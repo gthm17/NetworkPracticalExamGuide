@@ -868,7 +868,7 @@
 
   <div id="udp-overview" class="sub-panel active">
     <div class="section-title">UDP — User Datagram Protocol <span class="tag tag-both">Connectionless</span></div>
-    <p class="section-desc">UDP is like sending a letter — no handshake, no guarantee. Faster but unreliable. Key difference from TCP: use <code>SOCK_DGRAM</code> and <code>sendto()</code>/<code>recvfrom()</code> instead of <code>send()</code>/<code>recv()</code>.</p>
+    <p class="section-desc">UDP is like sending a letter — no handshake, no guarantee. Faster but unreliable. This version uses <strong>command-line args</strong> for IP/port and is <strong>one-way</strong>: client sends, server only receives. Key headers: <code>&lt;arpa/inet.h&gt;</code> (client) and <code>&lt;unistd.h&gt;</code> (server).</p>
     <div class="grid2">
       <div class="card" style="margin:0">
         <div class="card-title">TCP vs UDP Quick Diff</div>
@@ -883,13 +883,15 @@
         </table>
       </div>
       <div class="card" style="margin:0">
-        <div class="card-title green">UDP Flow</div>
+        <div class="card-title green">UDP Flow (New Version)</div>
         <div class="flow">
-          <div class="flow-step"><span class="flow-num">1</span><span><span class="flow-fn">socket(AF_INET, SOCK_DGRAM)</span></span></div>
+          <div class="flow-step"><span class="flow-num">1</span><span><span class="flow-fn">socket(AF_INET, SOCK_DGRAM, 0)</span> <span class="flow-desc">— both sides</span></span></div>
           <div class="flow-arrow">↓ Server only</div>
-          <div class="flow-step"><span class="flow-num orange">2</span><span><span class="flow-fn">bind()</span> <span class="flow-desc">— server binds to port</span></span></div>
-          <div class="flow-arrow">↓ No connection step!</div>
-          <div class="flow-step"><span class="flow-num green">3</span><span><span class="flow-fn">recvfrom() / sendto()</span></span></div>
+          <div class="flow-step"><span class="flow-num orange">2</span><span><span class="flow-fn">bind()</span> <span class="flow-desc">— server binds to argv[1] port</span></span></div>
+          <div class="flow-step"><span class="flow-num orange">3</span><span><span class="flow-fn">recvfrom()</span> <span class="flow-desc">— server waits &amp; receives</span></span></div>
+          <div class="flow-arrow">↓ Client only</div>
+          <div class="flow-step"><span class="flow-num green">4</span><span><span class="flow-fn">sendto()</span> <span class="flow-desc">— client sends to argv[1] IP, argv[2] port</span></span></div>
+          <div class="flow-step"><span class="flow-num green">5</span><span><span class="flow-fn">close()</span> <span class="flow-desc">— both sides close socket</span></span></div>
         </div>
       </div>
     </div>
@@ -897,116 +899,179 @@
 
   <div id="udp-server" class="sub-panel">
     <div class="section-title">UDP Server <span class="tag tag-server">SERVER</span></div>
+    <p class="section-desc">Run as: <code>./server &lt;Port&gt;</code>. Server binds to the given port, prints <code>Server waiting...</code>, then blocks on <code>recvfrom()</code>. When a datagram arrives it prints it and exits. No reply sent — one-way only.</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// UDP SERVER — Networks Lab</span>
+<pre><span class="cm">// UDP SERVER PROGRAM</span>
+
 <span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> sock_id, k;
-    <span class="type">char</span> buf[<span class="num">100</span>];
+<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]) {
     <span class="kw">struct</span> <span class="type">sockaddr_in</span> server, client;
-    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(client);
 
-    <span class="cm">// Step 1: Create UDP socket (SOCK_DGRAM!)</span>
-    sock_id = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sock_id == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in socket\n"</span>);
+    <span class="cm">// Check input format</span>
+    <span class="kw">if</span> (argc != <span class="num">2</span>) {
+        <span class="fn">printf</span>(<span class="str">"Usage: %s &lt;Port&gt;\n"</span>, argv[<span class="num">0</span>]);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
 
-    <span class="cm">// Step 2: Bind (server needs this)</span>
+    <span class="cm">// Create socket</span>
+    <span class="type">int</span> sockfd = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sockfd == -<span class="num">1</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error in socket()\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+
+    <span class="cm">// Server details</span>
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+    server.sin_port = <span class="fn">htons</span>(<span class="fn">atoi</span>(argv[<span class="num">1</span>]));
 
-    k = <span class="fn">bind</span>(sock_id, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, <span class="kw">sizeof</span>(server));
-    <span class="kw">if</span> (k == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in binding\n"</span>);
+    <span class="cm">// Bind socket</span>
+    <span class="kw">if</span> (<span class="fn">bind</span>(sockfd,
+             (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;server,
+             <span class="kw">sizeof</span>(server)) &lt; <span class="num">0</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error in bind()!\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
 
-    <span class="cm">// Step 3: Receive from client (recvfrom, not recv!)</span>
-    k = <span class="fn">recvfrom</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
-        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, &amp;len);
-    <span class="fn">printf</span>(<span class="str">"Got datagram: %s\n"</span>, buf);
+    <span class="type">char</span> buffer[<span class="num">100</span>];
+    <span class="type">socklen_t</span> client_len = <span class="kw">sizeof</span>(client);
 
-    <span class="cm">// Step 4: Send reply back</span>
-    <span class="fn">printf</span>(<span class="str">"Enter reply: "</span>);
-    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
-    <span class="fn">sendto</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
-        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, len);
+    <span class="fn">printf</span>(<span class="str">"Server waiting...\n"</span>);
 
-    <span class="fn">close</span>(sock_id);
+    <span class="cm">// Receive message</span>
+    <span class="kw">if</span> (<span class="fn">recvfrom</span>(sockfd,
+                 buffer,
+                 <span class="kw">sizeof</span>(buffer),
+                 <span class="num">0</span>,
+                 (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;client,
+                 &amp;client_len) &lt; <span class="num">0</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error in recvfrom()!\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+
+    <span class="fn">printf</span>(<span class="str">"Got a datagram: %s\n"</span>, buffer);
+
+    <span class="fn">close</span>(sockfd);
     <span class="kw">return</span> <span class="num">0</span>;
 }</pre>
+    </div>
+    <div class="trick-box">
+      <div class="trick-label">🔑 REMEMBER</div>
+      Server uses <code>argc != 2</code> — only takes <strong>port</strong> as arg. <code>atoi(argv[1])</code> converts the port string to int. <code>socklen_t client_len</code> must be initialised with <code>sizeof(client)</code> <em>before</em> passing its address to <code>recvfrom()</code>.
     </div>
   </div>
 
   <div id="udp-client" class="sub-panel">
     <div class="section-title">UDP Client <span class="tag tag-client">CLIENT</span></div>
+    <p class="section-desc">Run as: <code>./client &lt;IP Address&gt; &lt;Port&gt;</code>. Client takes the server IP and port on the command line, uses <code>inet_addr()</code> to convert the IP string, sends one message, then exits. No <code>recvfrom()</code> — one-way only.</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// UDP CLIENT — Networks Lab</span>
+<pre><span class="cm">// UDP CLIENT PROGRAM</span>
+
 <span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;arpa/inet.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> sock_id, k;
-    <span class="type">char</span> buf[<span class="num">100</span>];
+<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]) {
     <span class="kw">struct</span> <span class="type">sockaddr_in</span> server;
-    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(server);
+    <span class="type">int</span> sockfd;
 
-    <span class="cm">// Step 1: Create UDP socket (same as server)</span>
-    sock_id = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sock_id == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in socket\n"</span>);
+    <span class="cm">// Check input format</span>
+    <span class="kw">if</span> (argc != <span class="num">3</span>) {
+        <span class="fn">printf</span>(<span class="str">"Usage: %s &lt;IP Address&gt; &lt;Port&gt;\n"</span>, argv[<span class="num">0</span>]);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
 
-    <span class="cm">// Step 2: Set server address (NO bind, NO connect!)</span>
+    <span class="cm">// Create socket</span>
+    sockfd = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sockfd == -<span class="num">1</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error in socket()\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+
+    <span class="cm">// Server details</span>
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+    server.sin_port = <span class="fn">htons</span>(<span class="fn">atoi</span>(argv[<span class="num">2</span>]));
+    server.sin_addr.s_addr = <span class="fn">inet_addr</span>(argv[<span class="num">1</span>]);
 
-    <span class="cm">// Step 3: Send to server (sendto, not send!)</span>
-    <span class="fn">printf</span>(<span class="str">"Enter message: "</span>);
-    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
-    <span class="fn">sendto</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
-        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, len);
+    <span class="type">char</span> buffer[<span class="num">100</span>];
 
-    <span class="cm">// Step 4: Receive reply</span>
-    k = <span class="fn">recvfrom</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
-        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, &amp;len);
-    <span class="fn">printf</span>(<span class="str">"Reply from server: %s\n"</span>, buf);
+    <span class="fn">printf</span>(<span class="str">"Enter a message to be sent to server:\n"</span>);
+    <span class="fn">fgets</span>(buffer, <span class="kw">sizeof</span>(buffer), stdin);
 
-    <span class="fn">close</span>(sock_id);
+    <span class="cm">// Send message</span>
+    <span class="kw">if</span> (<span class="fn">sendto</span>(sockfd,
+               buffer,
+               <span class="fn">strlen</span>(buffer),
+               <span class="num">0</span>,
+               (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;server,
+               <span class="kw">sizeof</span>(server)) &lt; <span class="num">0</span>) {
+        <span class="fn">printf</span>(<span class="str">"Error in sendto()\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+
+    <span class="fn">printf</span>(<span class="str">"Message sent successfully\n"</span>);
+
+    <span class="fn">close</span>(sockfd);
     <span class="kw">return</span> <span class="num">0</span>;
 }</pre>
+    </div>
+    <div class="trick-box orange">
+      <div class="trick-label orange">⚠️ KEY DIFFERENCE FROM SERVER</div>
+      Client uses <code>argc != 3</code> (needs <strong>both IP and Port</strong>). <code>inet_addr(argv[1])</code> converts dotted-decimal IP string → binary. Port is <code>atoi(argv[2])</code>. No <code>bind()</code>, no <code>recvfrom()</code>.
     </div>
   </div>
 
   <div id="udp-tricks" class="sub-panel">
-    <div class="section-title">UDP — Copy-Paste Tricks</div>
+    <div class="section-title">UDP — Copy-Paste Tricks &amp; Diff</div>
+
     <div class="card">
-      <div class="card-title orange">Server → Client Changes</div>
+      <div class="card-title orange">Server → Client: What Changes</div>
       <div class="trick-box green">
-        <div class="trick-label green">✅ KEEP SAME</div>
-        All headers • <code>socket(AF_INET, SOCK_DGRAM, 0)</code> • Port 3003 • <code>sendto()</code> / <code>recvfrom()</code> function signatures
+        <div class="trick-label green">✅ KEEP SAME (copy from server)</div>
+        Common headers (<code>&lt;stdio.h&gt;</code>, <code>&lt;string.h&gt;</code>, <code>&lt;sys/socket.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;netinet/in.h&gt;</code>) • <code>socket(AF_INET, SOCK_DGRAM, 0)</code> • <code>struct sockaddr_in</code> • <code>sin_family = AF_INET</code>
       </div>
       <div class="trick-box orange">
         <div class="trick-label orange">❌ REMOVE from server to make client</div>
-        The entire <code>bind()</code> block (client doesn't bind)
+        <code>bind()</code> block • <code>recvfrom()</code> call • <code>socklen_t client_len</code> • <code>&lt;unistd.h&gt;</code> header • <code>struct sockaddr_in client</code> • <code>printf("Server waiting...")</code>
       </div>
       <div class="trick-box yellow">
-        <div class="trick-label yellow">🔄 SWAP order</div>
-        Server does <code>recvfrom()</code> first, client does <code>sendto()</code> first
+        <div class="trick-label yellow">➕ ADD in client (not in server)</div>
+        <code>#include &lt;arpa/inet.h&gt;</code> • <code>argc != 3</code> check (IP + Port args) • <code>inet_addr(argv[1])</code> for IP • <code>atoi(argv[2])</code> for port • <code>strlen(buffer)</code> in sendto • <code>sendto()</code> call • <code>printf("Message sent successfully")</code>
       </div>
     </div>
+
+    <div class="card">
+      <div class="card-title purple">Side-by-Side Diff</div>
+      <table class="compare-table">
+        <tr><th>Step</th><th>SERVER</th><th>CLIENT</th></tr>
+        <tr><td>Args</td><td>argc != 2 → Port only</td><td>argc != 3 → IP + Port</td></tr>
+        <tr><td>1</td><td>socket(AF_INET, SOCK_DGRAM, 0)</td><td>socket(AF_INET, SOCK_DGRAM, 0) ← same</td></tr>
+        <tr><td>2</td><td>INADDR_ANY + atoi(argv[1])</td><td>inet_addr(argv[1]) + atoi(argv[2])</td></tr>
+        <tr><td>3</td><td>bind() ← server only</td><td>❌ skip</td></tr>
+        <tr><td>4</td><td>recvfrom() → print datagram</td><td>fgets() → sendto()</td></tr>
+        <tr><td>5</td><td>close(sockfd)</td><td>print "sent" → close(sockfd)</td></tr>
+      </table>
+    </div>
+
     <div class="trick-box purple">
-      <div class="trick-label purple">💡 KEY TRICK — UDP vs TCP in one line</div>
-      Change <code>SOCK_STREAM</code> → <code>SOCK_DGRAM</code>, change <code>send/recv</code> → <code>sendto/recvfrom</code>, remove <code>listen()</code> and <code>accept()</code> from server, remove <code>connect()</code> from client. That's literally the full TCP→UDP conversion.
+      <div class="trick-label purple">💡 EXAM TIP — One-Way vs Two-Way</div>
+      This version is <strong>one-way</strong>: client sends, server receives and prints — no reply. If asked about two-way UDP, server would also call <code>sendto()</code> using the <code>&amp;client</code> address captured by <code>recvfrom()</code>.
+    </div>
+
+    <div class="trick-box">
+      <div class="trick-label">🔑 TCP → UDP Conversion in 4 steps</div>
+      1. <code>SOCK_STREAM</code> → <code>SOCK_DGRAM</code> &nbsp;|&nbsp; 2. <code>send/recv</code> → <code>sendto/recvfrom</code> &nbsp;|&nbsp; 3. Remove <code>listen()</code>, <code>accept()</code>, <code>connect()</code> &nbsp;|&nbsp; 4. Add destination address to <code>sendto()</code>
     </div>
   </div>
 </div>
