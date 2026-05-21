@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Networks Lab — Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #00e5ff;
+    --accent2: #ff6b35;
+    --accent3: #a78bfa;
+    --green: #00ffaa;
+    --yellow: #ffd60a;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --code-bg: #0d0d15;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-dot {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  header h1 span { color: var(--accent); }
+  .exam-badge {
+    margin-left: auto;
+    background: var(--accent2);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: glow-badge 1.5s infinite alternate;
+  }
+  @keyframes glow-badge {
+    from { box-shadow: 0 0 6px var(--accent2); }
+    to { box-shadow: 0 0 18px var(--accent2); }
+  }
+
+  /* MAIN TABS */
+  .main-tabs {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    gap: 4px;
+    padding: 16px 32px 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9);
+    backdrop-filter: blur(8px);
+    overflow-x: auto;
+  }
+  .main-tabs::-webkit-scrollbar { height: 3px; }
+  .main-tabs::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  .tab-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--text); border-color: var(--accent); }
+  .tab-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    border-color: var(--accent);
+    border-bottom: 2px solid var(--card);
+    margin-bottom: -1px;
+  }
+
+  .content-area {
+    position: relative;
+    z-index: 5;
+    padding: 24px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SUB TABS */
+  .sub-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .sub-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .sub-btn:hover { color: var(--text); border-color: var(--accent3); }
+  .sub-btn.active {
+    background: var(--accent3);
+    color: #000;
+    border-color: var(--accent3);
+    font-weight: 700;
+  }
+
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* SECTION HEADERS */
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .tag {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tag-server { background: rgba(0,229,255,0.15); color: var(--accent); border: 1px solid var(--accent); }
+  .tag-client { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid var(--accent2); }
+  .tag-both { background: rgba(167,139,250,0.15); color: var(--accent3); border: 1px solid var(--accent3); }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: '';
+    width: 3px; height: 16px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+  .card-title.orange::before { background: var(--accent2); }
+  .card-title.purple::before { background: var(--accent3); }
+  .card-title.green::before { background: var(--green); }
+  .card-title.yellow::before { background: var(--yellow); }
+
+  /* CODE BLOCKS */
+  .code-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .copy-btn:hover { background: var(--accent); color: #000; }
+  .copy-btn.copied { background: var(--green); border-color: var(--green); color: #000; }
+
+  /* SYNTAX COLORS */
+  .kw { color: #ff79c6; }
+  .fn { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .cm { color: #6272a4; font-style: italic; }
+  .num { color: #bd93f9; }
+  .type { color: #8be9fd; }
+  .op { color: #ff79c6; }
+
+  /* TRICK BOXES */
+  .trick-box {
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(167,139,250,0.05));
+    border: 1px solid rgba(0,229,255,0.3);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+  .trick-box.orange { border-left-color: var(--accent2); border-color: rgba(255,107,53,0.3); background: linear-gradient(135deg, rgba(255,107,53,0.05), rgba(0,0,0,0)); }
+  .trick-box.green { border-left-color: var(--green); border-color: rgba(0,255,170,0.3); background: linear-gradient(135deg, rgba(0,255,170,0.05), rgba(0,0,0,0)); }
+  .trick-box.yellow { border-left-color: var(--yellow); border-color: rgba(255,214,10,0.3); background: linear-gradient(135deg, rgba(255,214,10,0.05), rgba(0,0,0,0)); }
+  .trick-box.purple { border-left-color: var(--accent3); border-color: rgba(167,139,250,0.3); background: linear-gradient(135deg, rgba(167,139,250,0.05), rgba(0,0,0,0)); }
+
+  .trick-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .trick-label.orange { color: var(--accent2); }
+  .trick-label.green { color: var(--green); }
+  .trick-label.yellow { color: var(--yellow); }
+  .trick-label.purple { color: var(--accent3); }
+
+  /* DIFF HIGHLIGHT */
+  .diff-add { background: rgba(0,255,170,0.12); border-left: 3px solid var(--green); padding-left: 6px; display: block; }
+  .diff-remove { background: rgba(255,107,53,0.12); border-left: 3px solid var(--accent2); padding-left: 6px; display: block; text-decoration: line-through; opacity: 0.6; }
+
+  /* FLOW VIZ */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 16px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .flow-step:hover { border-color: var(--accent); transform: translateX(4px); }
+  .flow-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .flow-num.orange { background: var(--accent2); }
+  .flow-num.green { background: var(--green); }
+  .flow-num.purple { background: var(--accent3); }
+  .flow-arrow {
+    margin-left: 18px;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  .flow-fn { font-family: 'JetBrains Mono', monospace; color: var(--green); font-weight: 700; }
+  .flow-desc { color: var(--muted); font-size: 0.78rem; }
+
+  /* COMPARE TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 10px;
+  }
+  .compare-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table th:nth-child(2) { color: var(--accent); }
+  .compare-table th:nth-child(3) { color: var(--accent2); }
+  .compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* GRID 2 */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .grid2 { grid-template-columns: 1fr; } }
+
+  /* INLINE CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(0,229,255,0.1);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+
+  /* VIZ CANVAS */
+  .viz-area {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .viz-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .viz-box {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+  .viz-server { background: rgba(0,229,255,0.15); border: 1px solid var(--accent); color: var(--accent); }
+  .viz-client { background: rgba(255,107,53,0.15); border: 1px solid var(--accent2); color: var(--accent2); }
+  .viz-arrow { color: var(--green); font-size: 1.1rem; }
+  .viz-label { color: var(--muted); font-size: 0.72rem; }
+
+  /* MEMCARD */
+  .mem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .mem-card {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    transition: all 0.2s;
+  }
+  .mem-card:hover { border-color: var(--accent3); transform: translateY(-2px); }
+  .mem-fn {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+  .mem-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .highlight-inline {
+    background: rgba(255,214,10,0.15);
+    color: var(--yellow);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+  }
+
+  /* ═══════════════════════════════════════
+     MOBILE OPTIMIZATIONS
+  ═══════════════════════════════════════ */
+  @media (max-width: 640px) {
+
+    /* Header */
+    header {
+      padding: 14px 16px 12px;
+      gap: 10px;
+    }
+    header h1 {
+      font-size: 1rem;
+      letter-spacing: -0.3px;
+    }
+    header h1 span { display: none; }
+    .exam-badge {
+      font-size: 0.6rem;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .logo-dot { width: 9px; height: 9px; flex-shrink: 0; }
+
+    /* Main tabs — scrollable pill row on mobile */
+    .main-tabs {
+      padding: 10px 12px 0;
+      gap: 6px;
+      /* Hide the tab-bar bottom border effect, go flat */
+      border-bottom: 2px solid var(--border);
+    }
+    .tab-btn {
+      font-size: 0.72rem;
+      padding: 8px 12px;
+      border-radius: 6px 6px 0 0;
+      border-bottom: none;
+    }
+    .tab-btn.active {
+      border-bottom: 2px solid var(--card);
+      margin-bottom: -2px;
+    }
+
+    /* Content area */
+    .content-area {
+      padding: 16px 14px;
+    }
+
+    /* Sub tabs — wrap nicely */
+    .sub-tabs {
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .sub-btn {
+      font-size: 0.72rem;
+      padding: 6px 13px;
+    }
+
+    /* Section title — stack tag below on tiny screens */
+    .section-title {
+      font-size: 1.05rem;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .section-title .tag {
+      font-size: 0.6rem;
+    }
+
+    .section-desc {
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+    }
+
+    /* Cards */
+    .card {
+      padding: 14px 12px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+    }
+    .card-title {
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+    }
+
+    /* Code blocks — key mobile fix */
+    pre {
+      font-size: 0.68rem;
+      padding: 42px 12px 14px; /* top padding for copy btn */
+      line-height: 1.6;
+      border-radius: 6px;
+      /* Ensure horizontal scroll works */
+      -webkit-overflow-scrolling: touch;
+    }
+    .code-wrap { margin-bottom: 14px; }
+    .copy-btn {
+      font-size: 0.65rem;
+      padding: 5px 10px;
+      top: 8px; right: 8px;
+    }
+
+    /* Trick boxes */
+    .trick-box {
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+    .trick-label {
+      font-size: 0.62rem;
+      margin-bottom: 5px;
+    }
+
+    /* Flow steps */
+    .flow-step {
+      font-size: 0.78rem;
+      padding: 9px 10px;
+      gap: 10px;
+    }
+    .flow-fn { font-size: 0.75rem; }
+    .flow-desc { font-size: 0.72rem; }
+    .flow-arrow { margin-left: 12px; font-size: 0.9rem; }
+
+    /* Tables — make scrollable */
+    .compare-table {
+      font-size: 0.72rem;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .compare-table th { padding: 8px 10px; font-size: 0.62rem; }
+    .compare-table td { padding: 7px 10px; font-size: 0.7rem; }
+
+    /* Viz area */
+    .viz-area {
+      padding: 14px 12px;
+      font-size: 0.7rem;
+      min-height: auto;
+    }
+    .viz-row { gap: 6px; flex-wrap: wrap; }
+    .viz-box { padding: 6px 10px; font-size: 0.68rem; }
+    .viz-label { font-size: 0.65rem; }
+
+    /* Mem grid — 1 col on mobile */
+    .mem-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .mem-card { padding: 10px 12px; }
+    .mem-fn { font-size: 0.8rem; }
+    .mem-desc { font-size: 0.74rem; }
+
+    /* Grid2 already handles 1-col via existing @media, just reduce gap */
+    .grid2 { gap: 12px; }
+
+    /* inline code */
+    code { font-size: 0.78em; padding: 1px 5px; }
+  }
+
+  /* Slightly bigger than phone but still tablet */
+  @media (min-width: 641px) and (max-width: 900px) {
+    header { padding: 18px 20px 14px; }
+    .content-area { padding: 20px 20px; }
+    .main-tabs { padding: 12px 20px 0; }
+    pre { font-size: 0.74rem; }
+    .section-title { font-size: 1.15rem; }
+  }
+
+  /* Touch: make buttons feel tappable */
+  @media (hover: none) {
+    .tab-btn, .sub-btn, .copy-btn, .flow-step, .mem-card {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .flow-step:hover { transform: none; }
+    .mem-card:hover { transform: none; }
+    .tab-btn { min-height: 38px; }
+    .sub-btn { min-height: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-dot"></div>
+  <h1>Networks Lab <span>// Exam Prep</span></h1>
+  <div class="exam-badge">⚡ Exam Tomorrow</div>
+</header>
+
+<div class="main-tabs" id="mainTabs">
+  <button class="tab-btn active" onclick="showTab('tcp')">TCP</button>
+  <button class="tab-btn" onclick="showTab('udp')">UDP</button>
+  <button class="tab-btn" onclick="showTab('snw')">Stop &amp; Wait</button>
+  <button class="tab-btn" onclick="showTab('dvr')">DVR</button>
+  <button class="tab-btn" onclick="showTab('leaky')">Leaky Bucket</button>
+  <button class="tab-btn" onclick="showTab('ftp')">FTP</button>
+</div>
+
+<div class="content-area">
+
+<!-- ═══════════════ TCP ═══════════════ -->
+<div id="tcp" class="tab-panel active">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('tcp','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('tcp','server')">Server</button>
+    <button class="sub-btn" onclick="showSub('tcp','client')">Client</button>
+    <button class="sub-btn" onclick="showSub('tcp','tricks')">Tricks &amp; Diff</button>
+  </div>
+
+  <!-- Overview -->
+  <div id="tcp-overview" class="sub-panel active">
+    <div class="section-title">TCP — Transmission Control Protocol <span class="tag tag-both">Connection-Based</span></div>
+    <p class="section-desc">TCP is like a phone call — you <strong>establish a connection first</strong>, then talk, then hang up. Reliable, ordered delivery guaranteed.</p>
+    <div class="card">
+      <div class="card-title">How TCP Works — The Flow</div>
+      <div class="flow">
+        <div class="flow-step"><span class="flow-num">1</span><span><span class="flow-fn">socket()</span> — <span class="flow-desc">Both server &amp; client create a socket (endpoint)</span></span></div>
+        <div class="flow-arrow">↓ Server only</div>
+        <div class="flow-step"><span class="flow-num orange">2</span><span><span class="flow-fn">bind()</span> — <span class="flow-desc">Server attaches socket to a port (3003)</span></span></div>
+        <div class="flow-step"><span class="flow-num orange">3</span><span><span class="flow-fn">listen()</span> — <span class="flow-desc">Server starts waiting for connections</span></span></div>
+        <div class="flow-step"><span class="flow-num orange">4</span><span><span class="flow-fn">accept()</span> — <span class="flow-desc">Server accepts incoming client</span></span></div>
+        <div class="flow-arrow">↓ Client only</div>
+        <div class="flow-step"><span class="flow-num green">5</span><span><span class="flow-fn">connect()</span> — <span class="flow-desc">Client connects to server IP:port</span></span></div>
+        <div class="flow-arrow">↓ Both</div>
+        <div class="flow-step"><span class="flow-num purple">6</span><span><span class="flow-fn">send() / recv()</span> — <span class="flow-desc">Exchange data</span></span></div>
+        <div class="flow-step"><span class="flow-num purple">7</span><span><span class="flow-fn">close()</span> — <span class="flow-desc">Terminate connection</span></span></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="viz-area">
+        <div class="viz-row"><div class="viz-box viz-server">SERVER</div><span class="viz-label">socket() → bind() → listen() → accept()</span></div>
+        <div class="viz-row" style="margin-left:30px;"><span class="viz-arrow">↕</span><span class="viz-label" style="margin-left:8px;">3-Way Handshake (SYN, SYN-ACK, ACK)</span></div>
+        <div class="viz-row"><div class="viz-box viz-client">CLIENT</div><span class="viz-label">socket() → connect()</span></div>
+        <div class="viz-row" style="margin-left:30px;"><span class="viz-arrow">↕</span><span class="viz-label" style="margin-left:8px;">send() / recv() both directions</span></div>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="card-title yellow">Key Socket Args</div>
+        <div class="mem-grid" style="grid-template-columns:1fr;">
+          <div class="mem-card"><div class="mem-fn">AF_INET</div><div class="mem-desc">IPv4 address family</div></div>
+          <div class="mem-card"><div class="mem-fn">SOCK_STREAM</div><div class="mem-desc">TCP — stream based, reliable</div></div>
+          <div class="mem-card"><div class="mem-fn">INADDR_ANY</div><div class="mem-desc">Accept connections on any interface</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server -->
+  <div id="tcp-server" class="sub-panel">
+    <div class="section-title">TCP Server <span class="tag tag-server">SERVER</span></div>
+    <p class="section-desc">Server binds to port, listens, accepts client, then does recv → send.</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// TCP SERVER — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> sock_desc, temp_sock_desc, k, len;
+    <span class="type">char</span> buf[<span class="num">100</span>];
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> server_addr, client;
+
+    <span class="cm">// Step 1: Create socket</span>
+    sock_desc = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sock_desc == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in socket creation\n"</span>);
+
+    <span class="cm">// Step 2: Set server address</span>
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+
+    <span class="cm">// Step 3: Bind socket to address</span>
+    k = <span class="fn">bind</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server_addr, <span class="kw">sizeof</span>(server_addr));
+    <span class="kw">if</span> (k == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in binding\n"</span>);
+
+    <span class="cm">// Step 4: Listen for connections</span>
+    k = <span class="fn">listen</span>(sock_desc, <span class="num">5</span>);
+    <span class="kw">if</span> (k == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in listening\n"</span>);
+
+    <span class="cm">// Step 5: Accept a client</span>
+    len = <span class="kw">sizeof</span>(client);
+    temp_sock_desc = <span class="fn">accept</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, &amp;len);
+    <span class="kw">if</span> (temp_sock_desc == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in accept\n"</span>);
+
+    <span class="cm">// Step 6: Receive message from client</span>
+    k = <span class="fn">recv</span>(temp_sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+    <span class="fn">printf</span>(<span class="str">"Message from client: %s\n"</span>, buf);
+
+    <span class="cm">// Step 7: Send reply</span>
+    <span class="fn">printf</span>(<span class="str">"Enter data to send: "</span>);
+    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
+    <span class="fn">send</span>(temp_sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="fn">close</span>(temp_sock_desc);
+    <span class="fn">close</span>(sock_desc);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+    <div class="trick-box">
+      <div class="trick-label">🔑 REMEMBER</div>
+      Server uses <strong>TWO sockets</strong>: <code>sock_desc</code> (listening) and <code>temp_sock_desc</code> (actual communication with client). <code>accept()</code> returns the second one.
+    </div>
+  </div>
+
+  <!-- Client -->
+  <div id="tcp-client" class="sub-panel">
+    <div class="section-title">TCP Client <span class="tag tag-client">CLIENT</span></div>
+    <p class="section-desc">Client just creates socket, connects, then does send → recv. No bind/listen/accept needed!</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// TCP CLIENT — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> sock_desc, k;
+    <span class="type">char</span> buf[<span class="num">100</span>];
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> client;
+
+    <span class="cm">// Step 1: Create socket (SAME as server)</span>
+    sock_desc = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sock_desc == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in socket creation\n"</span>);
+
+    <span class="cm">// Step 2: Set server address to connect TO</span>
+    client.sin_family = AF_INET;
+    client.sin_addr.s_addr = INADDR_ANY;
+    client.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>); <span class="cm">// SAME port as server</span>
+
+    <span class="cm">// Step 3: Connect to server (replaces bind+listen+accept)</span>
+    k = <span class="fn">connect</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, <span class="kw">sizeof</span>(client));
+    <span class="kw">if</span> (k == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in connecting\n"</span>);
+
+    <span class="cm">// Step 4: Send message first (client initiates)</span>
+    <span class="fn">printf</span>(<span class="str">"Enter data to send: "</span>);
+    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
+    <span class="fn">send</span>(sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="cm">// Step 5: Receive reply from server</span>
+    k = <span class="fn">recv</span>(sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+    <span class="fn">printf</span>(<span class="str">"Message from server: %s\n"</span>, buf);
+
+    <span class="fn">close</span>(sock_desc);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <!-- Tricks -->
+  <div id="tcp-tricks" class="sub-panel">
+    <div class="section-title">TCP — Copy-Paste Tricks &amp; Diff</div>
+
+    <div class="card">
+      <div class="card-title orange">Server → Client: What Changes</div>
+      <div class="trick-box green">
+        <div class="trick-label green">✅ KEEP SAME (copy from server)</div>
+        Headers • <code>socket(AF_INET, SOCK_STREAM, 0)</code> • Port number (3003) • <code>sin_family</code>, <code>sin_addr</code>, <code>sin_port</code> setup • <code>send()</code> / <code>recv()</code> logic
+      </div>
+      <div class="trick-box orange">
+        <div class="trick-label orange">❌ REMOVE from server</div>
+        <code>bind()</code> call • <code>listen()</code> call • <code>accept()</code> call • <code>temp_sock_desc</code> variable
+      </div>
+      <div class="trick-box yellow">
+        <div class="trick-label yellow">➕ ADD in client</div>
+        <code>connect(sock_desc, (struct sockaddr*)&amp;client, sizeof(client))</code> — this single line replaces ALL 3 server calls
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title purple">Side-by-Side Diff</div>
+      <table class="compare-table">
+        <tr><th>Step</th><th>SERVER</th><th>CLIENT</th></tr>
+        <tr><td>1</td><td>socket()</td><td>socket() ← same</td></tr>
+        <tr><td>2</td><td>bind()</td><td>❌ skip</td></tr>
+        <tr><td>3</td><td>listen()</td><td>❌ skip</td></tr>
+        <tr><td>4</td><td>accept() → new fd</td><td>connect() ← replaces all 3</td></tr>
+        <tr><td>5</td><td>recv() first</td><td>send() first</td></tr>
+        <tr><td>6</td><td>send()</td><td>recv()</td></tr>
+      </table>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">💡 EXAM TIP</div>
+      If asked "what does the client NOT need that server does?" → Answer: <strong>bind(), listen(), accept()</strong>. Client only needs socket() + connect().
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ UDP ═══════════════ -->
+<div id="udp" class="tab-panel">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('udp','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('udp','server')">Server</button>
+    <button class="sub-btn" onclick="showSub('udp','client')">Client</button>
+    <button class="sub-btn" onclick="showSub('udp','tricks')">Tricks &amp; Diff</button>
+  </div>
+
+  <div id="udp-overview" class="sub-panel active">
+    <div class="section-title">UDP — User Datagram Protocol <span class="tag tag-both">Connectionless</span></div>
+    <p class="section-desc">UDP is like sending a letter — no handshake, no guarantee. Faster but unreliable. Key difference from TCP: use <code>SOCK_DGRAM</code> and <code>sendto()</code>/<code>recvfrom()</code> instead of <code>send()</code>/<code>recv()</code>.</p>
+    <div class="grid2">
+      <div class="card" style="margin:0">
+        <div class="card-title">TCP vs UDP Quick Diff</div>
+        <table class="compare-table">
+          <tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+          <tr><td>Socket type</td><td>SOCK_STREAM</td><td>SOCK_DGRAM</td></tr>
+          <tr><td>Connection</td><td>connect()</td><td>No connect</td></tr>
+          <tr><td>Send</td><td>send()</td><td>sendto()</td></tr>
+          <tr><td>Receive</td><td>recv()</td><td>recvfrom()</td></tr>
+          <tr><td>Reliable</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td>Server accept</td><td>accept()</td><td>No accept</td></tr>
+        </table>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="card-title green">UDP Flow</div>
+        <div class="flow">
+          <div class="flow-step"><span class="flow-num">1</span><span><span class="flow-fn">socket(AF_INET, SOCK_DGRAM)</span></span></div>
+          <div class="flow-arrow">↓ Server only</div>
+          <div class="flow-step"><span class="flow-num orange">2</span><span><span class="flow-fn">bind()</span> <span class="flow-desc">— server binds to port</span></span></div>
+          <div class="flow-arrow">↓ No connection step!</div>
+          <div class="flow-step"><span class="flow-num green">3</span><span><span class="flow-fn">recvfrom() / sendto()</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="udp-server" class="sub-panel">
+    <div class="section-title">UDP Server <span class="tag tag-server">SERVER</span></div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// UDP SERVER — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> sock_id, k;
+    <span class="type">char</span> buf[<span class="num">100</span>];
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> server, client;
+    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(client);
+
+    <span class="cm">// Step 1: Create UDP socket (SOCK_DGRAM!)</span>
+    sock_id = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sock_id == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in socket\n"</span>);
+
+    <span class="cm">// Step 2: Bind (server needs this)</span>
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+
+    k = <span class="fn">bind</span>(sock_id, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, <span class="kw">sizeof</span>(server));
+    <span class="kw">if</span> (k == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in binding\n"</span>);
+
+    <span class="cm">// Step 3: Receive from client (recvfrom, not recv!)</span>
+    k = <span class="fn">recvfrom</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
+        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, &amp;len);
+    <span class="fn">printf</span>(<span class="str">"Got datagram: %s\n"</span>, buf);
+
+    <span class="cm">// Step 4: Send reply back</span>
+    <span class="fn">printf</span>(<span class="str">"Enter reply: "</span>);
+    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
+    <span class="fn">sendto</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
+        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, len);
+
+    <span class="fn">close</span>(sock_id);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="udp-client" class="sub-panel">
+    <div class="section-title">UDP Client <span class="tag tag-client">CLIENT</span></div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// UDP CLIENT — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> sock_id, k;
+    <span class="type">char</span> buf[<span class="num">100</span>];
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> server;
+    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(server);
+
+    <span class="cm">// Step 1: Create UDP socket (same as server)</span>
+    sock_id = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sock_id == -<span class="num">1</span>)
+        <span class="fn">printf</span>(<span class="str">"Error in socket\n"</span>);
+
+    <span class="cm">// Step 2: Set server address (NO bind, NO connect!)</span>
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+
+    <span class="cm">// Step 3: Send to server (sendto, not send!)</span>
+    <span class="fn">printf</span>(<span class="str">"Enter message: "</span>);
+    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
+    <span class="fn">sendto</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
+        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, len);
+
+    <span class="cm">// Step 4: Receive reply</span>
+    k = <span class="fn">recvfrom</span>(sock_id, buf, <span class="num">100</span>, <span class="num">0</span>,
+        (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server, &amp;len);
+    <span class="fn">printf</span>(<span class="str">"Reply from server: %s\n"</span>, buf);
+
+    <span class="fn">close</span>(sock_id);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="udp-tricks" class="sub-panel">
+    <div class="section-title">UDP — Copy-Paste Tricks</div>
+    <div class="card">
+      <div class="card-title orange">Server → Client Changes</div>
+      <div class="trick-box green">
+        <div class="trick-label green">✅ KEEP SAME</div>
+        All headers • <code>socket(AF_INET, SOCK_DGRAM, 0)</code> • Port 3003 • <code>sendto()</code> / <code>recvfrom()</code> function signatures
+      </div>
+      <div class="trick-box orange">
+        <div class="trick-label orange">❌ REMOVE from server to make client</div>
+        The entire <code>bind()</code> block (client doesn't bind)
+      </div>
+      <div class="trick-box yellow">
+        <div class="trick-label yellow">🔄 SWAP order</div>
+        Server does <code>recvfrom()</code> first, client does <code>sendto()</code> first
+      </div>
+    </div>
+    <div class="trick-box purple">
+      <div class="trick-label purple">💡 KEY TRICK — UDP vs TCP in one line</div>
+      Change <code>SOCK_STREAM</code> → <code>SOCK_DGRAM</code>, change <code>send/recv</code> → <code>sendto/recvfrom</code>, remove <code>listen()</code> and <code>accept()</code> from server, remove <code>connect()</code> from client. That's literally the full TCP→UDP conversion.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ STOP AND WAIT ═══════════════ -->
+<div id="snw" class="tab-panel">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('snw','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('snw','code')">Full Code</button>
+    <button class="sub-btn" onclick="showSub('snw','tricks')">Tricks</button>
+  </div>
+
+  <div id="snw-overview" class="sub-panel active">
+    <div class="section-title">Stop &amp; Wait Protocol <span class="tag tag-both">Flow Control</span></div>
+    <p class="section-desc">Send one packet → Wait for ACK → Send next. Simplest flow control protocol. Uses random error simulation with <code>rand() % 4</code>.</p>
+    <div class="card">
+      <div class="card-title">How It Works</div>
+      <div class="flow">
+        <div class="flow-step"><span class="flow-num">1</span><span>Sender sends packet with sequence number</span></div>
+        <div class="flow-step"><span class="flow-num orange">2</span><span><code>errorframe = rand() % 4</code> — simulates packet loss (0 = error)</span></div>
+        <div class="flow-step"><span class="flow-num green">3</span><span>If no error: Receiver gets it, sends ACK back</span></div>
+        <div class="flow-step"><span class="flow-num purple">4</span><span><code>errorack = rand() % 4</code> — simulates ACK loss</span></div>
+        <div class="flow-step"><span class="flow-num">5</span><span>If ACK received: Sender moves to next packet</span></div>
+        <div class="flow-step"><span class="flow-num orange">6</span><span>If error: <code>t--</code> (timeout countdown), retransmit</span></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="trick-box">
+        <div class="trick-label">Key Variables</div>
+        <code>turn</code> = 's' or 'r' (whose turn) <br>
+        <code>errorframe</code> = 0 means error in packet<br>
+        <code>errorack</code> = 0 means error in ACK<br>
+        <code>p.seq</code> = sequence number<br>
+        <code>ak</code> = acknowledgment number<br>
+        <code>frexp</code> = expected frame number (receiver side)
+      </div>
+      <div class="trick-box orange">
+        <div class="trick-label orange">The Core Logic</div>
+        <code>rand() % 4 == 0</code> means ~25% chance of error. This simulates real network unreliability. If errorframe ≠ 0, packet sent OK. If errorack ≠ 0, ACK sent OK.
+      </div>
+    </div>
+  </div>
+
+  <div id="snw-code" class="sub-panel">
+    <div class="section-title">Stop &amp; Wait — Full Code</div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// STOP AND WAIT — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+
+<span class="kw">struct</span> frame {
+    <span class="type">int</span> info;
+    <span class="type">int</span> seq;
+};
+
+<span class="type">int</span> ak;
+<span class="type">int</span> t = <span class="num">5</span>, k;
+<span class="type">int</span> disconnect = <span class="num">0</span>;
+<span class="kw">struct</span> frame p;
+<span class="type">char</span> turn = <span class="str">'s'</span>;
+<span class="type">int</span> errorframe = <span class="num">1</span>, errorack = <span class="num">1</span>;
+
+<span class="type">void</span> <span class="fn">sender</span>();
+<span class="type">void</span> <span class="fn">receiver</span>();
+
+<span class="type">void</span> <span class="fn">main</span>() {
+    p.info = <span class="num">0</span>;
+    p.seq = <span class="num">0</span>;
+    <span class="kw">while</span> (!disconnect) {
+        <span class="fn">sender</span>();
+        <span class="fn">receiver</span>();
+    }
+}
+
+<span class="type">void</span> <span class="fn">sender</span>() {
+    <span class="kw">static</span> <span class="type">int</span> flag = <span class="num">0</span>;
+    <span class="kw">if</span> (turn == <span class="str">'s'</span>) {
+        <span class="kw">if</span> (errorack == <span class="num">0</span>) {          <span class="cm">// ACK was lost last time</span>
+            <span class="fn">printf</span>(<span class="str">"SENDER: sent packet with seq NO:%d\n"</span>, p.seq);
+            errorframe = <span class="fn">rand</span>() % <span class="num">4</span>;
+            <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorframe == <span class="num">0</span> ? <span class="str">"Error while sending Packet"</span> : <span class="str">""</span>));
+            turn = <span class="str">'r'</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">if</span> (flag == <span class="num">1</span>)
+                <span class="fn">printf</span>(<span class="str">"SENDER: Received ACK for packet %d\n"</span>, ak);
+            <span class="kw">if</span> (p.seq == <span class="num">5</span>) {         <span class="cm">// Sent all 5 packets</span>
+                disconnect = <span class="num">1</span>;
+                <span class="kw">return</span>;
+            }
+            p.info = p.info + <span class="num">1</span>;
+            p.seq = p.seq + <span class="num">1</span>;
+            <span class="fn">printf</span>(<span class="str">"SENDER: Sent packet with seq NO:%d\n"</span>, p.seq);
+            errorframe = <span class="fn">rand</span>() % <span class="num">4</span>;
+            <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorframe == <span class="num">0</span> ? <span class="str">"Error While sending Packet"</span> : <span class="str">""</span>));
+            turn = <span class="str">'r'</span>;
+            flag = <span class="num">1</span>;
+        }
+    } <span class="kw">else</span> {
+        t--;  <span class="cm">// timeout countdown</span>
+    }
+}
+
+<span class="type">void</span> <span class="fn">receiver</span>() {
+    <span class="kw">static</span> <span class="type">int</span> frexp = <span class="num">1</span>;  <span class="cm">// expected frame</span>
+    <span class="kw">if</span> (turn == <span class="str">'r'</span>) {
+        <span class="kw">if</span> (errorframe != <span class="num">0</span>) {    <span class="cm">// packet arrived OK</span>
+            <span class="kw">if</span> (p.seq == frexp) {  <span class="cm">// correct sequence</span>
+                <span class="fn">printf</span>(<span class="str">"RECEIVER: Received packet with seq %d\n"</span>, p.seq);
+                ak = p.seq;
+                frexp = frexp + <span class="num">1</span>;
+                turn = <span class="str">'s'</span>;
+                errorack = <span class="fn">rand</span>() % <span class="num">4</span>;
+                <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorack == <span class="num">0</span> ? <span class="str">"Error while sending ACK"</span> : <span class="str">""</span>));
+            } <span class="kw">else</span> {              <span class="cm">// duplicate packet</span>
+                <span class="fn">printf</span>(<span class="str">"RECEIVER: Duplicated packet with seq %d\n"</span>, p.seq);
+                ak = frexp - <span class="num">1</span>;
+                turn = <span class="str">'s'</span>;
+                errorack = <span class="fn">rand</span>() % <span class="num">4</span>;
+                <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorack == <span class="num">0</span> ? <span class="str">"Error while sending ACK"</span> : <span class="str">""</span>));
+            }
+        }
+    }
+}</pre>
+    </div>
+  </div>
+
+  <div id="snw-tricks" class="sub-panel">
+    <div class="section-title">Stop &amp; Wait — Tricks to Remember</div>
+    <div class="trick-box"><div class="trick-label">🔁 THE LOOP</div>While(!disconnect) calls sender() then receiver() alternately. They cooperate using the <code>turn</code> variable.</div>
+    <div class="trick-box orange"><div class="trick-label orange">🎲 ERROR SIMULATION</div><code>rand() % 4 == 0</code> → 25% error chance. Non-zero = success. This simulates both frame errors AND ACK errors separately.</div>
+    <div class="trick-box green"><div class="trick-label green">🔢 SEQUENCE LOGIC</div>Sender's <code>p.seq</code> increments each packet. Receiver's <code>frexp</code> (expected) also increments. If they match → new packet. If they don't → duplicate, re-ACK.</div>
+    <div class="trick-box yellow"><div class="trick-label yellow">📝 EXAM Q: Why two error variables?</div><code>errorframe</code> = error in the data packet going from sender to receiver. <code>errorack</code> = error in the ACK going back from receiver to sender. Both can fail independently.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ DVR ═══════════════ -->
+<div id="dvr" class="tab-panel">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('dvr','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('dvr','code')">Full Code</button>
+    <button class="sub-btn" onclick="showSub('dvr','tricks')">Tricks</button>
+  </div>
+
+  <div id="dvr-overview" class="sub-panel active">
+    <div class="section-title">Distance Vector Routing <span class="tag tag-both">Routing Algorithm</span></div>
+    <p class="section-desc">Each router tells its neighbors what it knows. Based on Bellman-Ford algorithm. Each node maintains a routing table with distance and next-hop to every other node.</p>
+    <div class="card">
+      <div class="card-title">The Bellman-Ford Core Logic</div>
+      <div class="trick-box">
+        <div class="trick-label">THE KEY FORMULA</div>
+        <code>if (rt[i].dist[j] > dmat[i][k] + rt[k].dist[j])</code><br><br>
+        Translation: "Can I reach j via intermediate node k cheaper than my current best path?" If yes → update!
+      </div>
+      <div class="flow">
+        <div class="flow-step"><span class="flow-num">1</span><span>Initialize routing table from cost matrix (direct link costs)</span></div>
+        <div class="flow-step"><span class="flow-num orange">2</span><span>Triple nested loop: for every i (src) → j (dst) → k (intermediate)</span></div>
+        <div class="flow-step"><span class="flow-num green">3</span><span>If shorter path found via k: update distance AND update "from" (next hop)</span></div>
+        <div class="flow-step"><span class="flow-num purple">4</span><span>Repeat until no updates (count == 0) → converged!</span></div>
+        <div class="flow-step"><span class="flow-num">5</span><span>Print final routing table for each node</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dvr-code" class="sub-panel">
+    <div class="section-title">DVR — Full Code</div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// DISTANCE VECTOR ROUTING — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> node {
+    <span class="type">unsigned</span> dist[<span class="num">20</span>];   <span class="cm">// distance to each node</span>
+    <span class="type">unsigned</span> from[<span class="num">20</span>];   <span class="cm">// next hop to reach each node</span>
+} rt[<span class="num">10</span>];              <span class="cm">// routing table for 10 nodes</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> dmat[<span class="num">20</span>][<span class="num">20</span>];    <span class="cm">// cost matrix</span>
+    <span class="type">int</span> n, i, j, k, count = <span class="num">0</span>;
+
+    <span class="fn">printf</span>(<span class="str">"Enter the number of nodes: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="fn">printf</span>(<span class="str">"Enter the cost matrix:\n"</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
+            <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;dmat[i][j]);
+
+    <span class="cm">// Initialize routing table with direct link costs</span>
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++) {
+            rt[i].dist[j] = dmat[i][j];
+            rt[i].from[j] = j;  <span class="cm">// initially, go directly</span>
+        }
+
+    <span class="cm">// Bellman-Ford: update until no change</span>
+    <span class="kw">do</span> {
+        count = <span class="num">0</span>;
+        <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+            <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
+                <span class="kw">for</span> (k = <span class="num">0</span>; k &lt; n; k++) {
+                    <span class="cm">// Can we reach j via k cheaper?</span>
+                    <span class="kw">if</span> (rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j]) {
+                        rt[i].dist[j] = rt[i].dist[k] + rt[k].dist[j];
+                        rt[i].from[j] = k;
+                        count++;  <span class="cm">// something changed</span>
+                    }
+                }
+    } <span class="kw">while</span> (count != <span class="num">0</span>);  <span class="cm">// repeat till stable</span>
+
+    <span class="cm">// Print routing tables</span>
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="fn">printf</span>(<span class="str">"\n\nState value for router %d\n"</span>, i + <span class="num">1</span>);
+        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
+            <span class="fn">printf</span>(<span class="str">"\n node %d via %d Distance %d"</span>,
+                   j + <span class="num">1</span>, rt[i].from[j] + <span class="num">1</span>, rt[i].dist[j]);
+    }
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="dvr-tricks" class="sub-panel">
+    <div class="section-title">DVR — Tricks to Remember</div>
+    <div class="trick-box"><div class="trick-label">🧠 THE MAGIC LINE</div>
+      <code>rt[i].dist[j] > dmat[i][k] + rt[k].dist[j]</code><br><br>
+      Read as: "Current best distance from i→j" > "Cost of i→k (direct link)" + "k's best distance to j". If true → we found a shortcut via k!
+    </div>
+    <div class="trick-box yellow"><div class="trick-label yellow">🔄 WHY do-while?</div>
+      We repeat until nothing changes (<code>count == 0</code>). This is convergence. Each iteration, more optimal paths propagate through the network. DVR is slow to converge — that's actually a known disadvantage!
+    </div>
+    <div class="trick-box green"><div class="trick-label green">📋 STRUCT TRICK</div>
+      <code>rt[i].dist[j]</code> = shortest distance from node i to node j<br>
+      <code>rt[i].from[j]</code> = which neighbor to use to get to j from i
+    </div>
+    <div class="trick-box purple"><div class="trick-label purple">💡 EXAM Q: What is the time complexity?</div>
+      O(n³) per iteration × multiple iterations. Three nested loops over n nodes = O(n³). This is why DVR doesn't scale well to large networks.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ LEAKY BUCKET ═══════════════ -->
+<div id="leaky" class="tab-panel">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('leaky','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('leaky','code')">Full Code</button>
+    <button class="sub-btn" onclick="showSub('leaky','tricks')">Tricks</button>
+  </div>
+
+  <div id="leaky-overview" class="sub-panel active">
+    <div class="section-title">Leaky Bucket Algorithm <span class="tag tag-both">Congestion Control</span></div>
+    <p class="section-desc">Traffic shaping algorithm. Imagine a bucket with a hole — packets fill the bucket, but output rate is constant. Excess packets are dropped.</p>
+    <div class="card">
+      <div class="card-title">Visualization</div>
+      <div class="viz-area">
+        <div class="viz-row">
+          <div class="viz-box viz-client">Incoming packets (bursty)</div>
+          <span class="viz-arrow">→</span>
+          <div style="border: 2px solid var(--accent); border-radius: 8px; padding: 10px 20px; text-align:center; font-size:0.75rem; color:var(--accent)">
+            BUCKET<br><span style="font-size:0.65rem; color:var(--muted)">size = buck_size<br>current = store</span>
+          </div>
+          <span class="viz-arrow">→</span>
+          <div class="viz-box viz-server">Outgoing (steady rate)</div>
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted); margin-top:8px;">
+          If incoming > (bucket_size - store) → DROP excess<br>
+          Each round: store -= outgoing (constant drain)
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="trick-box">
+        <div class="trick-label">Key Variables</div>
+        <code>buck_size</code> = max bucket capacity<br>
+        <code>store</code> = currently stored packets<br>
+        <code>incoming</code> = new packets arriving<br>
+        <code>outgoing</code> = constant drain rate
+      </div>
+      <div class="trick-box orange">
+        <div class="trick-label orange">The Core Check</div>
+        <code>if (incoming &lt;= buck_size - store)</code><br>
+        → fits in bucket → accept<br><br>
+        <code>else</code><br>
+        → drop excess, fill to max
+      </div>
+    </div>
+  </div>
+
+  <div id="leaky-code" class="sub-panel">
+    <div class="section-title">Leaky Bucket — Full Code</div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// LEAKY BUCKET ALGORITHM — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> incoming, outgoing, buck_size, n, store = <span class="num">0</span>;
+
+    <span class="fn">printf</span>(<span class="str">"Enter bucket size, outgoing rate and no of inputs: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d%d%d"</span>, &amp;buck_size, &amp;outgoing, &amp;n);
+
+    <span class="kw">while</span> (n != <span class="num">0</span>) {
+        <span class="fn">printf</span>(<span class="str">"Enter the incoming packet size: "</span>);
+        <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;incoming);
+        <span class="fn">printf</span>(<span class="str">"Incoming packet size %d\n"</span>, incoming);
+
+        <span class="cm">// Does it fit in bucket?</span>
+        <span class="kw">if</span> (incoming &lt;= (buck_size - store)) {
+            store += incoming;
+            <span class="fn">printf</span>(<span class="str">"Bucket buffer size %d out of %d\n"</span>, store, buck_size);
+        } <span class="kw">else</span> {
+            <span class="cm">// Drop what doesn't fit</span>
+            <span class="fn">printf</span>(<span class="str">"Dropped %d no of packets\n"</span>, incoming - (buck_size - store));
+            <span class="fn">printf</span>(<span class="str">"Bucket buffer size %d out of %d\n"</span>, buck_size, buck_size);
+            store = buck_size;  <span class="cm">// bucket is full</span>
+        }
+
+        <span class="cm">// Drain at constant outgoing rate</span>
+        store = store - outgoing;
+        <span class="fn">printf</span>(<span class="str">"After outgoing %d packets left out of %d in buffer\n"</span>,
+               store, buck_size);
+        n--;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="leaky-tricks" class="sub-panel">
+    <div class="section-title">Leaky Bucket — Tricks</div>
+    <div class="trick-box"><div class="trick-label">💧 THE ANALOGY</div>Bucket = buffer. Water in = incoming packets. Hole = outgoing rate. If too much water → overflow (drop packets). Hole always drains at same rate regardless of input.</div>
+    <div class="trick-box green"><div class="trick-label green">🔢 DROP CALCULATION</div>Dropped = <code>incoming - (buck_size - store)</code>. This is: "how many packets exceeded available space?"</div>
+    <div class="trick-box yellow"><div class="trick-label yellow">📝 EXAM Q: Leaky vs Token Bucket</div>Leaky = fixed output rate always (strict). Token Bucket = can burst occasionally (flexible). Leaky drops excess; Token stores tokens to allow bursts.</div>
+    <div class="trick-box purple"><div class="trick-label purple">⚠️ EDGE CASE</div>After outgoing, if <code>store</code> goes negative — in real code you'd clamp it to 0. The lab code assumes outgoing ≤ store always.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ FTP ═══════════════ -->
+<div id="ftp" class="tab-panel">
+  <div class="sub-tabs">
+    <button class="sub-btn active" onclick="showSub('ftp','overview')">Overview</button>
+    <button class="sub-btn" onclick="showSub('ftp','server')">Server</button>
+    <button class="sub-btn" onclick="showSub('ftp','client')">Client</button>
+    <button class="sub-btn" onclick="showSub('ftp','tricks')">Tricks &amp; Diff</button>
+  </div>
+
+  <div id="ftp-overview" class="sub-panel active">
+    <div class="section-title">File Transfer Protocol <span class="tag tag-both">TCP-Based</span></div>
+    <p class="section-desc">FTP is TCP + file I/O. Server reads a file and sends its contents. Client receives it and writes to a new file. The socket setup is <strong>identical to TCP</strong> — only the data handling changes.</p>
+    <div class="card">
+      <div class="card-title">FTP Flow</div>
+      <div class="flow">
+        <div class="flow-step"><span class="flow-num">1</span><span>Server: socket → bind → listen → accept (same as TCP)</span></div>
+        <div class="flow-step"><span class="flow-num orange">2</span><span>Client: socket → connect (same as TCP)</span></div>
+        <div class="flow-step"><span class="flow-num green">3</span><span>Client sends filename to server via <code>send()</code></span></div>
+        <div class="flow-step"><span class="flow-num purple">4</span><span>Server opens that file with <code>fopen()</code>, reads line by line</span></div>
+        <div class="flow-step"><span class="flow-num">5</span><span>Server sends each line; Client receives and writes to new file</span></div>
+        <div class="flow-step"><span class="flow-num orange">6</span><span>Server sends <code>"completed"</code> when done; Client detects it</span></div>
+      </div>
+    </div>
+    <div class="trick-box">
+      <div class="trick-label">🔑 KEY INSIGHT</div>
+      FTP = TCP socket code + File I/O (<code>fopen</code>, <code>fgets</code>, <code>fputs</code>). If you know TCP, you know 70% of FTP already!
+    </div>
+  </div>
+
+  <div id="ftp-server" class="sub-panel">
+    <div class="section-title">FTP Server <span class="tag tag-server">SERVER</span></div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// FTP SERVER — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> sd, newsd, n, port;
+    <span class="type">char</span> name[<span class="num">100</span>], fileread[<span class="num">100</span>];
+    FILE *fp;
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> serveraddr, clientaddr;
+    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(clientaddr);
+
+    <span class="fn">printf</span>(<span class="str">"Enter the port: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;port);
+
+    <span class="cm">// TCP socket setup (same as TCP server!)</span>
+    sd = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
+    <span class="kw">if</span> (sd &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Can't create socket\n"</span>);
+
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_addr.s_addr = INADDR_ANY;
+    serveraddr.sin_port = <span class="fn">htons</span>(port);
+
+    <span class="kw">if</span> (<span class="fn">bind</span>(sd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;serveraddr, <span class="kw">sizeof</span>(serveraddr)) &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Can't bind\n"</span>);
+
+    <span class="fn">listen</span>(sd, <span class="num">5</span>);
+
+    newsd = <span class="fn">accept</span>(sd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;clientaddr, &amp;len);
+    <span class="kw">if</span> (newsd &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Can't accept\n"</span>);
+
+    <span class="cm">// Receive filename from client</span>
+    n = <span class="fn">recv</span>(newsd, name, <span class="num">100</span>, <span class="num">0</span>);
+    name[n] = <span class="str">'\0'</span>;
+    <span class="fn">printf</span>(<span class="str">"File requested: %s\n"</span>, name);
+
+    <span class="cm">// Open the file</span>
+    fp = <span class="fn">fopen</span>(name, <span class="str">"r"</span>);
+    <span class="kw">if</span> (fp == NULL) {
+        <span class="fn">send</span>(newsd, <span class="str">"File not found"</span>, <span class="num">100</span>, <span class="num">0</span>);
+    } <span class="kw">else</span> {
+        <span class="cm">// Send file line by line</span>
+        <span class="kw">while</span> (<span class="fn">fgets</span>(fileread, <span class="kw">sizeof</span>(fileread), fp)) {
+            <span class="fn">send</span>(newsd, fileread, <span class="kw">sizeof</span>(fileread), <span class="num">0</span>);
+            <span class="fn">sleep</span>(<span class="num">1</span>);
+        }
+        <span class="cm">// Signal completion</span>
+        <span class="fn">send</span>(newsd, <span class="str">"completed"</span>, <span class="num">100</span>, <span class="num">0</span>);
+        <span class="fn">fclose</span>(fp);
+    }
+
+    <span class="fn">close</span>(newsd);
+    <span class="fn">close</span>(sd);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="ftp-client" class="sub-panel">
+    <div class="section-title">FTP Client <span class="tag tag-client">CLIENT</span></div>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<pre><span class="cm">// FTP CLIENT — Networks Lab</span>
+<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    FILE *fp;
+    <span class="type">int</span> csd, port, n;
+    <span class="type">char</span> name[<span class="num">100</span>], rcv[<span class="num">100</span>], newname[<span class="num">100</span>];
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> serveraddr;
+
+    <span class="fn">printf</span>(<span class="str">"Enter the port: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;port);
+
+    <span class="cm">// TCP socket setup (same as TCP client!)</span>
+    csd = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
+    <span class="kw">if</span> (csd &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Can't create socket\n"</span>);
+
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_addr.s_addr = INADDR_ANY;
+    serveraddr.sin_port = <span class="fn">htons</span>(port);
+
+    <span class="kw">if</span> (<span class="fn">connect</span>(csd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;serveraddr, <span class="kw">sizeof</span>(serveraddr)) &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Can't connect\n"</span>);
+
+    <span class="cm">// Send requested filename to server</span>
+    <span class="fn">printf</span>(<span class="str">"Enter filename to request: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%s"</span>, name);
+    <span class="fn">send</span>(csd, name, <span class="kw">sizeof</span>(name), <span class="num">0</span>);
+
+    <span class="cm">// Enter new filename to save as</span>
+    <span class="fn">printf</span>(<span class="str">"Enter new filename to save: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%s"</span>, newname);
+    fp = <span class="fn">fopen</span>(newname, <span class="str">"w"</span>);
+
+    <span class="cm">// Receive and write until "completed"</span>
+    <span class="kw">while</span> ((n = <span class="fn">recv</span>(csd, rcv, <span class="num">100</span>, <span class="num">0</span>)) &gt; <span class="num">0</span>) {
+        <span class="kw">if</span> (<span class="fn">strcmp</span>(rcv, <span class="str">"completed"</span>) == <span class="num">0</span>) {
+            <span class="fn">printf</span>(<span class="str">"File transfer completed!\n"</span>);
+            <span class="kw">break</span>;
+        }
+        <span class="fn">fputs</span>(rcv, fp);
+    }
+
+    <span class="fn">fclose</span>(fp);
+    <span class="fn">close</span>(csd);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div id="ftp-tricks" class="sub-panel">
+    <div class="section-title">FTP — Copy-Paste Tricks</div>
+    <div class="card">
+      <div class="card-title orange">Server → Client Changes</div>
+      <div class="trick-box green">
+        <div class="trick-label green">✅ COPY ENTIRE TCP server/client boilerplate</div>
+        Socket setup, bind, listen, accept (server) / connect (client) — 100% identical to TCP. Don't rewrite this!
+      </div>
+      <div class="trick-box yellow">
+        <div class="trick-label yellow">➕ ADD: File handling</div>
+        Server: <code>fopen(name, "r")</code> + <code>fgets()</code> loop + <code>send("completed")</code><br>
+        Client: <code>fopen(newname, "w")</code> + recv loop + <code>strcmp("completed")</code> check + <code>fputs()</code>
+      </div>
+    </div>
+    <div class="trick-box purple">
+      <div class="trick-label purple">💡 TERMINATION TRICK</div>
+      Server sends <code>"completed"</code> as a magic string to signal end of file. Client checks <code>strcmp(rcv, "completed") == 0</code> to break the loop. This is the "EOF signal" over the network.
+    </div>
+    <div class="trick-box">
+      <div class="trick-label">📋 FTP vs TCP diff in one sentence</div>
+      FTP = TCP + <code>fopen/fgets/fputs/fclose</code>. Everything else is the same.
+    </div>
+  </div>
+</div>
+
+</div><!-- end content-area -->
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function showSub(tab, sub) {
+  const panel = document.getElementById(tab);
+  panel.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  panel.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab + '-' + sub).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function copyCode(btn) {
+  const pre = btn.nextElementSibling;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
