@@ -637,6 +637,266 @@
     .tab-btn { min-height: 38px; }
     .sub-btn { min-height: 36px; }
   }
+
+  /* VIVA GUIDE STYLES */
+  .viva-search-wrap {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .viva-search-box {
+    flex: 1;
+    position: relative;
+  }
+  .viva-search-input {
+    width: 100%;
+    padding: 14px 18px 14px 44px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .viva-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+    background: rgba(0, 229, 255, 0.02);
+  }
+  .viva-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 1.1rem;
+    pointer-events: none;
+  }
+  .viva-categories {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+  .viva-categories::-webkit-scrollbar {
+    height: 4px;
+  }
+  .viva-categories::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .viva-cat-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.76rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .viva-cat-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .viva-cat-btn.active {
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+  }
+  .viva-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .viva-counter {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .viva-counter span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .viva-toggle-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .viva-ctrl-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .viva-ctrl-btn:hover {
+    border-color: var(--accent3);
+    color: var(--accent3);
+  }
+  .viva-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .viva-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .viva-card:hover {
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  .viva-q-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    gap: 16px;
+  }
+  .viva-q-text-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+  }
+  .viva-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 0.9rem;
+    background: rgba(0, 229, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    min-width: 48px;
+    text-align: center;
+  }
+  .viva-q-text {
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .viva-badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(167, 139, 250, 0.1);
+    color: var(--accent3);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    white-space: nowrap;
+  }
+  .viva-q-arrow {
+    color: var(--muted);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+    font-weight: bold;
+  }
+  .viva-card.expanded {
+    border-color: var(--accent3);
+  }
+  .viva-card.expanded .viva-q-arrow {
+    transform: rotate(90deg);
+    color: var(--accent3);
+  }
+  .viva-card.expanded .viva-q-num {
+    background: rgba(167, 139, 250, 0.12);
+    color: var(--accent3);
+  }
+  .viva-a-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 0 solid var(--border);
+    background: rgba(0, 0, 0, 0.15);
+  }
+  .viva-card.expanded .viva-a-body {
+    max-height: 2000px;
+    opacity: 1;
+    padding: 18px 20px 20px 76px;
+    border-top-width: 1px;
+  }
+  .viva-answer-content {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #c9d1d9;
+  }
+  .viva-answer-content strong {
+    color: var(--text);
+  }
+  .viva-answer-content table {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+  .viva-answer-content p {
+    margin-bottom: 8px;
+  }
+  .viva-answer-content p:last-child {
+    margin-bottom: 0;
+  }
+  .viva-answer-content code {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--green);
+    border: none;
+  }
+  @media (max-width: 640px) {
+    .viva-q-header {
+      padding: 12px 14px;
+    }
+    .viva-q-text-wrap {
+      gap: 8px;
+    }
+    .viva-q-num {
+      font-size: 0.78rem;
+      min-width: 40px;
+      padding: 1px 4px;
+    }
+    .viva-q-text {
+      font-size: 0.82rem;
+    }
+    .viva-badge {
+      display: none;
+    }
+    .viva-card.expanded .viva-a-body {
+      padding: 12px 14px 14px 14px;
+    }
+    .viva-answer-content {
+      font-size: 0.8rem;
+    }
+    .viva-search-input {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 0.82rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -654,6 +914,7 @@
   <button class="tab-btn" onclick="showTab('dvr')">DVR</button>
   <button class="tab-btn" onclick="showTab('leaky')">Leaky Bucket</button>
   <button class="tab-btn" onclick="showTab('ftp')">FTP</button>
+  <button class="tab-btn" onclick="showTab('viva')">Viva Q&amp;A</button>
 </div>
 
 <div class="content-area">
@@ -1590,6 +1851,2043 @@
   </div>
 </div>
 
+<!-- ═══════════════ VIVA Q&A ═══════════════ -->
+<div id="viva" class="tab-panel">
+  <div class="viva-search-wrap">
+    <div class="viva-search-box">
+      <span class="viva-search-icon">🔍</span>
+      <input type="text" id="vivaSearch" class="viva-search-input" placeholder="Search viva questions or answers..." oninput="filterViva()">
+    </div>
+  </div>
+
+  <div class="viva-categories">
+    <button class="viva-cat-btn active" onclick="filterVivaCategory('all', this)">All Categories</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('tcp-udp', this)">TCP &amp; UDP</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('sockets', this)">Socket Programming</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('osi', this)">OSI Model &amp; Layers</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('fundamentals', this)">Fundamentals</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('errors', this)">Error Control</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('flow', this)">Flow Control &amp; ARQ</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('routing', this)">Routing &amp; Addressing</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('congestion', this)">Congestion Control</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('media', this)">Multiplexing &amp; Media</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('security', this)">Security &amp; Misc</button>
+    <button class="viva-cat-btn" onclick="filterVivaCategory('tips', this)">⚡ Exam Tips</button>
+  </div>
+
+  <div class="viva-controls">
+    <div class="viva-counter">Showing <span id="vivaVisibleCount">126</span> of <span id="vivaTotalCount">126</span> questions</div>
+    <div class="viva-toggle-btns">
+      <button class="viva-ctrl-btn" onclick="toggleAllViva(true)">Expand All</button>
+      <button class="viva-ctrl-btn" onclick="toggleAllViva(false)">Collapse All</button>
+    </div>
+  </div>
+
+  <div class="viva-cards-container" id="vivaCardsContainer">
+    <div class="viva-card" data-category="tcp-udp">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q1</span>
+          <span class="viva-q-text">Differentiate between TCP and UDP.</span>
+        </div>
+        <span class="viva-badge">TCP & UDP</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+  <tr><td>Connection</td><td>Connection-oriented (end-to-end)</td><td>Connectionless</td></tr>
+  <tr><td>Error checking</td><td>Yes (checks for duplicate datagrams)</td><td>No (data may be checksummed only)</td></tr>
+  <tr><td>Reliability</td><td>Guaranteed delivery + retransmission</td><td>No guarantee of delivery</td></tr>
+  <tr><td>Acknowledgement</td><td>Yes</td><td>No</td></tr>
+  <tr><td>Orientation</td><td>Stream-oriented</td><td>Packet-oriented</td></tr>
+  <tr><td>Flow Control</td><td>Yes</td><td>No</td></tr>
+  <tr><td>Duplex</td><td>Bidirectional</td><td>Bidirectional</td></tr>
+  <tr><td>Speed</td><td>Slower but reliable</td><td>Faster but unreliable</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="tcp-udp">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q2</span>
+          <span class="viva-q-text">What is TCP/IP?</span>
+        </div>
+        <span class="viva-badge">TCP & UDP</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>TCP/IP stands for <strong>Transmission Control Protocol / Internet Protocol</strong>.</p><ul><li><strong>IP</strong> deals with packets — addressing and routing them across networks.</li><li><strong>TCP</strong> enables two hosts to establish a connection and exchange streams of data.</li><li>TCP guarantees delivery <strong>and</strong> guarantees packets are delivered in the <strong>same order</strong> they were sent.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="tcp-udp">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q3</span>
+          <span class="viva-q-text">What is UDP?</span>
+        </div>
+        <span class="viva-badge">TCP & UDP</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>UDP (User Datagram Protocol) is an alternative to TCP used primarily for establishing <strong>low-latency and loss-tolerating</strong> connections between applications. It skips connection setup overhead — ideal for real-time apps like video streaming, DNS, gaming.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="tcp-udp">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q4</span>
+          <span class="viva-q-text">What is the difference between TFTP and FTP?</span>
+        </div>
+        <span class="viva-badge">TCP & UDP</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Feature</th><th>TFTP</th><th>FTP</th></tr>
+  <tr><td>Full name</td><td>Trivial File Transfer Protocol</td><td>File Transfer Protocol</td></tr>
+  <tr><td>Reliability</td><td>No reliability/security</td><td>Reliable and secure</td></tr>
+  <tr><td>Underlying protocol</td><td>UDP</td><td>TCP</td></tr>
+  <tr><td>Connections</td><td>Single</td><td>Two (one for data, one for control)</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q5</span>
+          <span class="viva-q-text">What is a Socket?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A socket is an <strong>endpoint</strong> for communication between two machines. It is identified by an IP address + port number. In C, <code>socket()</code> creates a socket descriptor used for all subsequent operations.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q6</span>
+          <span class="viva-q-text">Explain the TCP server-client flow.</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Server:</strong> <code>socket()</code> &rarr; <code>bind()</code> &rarr; <code>listen()</code> &rarr; <code>accept()</code> &rarr; <code>recv()/send()</code> &rarr; <code>close()</code></p><p><strong>Client:</strong> <code>socket()</code> &rarr; <code>connect()</code> &rarr; <code>send()/recv()</code> &rarr; <code>close()</code></p><p><strong>Key:</strong> Server uses TWO socket descriptors — one for listening (<code>sock_desc</code>), one returned by <code>accept()</code> for actual communication (<code>temp_sock_desc</code>).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q7</span>
+          <span class="viva-q-text">What does each socket function do?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Function</th><th>Description</th></tr>
+  <tr><td><code>socket()</code></td><td>Creates a socket; returns a file descriptor</td></tr>
+  <tr><td><code>bind()</code></td><td>Attaches socket to a local IP:port (server only)</td></tr>
+  <tr><td><code>listen()</code></td><td>Marks socket as passive, ready to accept connections</td></tr>
+  <tr><td><code>accept()</code></td><td>Blocks until a client connects; returns new socket fd</td></tr>
+  <tr><td><code>connect()</code></td><td>Client initiates connection to server IP:port</td></tr>
+  <tr><td><code>send()</code> / <code>recv()</code></td><td>Send/receive data over connected socket</td></tr>
+  <tr><td><code>sendto()</code> / <code>recvfrom()</code></td><td>Send/receive for UDP (includes address info)</td></tr>
+  <tr><td><code>close()</code></td><td>Terminates the socket</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q8</span>
+          <span class="viva-q-text">What is AF_INET? What is SOCK_STREAM vs SOCK_DGRAM?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>AF_INET</strong> — Address Family IPv4. Used to specify IPv4 protocol family.</li><li><strong>SOCK_STREAM</strong> — TCP. Stream-based, reliable, connection-oriented.</li><li><strong>SOCK_DGRAM</strong> — UDP. Datagram-based, unreliable, connectionless.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q9</span>
+          <span class="viva-q-text">What does INADDR_ANY mean?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>It tells the server socket to <strong>accept connections on any available network interface</strong> of the machine, rather than binding to a specific IP address.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q10</span>
+          <span class="viva-q-text">What does htons() do?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><code>htons()</code> = <strong>Host TO Network Short</strong>. Converts a port number from host byte order to <strong>network byte order</strong> (big-endian). Networks always use big-endian; x86 machines are little-endian — so this conversion is necessary.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q11</span>
+          <span class="viva-q-text">What does inet_addr() do?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Converts a dotted-decimal IP string (e.g., <code>"127.0.0.1"</code>) into a <strong>binary network address</strong> (<code>in_addr_t</code>). Used in UDP clients that take an IP address as a command-line argument.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q12</span>
+          <span class="viva-q-text">What does the client NOT need that the server does?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong><code>bind()</code>, <code>listen()</code>, <code>accept()</code></strong> — the client only needs <code>socket()</code> + <code>connect()</code>. The single <code>connect()</code> call replaces all three server-side calls.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q13</span>
+          <span class="viva-q-text">Explain the UDP server-client flow.</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Server:</strong> <code>socket()</code> &rarr; <code>bind()</code> &rarr; <code>recvfrom()</code> &rarr; <code>close()</code></p><p><strong>Client:</strong> <code>socket()</code> &rarr; <code>sendto()</code> &rarr; <code>close()</code></p><p>No <code>connect()</code>, no <code>accept()</code>, no <code>listen()</code>. UDP is connectionless.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q14</span>
+          <span class="viva-q-text">What is the difference between send() and sendto()?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Feature</th><th><code>send()</code></th><th><code>sendto()</code></th></tr>
+  <tr><td>Used with</td><td>TCP (connected socket)</td><td>UDP (connectionless)</td></tr>
+  <tr><td>Destination</td><td>Implicit (already connected)</td><td>Explicit (pass <code>struct sockaddr*</code>)</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q15</span>
+          <span class="viva-q-text">What is socklen_t and why must it be initialized before recvfrom()?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><code>socklen_t</code> holds the size of the sockaddr structure. <code>recvfrom()</code> takes a <strong>pointer</strong> to it as a value-result argument — it reads the size going in and writes the actual size coming out. If uninitialized, the kernel doesn't know how much space is available &rarr; undefined behavior / crash.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q16</span>
+          <span class="viva-q-text">How does FTP differ from basic TCP?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>FTP = <strong>TCP socket code + File I/O</strong> (<code>fopen</code>, <code>fgets</code>, <code>fputs</code>, <code>fclose</code>). The socket setup (bind, listen, accept / connect) is identical to TCP. The only additions are:</p><ul><li>Server: <code>fopen(filename, "r")</code> &rarr; <code>fgets()</code> loop &rarr; <code>send("completed")</code></li><li>Client: <code>fopen(newname, "w")</code> &rarr; <code>recv()</code> loop &rarr; <code>strcmp("completed")</code> check &rarr; <code>fputs()</code></li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="sockets">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q17</span>
+          <span class="viva-q-text">How does FTP signal end of file over the network?</span>
+        </div>
+        <span class="viva-badge">Socket Programming</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The server sends the magic string <code>"completed"</code> after all file data is sent. The client checks <code>strcmp(rcv, "completed") == 0</code> to break the receive loop. This acts as the <strong>EOF signal</strong> over the socket.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q18</span>
+          <span class="viva-q-text">List the 7 layers of the OSI model.</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ol><li>Physical Layer</li><li>Data Link Layer</li><li>Network Layer</li><li>Transport Layer</li><li>Session Layer</li><li>Presentation Layer</li><li>Application Layer</li></ol>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q19</span>
+          <span class="viva-q-text">Which are network support layers? Which are user support layers?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Network support layers:</strong> Physical, Data Link, Network</li><li><strong>User support layers:</strong> Session, Presentation, Application</li><li><strong>Link between them:</strong> Transport Layer</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q20</span>
+          <span class="viva-q-text">What are the responsibilities of each layer?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Layer</th><th>Key Responsibilities</th><th>Device</th></tr>
+  <tr><td>Physical</td><td>Bit transmission, data rate, topology, sync</td><td>Hub, Repeater, NIC</td></tr>
+  <tr><td>Data Link</td><td>Framing, physical addressing, flow control, error control, access control</td><td>Bridge, Switch</td></tr>
+  <tr><td>Network</td><td>Logical addressing, routing</td><td>Router</td></tr>
+  <tr><td>Transport</td><td>End-to-end delivery, segmentation, flow control, error control</td><td>—</td></tr>
+  <tr><td>Session</td><td>Dialog control, synchronization</td><td>—</td></tr>
+  <tr><td>Presentation</td><td>Translation, encryption, compression</td><td>—</td></tr>
+  <tr><td>Application</td><td>User interface, file transfer, mail, directory services</td><td>—</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q21</span>
+          <span class="viva-q-text">What is the Transport Layer's role?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Responsible for <strong>source-to-destination delivery of the entire message</strong> (not just node-to-node). Handles:</p><ul><li>Service-point Addressing</li><li>Segmentation and reassembly</li><li>Connection control</li><li>Flow control</li><li>Error control</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q22</span>
+          <span class="viva-q-text">What are the responsibilities of the Presentation Layer?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Translation</strong> — converts data formats between systems</li><li><strong>Encryption</strong> — secures data</li><li><strong>Compression</strong> — reduces data size</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q23</span>
+          <span class="viva-q-text">What is the function of the Application Layer?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Enables users/software to <strong>access the network</strong>. Provides services like:</p><ul><li>Network Virtual Terminal (Telnet)</li><li>File Transfer, Access and Management (FTP)</li><li>Mail services (SMTP, POP3)</li><li>Directory Services</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q24</span>
+          <span class="viva-q-text">Which layer links the network and user support layers?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Transport Layer.</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="osi">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q25</span>
+          <span class="viva-q-text">What does Layer 2 (Data Link Layer) impose?</span>
+        </div>
+        <span class="viva-badge">OSI Model</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Layer 2 imposes the <strong>MTU (Maximum Transmission Unit)</strong> — the maximum size of a frame that can be transmitted on that link.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q26</span>
+          <span class="viva-q-text">Define Network.</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A network is a set of devices connected by physical media links. It is a connection of two or more nodes by a physical link, or two or more networks connected by nodes.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q27</span>
+          <span class="viva-q-text">What is a Link?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The physical medium (e.g., coaxial cable, optical fiber) directly connecting two or more computers is called a <strong>Link</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q28</span>
+          <span class="viva-q-text">What is a Node?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The computers/devices connected by links are called <strong>Nodes</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q29</span>
+          <span class="viva-q-text">What is a Gateway / Router?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A node connected to <strong>two or more networks</strong> that forwards messages from one network to another. A <strong>gateway</strong> typically operates at upper OSI layers and translates between different protocols/formats. A <strong>router</strong> operates at Layer 3 and makes forwarding decisions based on IP addresses.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q30</span>
+          <span class="viva-q-text">What is the difference between Gateway and Router?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A <strong>gateway</strong> operates at all 7 OSI layers and translates between completely different network architectures or data formats. A <strong>router</strong> operates at Layers 1–3 and routes packets between networks of the same protocol family.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q31</span>
+          <span class="viva-q-text">What is Protocol?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A protocol is a <strong>set of rules that govern all aspects of information communication</strong> between devices.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q32</span>
+          <span class="viva-q-text">What are the key elements of a Protocol?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Syntax</strong> — structure/format of data (order of presentation)</li><li><strong>Semantics</strong> — meaning of each section of bits</li><li><strong>Timing</strong> — when data should be sent and how fast</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q33</span>
+          <span class="viva-q-text">Define Bandwidth and Latency.</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Bandwidth</strong> — number of bits that can be transmitted over the network in a given time period (measured in bps)</li><li><strong>Latency</strong> — how long it takes a message to travel from one end of a network to the other (measured in time)</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q34</span>
+          <span class="viva-q-text">What is Round Trip Time (RTT)?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The time it takes to send a message from one end of a network to the other <strong>and back</strong>. RTT = 2 &times; one-way latency.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q35</span>
+          <span class="viva-q-text">Define Unicasting, Multicasting, and Broadcasting.</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Unicasting</strong> — message sent from one source to a <strong>single</strong> destination</li><li><strong>Multicasting</strong> — message sent to a <strong>subset</strong> of nodes</li><li><strong>Broadcasting</strong> — message sent to <strong>all</strong> nodes in the network</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q36</span>
+          <span class="viva-q-text">What is Routing?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The process of <strong>systematically determining how to forward messages</strong> toward destination nodes based on their address.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q37</span>
+          <span class="viva-q-text">What is a subnet?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A subnet (subnetwork) is an identifiably <strong>separate part of an organization's network</strong> — typically all machines at one location or on the same LAN. Allows a single shared network address for internet connectivity.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q38</span>
+          <span class="viva-q-text">What is semantic gap?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The gap between <strong>what applications expect</strong> from a network and <strong>what the underlying technology can actually provide</strong> is called the semantic gap.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q39</span>
+          <span class="viva-q-text">What is Congestion?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>When a switch receives packets faster than the shared link can handle and runs out of buffer space — some packets are dropped. This state is called <strong>congestion</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q40</span>
+          <span class="viva-q-text">What are the criteria for an effective network?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Performance</strong> — transmit time, response time</li><li><strong>Reliability</strong> — frequency of failure, recovery time</li><li><strong>Security</strong> — protection from unauthorized access and viruses</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q41</span>
+          <span class="viva-q-text">What is Point-to-Point vs Multiple Access?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Point-to-Point</strong> — physical link limited to a pair of nodes</li><li><strong>Multiple Access</strong> — physical link shared by more than two nodes</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q42</span>
+          <span class="viva-q-text">What are the two types of transmission technology?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ol><li><strong>Broadcast</strong> — shared medium, all nodes receive</li><li><strong>Point-to-Point</strong> — dedicated link between two nodes</li></ol>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q43</span>
+          <span class="viva-q-text">What is a peer-to-peer process?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Processes on each machine that <strong>communicate at the same layer</strong> of the OSI model are called peer-to-peer processes.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q44</span>
+          <span class="viva-q-text">What is Encapsulation?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The practice of <strong>enclosing data from one protocol within the messages of another protocol</strong>. Each OSI layer adds its own header (and sometimes trailer) as data passes down the stack.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q45</span>
+          <span class="viva-q-text">What are data units at different TCP/IP layers?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Layer</th><th>Data Unit</th></tr>
+  <tr><td>Application</td><td>Message</td></tr>
+  <tr><td>Transport</td><td>Segment (TCP) / User Datagram (UDP)</td></tr>
+  <tr><td>Network</td><td>Datagram / Packet</td></tr>
+  <tr><td>Data Link</td><td>Frame</td></tr>
+  <tr><td>Physical</td><td>Bits / Signals</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q46</span>
+          <span class="viva-q-text">What is MTU?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Maximum Transmission Unit</strong> — the size (in bytes) of the largest protocol data unit a layer can pass onwards. Fixed by standards for Ethernet. Larger MTU = greater efficiency (less header overhead per byte of user data).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q47</span>
+          <span class="viva-q-text">Why is fragmentation required?</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Every network has an MTU. Packets larger than the MTU must be divided into smaller <strong>fragments</strong> to traverse that network. Each fragment is reassembled at the destination.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="fundamentals">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q48</span>
+          <span class="viva-q-text">What is IPC? Name three techniques.</span>
+        </div>
+        <span class="viva-badge">Fundamentals</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Inter-Process Communication (IPC)</strong> — a set of techniques for exchanging data among multiple threads/processes. Three techniques:</p><ol><li>Message passing</li><li>Shared memory</li><li>Remote Procedure Calls (RPC)</li></ol>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q49</span>
+          <span class="viva-q-text">What are the two types of errors?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Single-bit error</strong> — only one bit in the data unit has changed</li><li><strong>Burst error</strong> — two or more bits in the data unit have changed</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q50</span>
+          <span class="viva-q-text">What is Error Detection?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Uses <strong>redundancy</strong> (adding extra bits) to detect errors at the destination. Does not fix — only detects.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q51</span>
+          <span class="viva-q-text">What are common Error Detection methods?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>VRC</strong> — Vertical Redundancy Check (parity bit per data unit)</li><li><strong>LRC</strong> — Longitudinal Redundancy Check (redundant row for a block)</li><li><strong>CRC</strong> — Cyclic Redundancy Check (binary division, most powerful)</li><li><strong>Checksum</strong> — used by higher-layer protocols (TCP/IP)</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q52</span>
+          <span class="viva-q-text">What is VRC?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A <strong>parity bit</strong> is added to every data unit so the total number of 1s becomes even (even parity). Detects all single-bit errors. Detects burst errors only if total errors in each data unit is odd.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q53</span>
+          <span class="viva-q-text">What is LRC?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A block of bits is divided into rows and a <strong>redundant row</strong> is added to the whole block. Better than VRC for burst error detection, but can miss errors if two data units have the same bit positions damaged.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q54</span>
+          <span class="viva-q-text">What is CRC?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Cyclic Redundancy Check</strong> — the most powerful redundancy checking technique. Based on <strong>binary division</strong>. A divisor polynomial is agreed upon; the remainder of dividing the data by the polynomial is appended. Receiver performs the same division — a non-zero remainder indicates an error.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q55</span>
+          <span class="viva-q-text">What is Checksum?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Used by TCP/IP for error detection. Steps:</p><ol><li>Divide data into sections</li><li>Add sections using <strong>1's complement arithmetic</strong></li><li>Take the complement of the final sum &rarr; this is the checksum</li></ol>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q56</span>
+          <span class="viva-q-text">Compare Error Detection vs Error Correction.</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Detection</strong> — only checks <em>if</em> an error occurred (simpler)</li><li><strong>Correction</strong> — must know the <em>exact number and location</em> of corrupted bits (much harder). Requires more redundant bits.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q57</span>
+          <span class="viva-q-text">What is Forward Error Correction?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The receiver tries to <strong>guess the original message</strong> using redundant bits, without asking for retransmission. Used where retransmission is not feasible (e.g., satellite links).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q58</span>
+          <span class="viva-q-text">What is Retransmission?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A technique where the receiver <strong>detects an error and asks the sender to resend</strong> the message. Repeated until an error-free copy is received.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="errors">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q59</span>
+          <span class="viva-q-text">What are other error detection/correction algorithms?</span>
+        </div>
+        <span class="viva-badge">Error Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Parity check, LRC, CRC, Fire codes (FC), BCH (Bose-Chaudhuri-Hocquenghem), Reed-Solomon (RS), Hamming codes (HC), Turbo Codes, Viterbi Convolutional Coding (FEC), Golay.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q60</span>
+          <span class="viva-q-text">What is Flow Control?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A set of procedures used to <strong>restrict the amount of data a sender can send before waiting for acknowledgment</strong>. Prevents a fast sender from overwhelming a slow receiver.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q61</span>
+          <span class="viva-q-text">What is Error Control?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Combines <strong>error detection + correction</strong>. Allows the receiver to inform the sender of lost/damaged frames and coordinates retransmission. In the data link layer, implemented primarily as detection + retransmission.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q62</span>
+          <span class="viva-q-text">What is ARQ (Automatic Repeat Request)?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>When an error is detected, specified frames are <strong>automatically retransmitted</strong>. This process is called ARQ. Error control in the data link layer is often implemented this way.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q63</span>
+          <span class="viva-q-text">What is Stop-and-Wait Protocol?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The sender sends <strong>one frame</strong>, waits for confirmation (ACK) from the receiver, then sends the next frame. Simplest flow control protocol. Inefficient for long-distance links (wastes bandwidth waiting).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q64</span>
+          <span class="viva-q-text">What is Stop-and-Wait ARQ?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Error correction in Stop-and-Wait where the sender <strong>keeps a copy</strong> of the sent frame and retransmits when the <strong>timer expires</strong> (ACK not received in time).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q65</span>
+          <span class="viva-q-text">Why are sequence numbers used in reliable transmission?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>To <strong>number frames</strong> so the receiver can detect duplicates and out-of-order delivery. The sender and receiver use sequence numbers to agree on which frames have been received and which need retransmission.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q66</span>
+          <span class="viva-q-text">What is Pipelining?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A technique where a <strong>new task is begun before the previous one ends</strong>. In networking, the sender sends multiple frames without waiting for individual ACKs — improving link utilization.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q67</span>
+          <span class="viva-q-text">What is a Sliding Window?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>An abstract concept defining the <strong>range of sequence numbers</strong> the sender/receiver must deal with at any time. Allows multiple outstanding (unacknowledged) frames. Window slides forward as ACKs are received.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q68</span>
+          <span class="viva-q-text">What is Piggybacking?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A technique where <strong>control information (ACKs) about received frames is carried along with outgoing data frames</strong> in the opposite direction, instead of sending a separate ACK. Improves efficiency.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q69</span>
+          <span class="viva-q-text">Explain the Stop-and-Wait simulation — what do errorframe and errorack represent?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong><code>errorframe</code></strong> — simulates error in the data packet going from sender to receiver. <code>rand() % 4 == 0</code> (~25% chance) means the packet was corrupted.</li><li><strong><code>errorack</code></strong> — simulates error in the ACK going back from receiver to sender. They fail <strong>independently</strong> — that's why two separate variables are needed.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="flow">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q70</span>
+          <span class="viva-q-text">What is the role of frexp in Stop-and-Wait?</span>
+        </div>
+        <span class="viva-badge">Flow Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><code>frexp</code> (frame expected) is the receiver's <strong>expected sequence number</strong>. If <code>p.seq == frexp</code>, it's a new packet &rarr; accept and increment. If they don't match &rarr; duplicate packet &rarr; re-send ACK for last received frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q71</span>
+          <span class="viva-q-text">What is Distance Vector Routing?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A routing algorithm where <strong>each router tells its neighbors what it knows</strong> about distances to all destinations. Based on the <strong>Bellman-Ford algorithm</strong>. Routers iteratively update their tables until convergence.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q72</span>
+          <span class="viva-q-text">Explain the Bellman-Ford update formula used in DVR.</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <pre><code>if (rt[i].dist[j] > dmat[i][k] + rt[k].dist[j])
+    rt[i].dist[j] = dmat[i][k] + rt[k].dist[j]</code></pre><p>Translation: <em>"Can I reach destination j from node i via intermediate node k, cheaper than my current best path?"</em> If yes &rarr; update distance and next hop.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q73</span>
+          <span class="viva-q-text">What does rt[i].dist[j] and rt[i].from[j] store?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><code>rt[i].dist[j]</code> — shortest known distance from node i to node j</li><li><code>rt[i].from[j]</code> — which neighbor (next hop) to use to get from i to j</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q74</span>
+          <span class="viva-q-text">Why does DVR use a do-while loop?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The algorithm <strong>repeats until no table entry changes</strong> (<code>count == 0</code>). Each iteration, better paths propagate through the network. This is called <strong>convergence</strong>. DVR is known to be <strong>slow to converge</strong> — a notable disadvantage.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q75</span>
+          <span class="viva-q-text">What is the time complexity of DVR?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>O(n&sup3;) per iteration</strong> &times; multiple iterations. Three nested loops (source &times; destination &times; intermediate) = O(n&sup3;). This is why DVR doesn't scale well to large networks.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q76</span>
+          <span class="viva-q-text">What is the difference between ARP and RARP?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>ARP (Address Resolution Protocol)</strong> — maps a 32-bit <strong>IP address &rarr; 48-bit MAC (physical) address</strong>. Sends a broadcast query; the target replies with its MAC.</li><li><strong>RARP (Reverse ARP)</strong> — allows a host to discover its <strong>IP address when it knows only its physical (MAC) address</strong>.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q77</span>
+          <span class="viva-q-text">What is ICMP?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Internet Control Message Protocol</strong> — a network layer protocol in TCP/IP. Used by hosts and gateways to send <strong>error/notification messages</strong> back to the sender (e.g., destination unreachable, time exceeded). Uses echo test/reply to check if a destination is reachable (<code>ping</code>).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q78</span>
+          <span class="viva-q-text">What is RIP (Routing Information Protocol)?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A simple protocol used to <strong>exchange routing information between routers</strong>. Uses hop count as the metric. Maximum hop count = 15 (16 = infinity/unreachable). A type of Distance Vector protocol.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q79</span>
+          <span class="viva-q-text">What is OSPF?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Open Shortest Path First</strong> — an internet routing protocol that scales well, can route traffic along multiple paths, and uses <strong>knowledge of the entire network topology</strong> (link-state) to make accurate routing decisions. Faster convergence than RIP.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q80</span>
+          <span class="viva-q-text">What is BGP?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Border Gateway Protocol</strong> — used to <strong>advertise the set of networks reachable within an autonomous system</strong>. The standard exterior gateway protocol of the internet. Newer than EGP.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q81</span>
+          <span class="viva-q-text">What is an Autonomous System?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A collection of routers under <strong>a single administrative authority</strong> using a common Interior Gateway Protocol (IGP).</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q82</span>
+          <span class="viva-q-text">What is IP address? What are the IP address classes?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>An IP address is a <strong>numerical label assigned to devices</strong> on a network for identification and location addressing.</p>
+<table class="compare-table">
+  <tr><th>Class</th><th>Range</th></tr>
+  <tr><td>A</td><td>0.0.0.0 – 127.255.255.255</td></tr>
+  <tr><td>B</td><td>128.0.0.0 – 191.255.255.255</td></tr>
+  <tr><td>C</td><td>192.0.0.0 – 223.255.255.255</td></tr>
+  <tr><td>D</td><td>224.0.0.0 – 239.255.255.255 (Multicast)</td></tr>
+  <tr><td>E</td><td>240.0.0.0 – 247.255.255.255 (Reserved)</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q83</span>
+          <span class="viva-q-text">What is MAC address?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A <strong>unique identifier</strong> assigned to a network adapter/NIC by the manufacturer. Used at the MAC sublayer of the Data Link Layer. 48 bits, usually stored in ROM on the network card. Also called Ethernet Hardware Address (EHA) or physical address.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q84</span>
+          <span class="viva-q-text">What is a Multi-homed Host?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A host that has <strong>multiple network interfaces</strong> and therefore requires multiple IP addresses.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q85</span>
+          <span class="viva-q-text">What is the minimum and maximum header length in TCP/IP?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Both TCP segment and IP datagram headers: <strong>minimum 20 bytes, maximum 60 bytes</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q86</span>
+          <span class="viva-q-text">What is Proxy ARP?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Using a <strong>router to answer ARP requests</strong> on behalf of a host. Done when the originating host believes a destination is local, but it actually lies beyond the router.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="routing">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q87</span>
+          <span class="viva-q-text">What is multicast routing?</span>
+        </div>
+        <span class="viva-badge">Routing & Addressing</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Sending a message to a <strong>group of destinations</strong> is called multicasting. The routing algorithm used for this is called <strong>multicast routing</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q88</span>
+          <span class="viva-q-text">What is Traffic Shaping?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A method to <strong>force packets to be transmitted at a more predictable, uniform rate</strong> to reduce congestion. Instead of bursty traffic, the network sees a smooth stream.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q89</span>
+          <span class="viva-q-text">What is the Leaky Bucket Algorithm?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A traffic shaping algorithm. Think of a bucket with a hole:</p><ul><li>Incoming packets fill the bucket (at any rate)</li><li>Output drains at a <strong>constant rate</strong> (the "leak")</li><li>If incoming > available space &rarr; <strong>excess packets are dropped</strong></li><li>Result: smooth, constant output regardless of bursty input</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q90</span>
+          <span class="viva-q-text">What are the key variables in the Leaky Bucket implementation?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Variable</th><th>Meaning</th></tr>
+  <tr><td><code>buck_size</code></td><td>Maximum bucket capacity</td></tr>
+  <tr><td><code>store</code></td><td>Currently stored packets</td></tr>
+  <tr><td><code>incoming</code></td><td>New packets arriving this round</td></tr>
+  <tr><td><code>outgoing</code></td><td>Constant drain rate per round</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q91</span>
+          <span class="viva-q-text">How is "dropped packets" calculated in Leaky Bucket?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <pre><code>Dropped = incoming - (buck_size - store)</code></pre><p>i.e., how many packets <strong>exceeded the available space</strong> in the bucket.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q92</span>
+          <span class="viva-q-text">Differentiate Leaky Bucket vs Token Bucket.</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Feature</th><th>Leaky Bucket</th><th>Token Bucket</th></tr>
+  <tr><td>Output rate</td><td>Always fixed (strict)</td><td>Variable — can burst</td></tr>
+  <tr><td>Burst handling</td><td>Excess dropped</td><td>Tokens accumulate to allow bursts</td></tr>
+  <tr><td>Used by</td><td>ATM</td><td>IETF</td></tr>
+  <tr><td>Max output</td><td><code>r &times; t</code> (rate &times; time)</td><td><code>b + r &times; t</code> (burst + rate &times; time)</td></tr>
+  <tr><td>On bursty arrivals</td><td>Smooth departures</td><td>Bursty departures possible</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q93</span>
+          <span class="viva-q-text">What is bursty traffic?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>An <strong>uneven pattern of data transmission</strong> — sometimes very high rate, sometimes very low. Real-world traffic (HTTP, video) is naturally bursty.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="congestion">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q94</span>
+          <span class="viva-q-text">What is the silly window syndrome?</span>
+        </div>
+        <span class="viva-badge">Congestion Control</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A TCP performance problem where data is passed in <strong>large blocks from the sender</strong> but an <strong>interactive application reads 1 byte at a time</strong> on the receiver side, causing tiny window sizes and extremely inefficient use of the network.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q95</span>
+          <span class="viva-q-text">What is Multiplexing?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A set of techniques that allows the <strong>simultaneous transmission of multiple signals</strong> across a single data link by sharing the link's capacity.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q96</span>
+          <span class="viva-q-text">What are the categories of Multiplexing?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>FDM</strong> — Frequency Division Multiplexing (analog)</li><li><strong>TDM</strong> — Time Division Multiplexing (digital)<ul><li>Synchronous TDM</li><li>Asynchronous TDM (Statistical TDM)</li></ul></li><li><strong>WDM</strong> — Wave Division Multiplexing (optical fiber)</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q97</span>
+          <span class="viva-q-text">Differentiate FDM, TDM, WDM.</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          
+<table class="compare-table">
+  <tr><th>Type</th><th>Medium</th><th>How</th></tr>
+  <tr><td>FDM</td><td>Analog</td><td>Different frequency bands for each signal</td></tr>
+  <tr><td>TDM (Sync)</td><td>Digital</td><td>Fixed time slots per device, always allocated</td></tr>
+  <tr><td>WDM</td><td>Optical fiber</td><td>Conceptually same as FDM but with light wavelengths</td></tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q98</span>
+          <span class="viva-q-text">What is Synchronous TDM?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The multiplexer allocates <strong>exactly the same time slot to each device at all times</strong>, whether or not the device has anything to transmit. Wastes slots but simple to implement.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q99</span>
+          <span class="viva-q-text">What are the categories of Transmission Media?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Guided (Wired):</strong></p><ul><li>Twisted-pair cable (Shielded / Unshielded)</li><li>Coaxial cable</li><li>Fiber-optic cable</li></ul><p><strong>Unguided (Wireless):</strong></p><ul><li>Terrestrial microwave</li><li>Satellite communication</li><li>Cellular telephony</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q100</span>
+          <span class="viva-q-text">What is Attenuation?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>The <strong>degeneration (weakening) of a signal over distance</strong> on a network cable. That's why repeaters are needed to regenerate signals over long distances.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q101</span>
+          <span class="viva-q-text">Difference between Bit Rate and Baud Rate.</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Bit Rate</strong> — number of <strong>bits</strong> transmitted per second</li><li><strong>Baud Rate</strong> — number of <strong>signal units</strong> per second required to represent those bits</li></ul><p>Formula: <code>Baud rate = Bit rate / N</code><br>where N = number of bits represented by each signal shift.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q102</span>
+          <span class="viva-q-text">What is Bandwidth (physical definition)?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Every transmission line has an upper and lower limit on the frequency of signals it can carry. This <strong>limited frequency range</strong> is called the bandwidth.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q103</span>
+          <span class="viva-q-text">Explain the 5-4-3 Rule (Ethernet).</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Between any two points on an Ethernet network, there can be <strong>no more than 5 network segments, 4 repeaters</strong>, and of those 5 segments, only <strong>3 can be populated</strong> with devices.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="media">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q104</span>
+          <span class="viva-q-text">What is baseband vs broadband transmission?</span>
+        </div>
+        <span class="viva-badge">Multiplexing & Media</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Baseband</strong> — entire cable bandwidth consumed by a <strong>single signal</strong></li><li><strong>Broadband</strong> — signals sent on <strong>multiple frequencies</strong>, allowing multiple simultaneous signals</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q105</span>
+          <span class="viva-q-text">What is Framing?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>In the Data Link Layer, framing <strong>separates messages</strong> by adding sender and destination addresses. The destination address defines where to go; the sender address helps the recipient acknowledge receipt.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q106</span>
+          <span class="viva-q-text">What is Bit Stuffing?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Adding an extra <code>0</code> whenever <strong>five consecutive 1s follow a 0</strong> in the data, so the receiver doesn't mistake the bit pattern <code>0111110</code> for a flag (delimiter). Receiver removes the stuffed bit.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q107</span>
+          <span class="viva-q-text">What is Character (Byte) Stuffing?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>When a data section contains a byte with the same pattern as the flag, an <strong>escape character (ESC)</strong> is added before it. The receiver removes the ESC and treats the next byte as data, not a delimiter.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q108</span>
+          <span class="viva-q-text">What is a Packet Filter?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A router with extra functionality that <strong>inspects every incoming/outgoing packet</strong>. Packets meeting defined criteria are forwarded; those that fail are dropped. Basic form of firewall.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q109</span>
+          <span class="viva-q-text">What is Virtual Channel / Virtual Circuit?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A logical connection from one source to one destination (though multicast is possible). Also called a <strong>virtual channel</strong>. Provides the appearance of a dedicated path even over a shared network.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q110</span>
+          <span class="viva-q-text">What is Virtual Path?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Along a transmission path from source to destination, a <strong>group of virtual circuits</strong> can be grouped together into a <strong>virtual path</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q111</span>
+          <span class="viva-q-text">What is a Region (in hierarchical routing)?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>In hierarchical routing, routers are divided into <strong>regions</strong>. Each router knows full detail about routing within its own region but nothing about the internal structure of other regions. Reduces routing table size.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q112</span>
+          <span class="viva-q-text">What is Kerberos?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>An <strong>authentication service</strong> developed at MIT. Uses encryption to prevent intruders from discovering passwords and gaining unauthorized access. Based on a trusted third-party key distribution center.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q113</span>
+          <span class="viva-q-text">What is RAID?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p><strong>Redundant Array of Independent Disks</strong> — a method for providing <strong>fault tolerance</strong> by using multiple hard disk drives. Data is distributed across drives for redundancy and/or performance.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q114</span>
+          <span class="viva-q-text">What is Beaconing?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A process that allows a network to <strong>self-repair</strong>. Stations on the ring notify others when they are not receiving transmissions. Used in <strong>Token Ring and FDDI</strong> networks.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q115</span>
+          <span class="viva-q-text">What is MAU (Token Ring)?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>In Token Ring, the hub is called <strong>Multistation Access Unit (MAU)</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q116</span>
+          <span class="viva-q-text">What is Passive Topology?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>When computers on the network simply <strong>listen and receive</strong> the signal without amplifying it. <strong>Linear bus</strong> is an example of passive topology.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q117</span>
+          <span class="viva-q-text">What is a Brouter?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A <strong>hybrid device</strong> combining features of both a <strong>bridge</strong> and a <strong>router</strong>. Can route specific protocols and bridge others.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q118</span>
+          <span class="viva-q-text">What is Frame Relay? Which layer?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Frame relay is a <strong>packet switching technology</strong> operating at the <strong>Data Link Layer (Layer 2)</strong>. Designed for WANs; faster than older X.25 but with less error checking.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q119</span>
+          <span class="viva-q-text">What is Terminal Emulation (Telnet)? Which layer?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Telnet is also called terminal emulation. It belongs to the <strong>Application Layer</strong>. Allows a user to log in and control a remote computer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q120</span>
+          <span class="viva-q-text">What is the difference between Simulation and Emulation?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Simulation</strong> — mimics the <strong>outward appearance/behavior</strong> of a system in software</li><li><strong>Emulation</strong> — mimics the <strong>actual cause/process</strong>. Usually hardware-based; self-contained and can be connected to a development environment</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q121</span>
+          <span class="viva-q-text">What is Network Throughput?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Usually represented as an average and measured in <strong>bits per second (bps)</strong> or packets per second. An important indicator of network performance and quality. High packet loss &rarr; lower throughput.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q122</span>
+          <span class="viva-q-text">What are key, ciphertext, and plaintext?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <ul><li><strong>Plaintext</strong> — original readable information</li><li><strong>Ciphertext</strong> — result of encrypting plaintext using an algorithm (cipher) + key</li><li><strong>Key</strong> — special knowledge used to encrypt/decrypt; without it the ciphertext is unreadable</li><li><strong>Decryption</strong> — process of converting ciphertext back to plaintext</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q123</span>
+          <span class="viva-q-text">What is a Linear Block Code?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>A block code where the <strong>XOR (modulo-2 addition) of any two valid codewords produces another valid codeword</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q124</span>
+          <span class="viva-q-text">What are Cyclic Codes?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Special linear block codes with an extra property: if a codeword is <strong>cyclically shifted (rotated)</strong>, the result is another valid codeword.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="security">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">Q125</span>
+          <span class="viva-q-text">What is Redundancy (in error detection)?</span>
+        </div>
+        <span class="viva-badge">Security & Misc</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <p>Including <strong>extra bits in transmission solely for comparison</strong> at the destination. These bits add no information — their purpose is purely to enable error detection.</p>
+        </div>
+      </div>
+    </div>
+    <div class="viva-card" data-category="tips">
+      <div class="viva-q-header" onclick="toggleVivaCard(this.parentNode)">
+        <div class="viva-q-text-wrap">
+          <span class="viva-q-num">⚡</span>
+          <span class="viva-q-text">Quick-Fire Exam Tips Cheat Sheet</span>
+        </div>
+        <span class="viva-badge">Exam Tips</span>
+        <span class="viva-q-arrow">▶</span>
+      </div>
+      <div class="viva-a-body">
+        <div class="viva-answer-content">
+          <table class="compare-table">
+            <tr><th>Question / Metric</th><th>One-line Answer / Value</th></tr>
+            <tr><td>TCP socket type</td><td><code>SOCK_STREAM</code></td></tr>
+            <tr><td>UDP socket type</td><td><code>SOCK_DGRAM</code></td></tr>
+            <tr><td>What client doesn't need vs server</td><td><code>bind()</code>, <code>listen()</code>, <code>accept()</code></td></tr>
+            <tr><td>DVR algorithm basis</td><td>Bellman-Ford</td></tr>
+            <tr><td>DVR time complexity</td><td>O(n³) per iteration</td></tr>
+            <tr><td>Leaky bucket output</td><td>Always constant rate</td></tr>
+            <tr><td>Token bucket advantage over leaky</td><td>Allows controlled bursts</td></tr>
+            <tr><td>Stop-and-Wait error variable</td><td><code>rand() % 4</code> &rarr; 25% error chance</td></tr>
+            <tr><td>FTP EOF signal over socket</td><td>Send string <code>"completed"</code></td></tr>
+            <tr><td><code>htons()</code> purpose</td><td>Host-to-network byte order conversion</td></tr>
+            <tr><td><code>inet_addr()</code> purpose</td><td>String IP &rarr; binary network address</td></tr>
+            <tr><td>OSI layer that imposes MTU</td><td>Layer 2 — Data Link</td></tr>
+            <tr><td>Transport layer protocol for FTP</td><td>TCP</td></tr>
+            <tr><td>Transport layer protocol for TFTP</td><td>UDP</td></tr>
+            <tr><td>ARP purpose</td><td>IP address &rarr; MAC address</td></tr>
+            <tr><td>RARP purpose</td><td>MAC address &rarr; IP address</td></tr>
+            <tr><td><code>INADDR_ANY</code> means</td><td>Accept on any interface</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- end content-area -->
 
 <script>
@@ -1620,6 +3918,74 @@ function copyCode(btn) {
     }, 2000);
   });
 }
+
+// Viva Q&A logic
+function toggleVivaCard(card) {
+  card.classList.toggle('expanded');
+}
+
+function toggleAllViva(expand) {
+  const cards = document.querySelectorAll('.viva-card');
+  cards.forEach(card => {
+    if (card.style.display !== 'none') {
+      if (expand) {
+        card.classList.add('expanded');
+      } else {
+        card.classList.remove('expanded');
+      }
+    }
+  });
+}
+
+let currentVivaCategory = 'all';
+
+function filterVivaCategory(category, btn) {
+  document.querySelectorAll('.viva-cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+  }
+  currentVivaCategory = category;
+  filterViva();
+}
+
+function filterViva() {
+  const query = document.getElementById('vivaSearch').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.viva-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const cat = card.getAttribute('data-category');
+    const qText = card.querySelector('.viva-q-text').textContent.toLowerCase();
+    const aText = card.querySelector('.viva-answer-content').textContent.toLowerCase();
+
+    const matchesCategory = (currentVivaCategory === 'all' || cat === currentVivaCategory);
+    const matchesSearch = (!query || qText.includes(query) || aText.includes(query));
+
+    if (matchesCategory && matchesSearch) {
+      card.style.display = 'block';
+      visibleCount++;
+      if (query.length > 0) {
+        card.classList.add('expanded');
+      } else {
+        card.classList.remove('expanded');
+      }
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('expanded');
+    }
+  });
+
+  document.getElementById('vivaVisibleCount').textContent = visibleCount;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const totalCount = document.querySelectorAll('.viva-card').length;
+  const totalEl = document.getElementById('vivaTotalCount');
+  const visibleEl = document.getElementById('vivaVisibleCount');
+  if (totalEl) totalEl.textContent = totalCount;
+  if (visibleEl) visibleEl.textContent = totalCount;
+});
+
 </script>
 </body>
 </html>
