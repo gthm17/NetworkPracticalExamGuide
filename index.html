@@ -1275,7 +1275,7 @@
                 <span class="kw">for</span> (k = <span class="num">0</span>; k &lt; n; k++) {
                     <span class="cm">// Can we reach j via k cheaper?</span>
                     <span class="kw">if</span> (rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j]) {
-                        rt[i].dist[j] = rt[i].dist[k] + rt[k].dist[j];
+                        rt[i].dist[j] = dmat[i][k] + rt[k].dist[j];  <span class="cm">// ✅ FIXED</span>
                         rt[i].from[j] = k;
                         count++;  <span class="cm">// something changed</span>
                     }
@@ -1392,6 +1392,8 @@
 
         <span class="cm">// Drain at constant outgoing rate</span>
         store = store - outgoing;
+        <span class="kw">if</span> (store &lt; <span class="num">0</span>) store = <span class="num">0</span>;  <span class="cm">// ✅ FIXED — clamp to zero</span>
+
         <span class="fn">printf</span>(<span class="str">"After outgoing %d packets left out of %d in buffer\n"</span>,
                store, buck_size);
         n--;
@@ -1406,7 +1408,7 @@
     <div class="trick-box"><div class="trick-label">💧 THE ANALOGY</div>Bucket = buffer. Water in = incoming packets. Hole = outgoing rate. If too much water → overflow (drop packets). Hole always drains at same rate regardless of input.</div>
     <div class="trick-box green"><div class="trick-label green">🔢 DROP CALCULATION</div>Dropped = <code>incoming - (buck_size - store)</code>. This is: "how many packets exceeded available space?"</div>
     <div class="trick-box yellow"><div class="trick-label yellow">📝 EXAM Q: Leaky vs Token Bucket</div>Leaky = fixed output rate always (strict). Token Bucket = can burst occasionally (flexible). Leaky drops excess; Token stores tokens to allow bursts.</div>
-    <div class="trick-box purple"><div class="trick-label purple">⚠️ EDGE CASE</div>After outgoing, if <code>store</code> goes negative — in real code you'd clamp it to 0. The lab code assumes outgoing ≤ store always.</div>
+    <div class="trick-box purple"><div class="trick-label purple">⚠️ EDGE CASE</div>After outgoing, if <code>store</code> goes negative — we clamp <code>store</code> to 0 (<code>if (store &lt; 0) store = 0;</code>) to handle this.</div>
   </div>
 </div>
 
