@@ -971,57 +971,73 @@
     <p class="section-desc">Server binds to port, listens, accepts client, then does recv → send.</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// TCP SERVER — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> sock_desc, temp_sock_desc, k, len;
-    <span class="type">char</span> buf[<span class="num">100</span>];
-    <span class="kw">struct</span> <span class="type">sockaddr_in</span> server_addr, client;
+<span class="cm">// Typedef for socket address structure</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="type">sockaddr</span> <span class="type">SA</span>;
 
-    <span class="cm">// Step 1: Create socket</span>
-    sock_desc = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sock_desc == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in socket creation\n"</span>);
+<span class="type">void</span> <span class="fn">main</span>(){
 
-    <span class="cm">// Step 2: Set server address</span>
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+    <span class="cm">// sockfd   -&gt; Server socket descriptor</span>
+    <span class="cm">// clientfd -&gt; Client socket descriptor</span>
+    <span class="type">int</span> sockfd, clientfd, len, k;
 
-    <span class="cm">// Step 3: Bind socket to address</span>
-    k = <span class="fn">bind</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;server_addr, <span class="kw">sizeof</span>(server_addr));
-    <span class="kw">if</span> (k == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in binding\n"</span>);
+    <span class="cm">// Structures for server and client address</span>
+    <span class="kw">struct</span> <span class="type">sockaddr_in</span> server, client;
 
-    <span class="cm">// Step 4: Listen for connections</span>
-    k = <span class="fn">listen</span>(sock_desc, <span class="num">5</span>);
-    <span class="kw">if</span> (k == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in listening\n"</span>);
+    <span class="cm">// Buffer for communication</span>
+    <span class="type">char</span> buff[<span class="num">100</span>];
 
-    <span class="cm">// Step 5: Accept a client</span>
+    <span class="cm">// Create TCP socket</span>
+    sockfd = <span class="fn">socket</span>(<span class="type">AF_INET</span>, <span class="type">SOCK_STREAM</span>, <span class="num">0</span>);
+
+    <span class="kw">if</span>(sockfd == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while SOCKET Creation\n&quot;</span>);
+
+    <span class="cm">// Configure server details</span>
+    server.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
+    server.sin_family = <span class="type">AF_INET</span>;
+    server.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
+
+    <span class="cm">// Bind socket to IP and port</span>
+    k = <span class="fn">bind</span>(sockfd, (<span class="type">SA</span>*)&amp;server, <span class="kw">sizeof</span>(server));
+
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Binding\n&quot;</span>);
+
+    <span class="cm">// Put server in listening state</span>
+    k = <span class="fn">listen</span>(sockfd, <span class="num">5</span>);
+
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Listening\n&quot;</span>);
+
     len = <span class="kw">sizeof</span>(client);
-    temp_sock_desc = <span class="fn">accept</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, &amp;len);
-    <span class="kw">if</span> (temp_sock_desc == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in accept\n"</span>);
 
-    <span class="cm">// Step 6: Receive message from client</span>
-    k = <span class="fn">recv</span>(temp_sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
-    <span class="fn">printf</span>(<span class="str">"Message from client: %s\n"</span>, buf);
+    <span class="cm">// Accept incoming client connection</span>
+    clientfd = <span class="fn">accept</span>(sockfd, (<span class="type">SA</span>*)&amp;client, &amp;len);
 
-    <span class="cm">// Step 7: Send reply</span>
-    <span class="fn">printf</span>(<span class="str">"Enter data to send: "</span>);
-    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
-    <span class="fn">send</span>(temp_sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+    <span class="kw">if</span>(clientfd == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Accepting\n&quot;</span>);
 
-    <span class="fn">close</span>(temp_sock_desc);
-    <span class="fn">close</span>(sock_desc);
-    <span class="kw">return</span> <span class="num">0</span>;
+    <span class="cm">// Receive message from client</span>
+    k = <span class="fn">recv</span>(clientfd, buff, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="fn">printf</span>(<span class="str">&quot;Message from Client is:\n\t\t%s\n\n&quot;</span>, buff);
+
+    <span class="cm">// Send response to client</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter Data to be Sent:\t&quot;</span>);
+    <span class="fn">fgets</span>(buff, <span class="num">100</span>, stdin);
+
+    k = <span class="fn">send</span>(clientfd, buff, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="cm">// Close sockets</span>
+    <span class="fn">close</span>(clientfd);
+    <span class="fn">close</span>(sockfd);
 }</pre>
     </div>
     <div class="trick-box">
@@ -1036,44 +1052,59 @@
     <p class="section-desc">Client just creates socket, connects, then does send → recv. No bind/listen/accept needed!</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// TCP CLIENT — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> sock_desc, k;
-    <span class="type">char</span> buf[<span class="num">100</span>];
+<span class="cm">// Typedef for socket address structure</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="type">sockaddr</span> <span class="type">SA</span>;
+
+<span class="type">void</span> <span class="fn">main</span>(){
+
+    <span class="cm">// clientfd -&gt; Client socket descriptor</span>
+    <span class="cm">// len,k    -&gt; Helper variables</span>
+    <span class="type">int</span> clientfd, len, k;
+
+    <span class="cm">// Structure to hold client/server address</span>
     <span class="kw">struct</span> <span class="type">sockaddr_in</span> client;
 
-    <span class="cm">// Step 1: Create socket (SAME as server)</span>
-    sock_desc = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sock_desc == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in socket creation\n"</span>);
+    <span class="cm">// Buffer for message transmission</span>
+    <span class="type">char</span> buff[<span class="num">100</span>];
 
-    <span class="cm">// Step 2: Set server address to connect TO</span>
-    client.sin_family = AF_INET;
-    client.sin_addr.s_addr = INADDR_ANY;
-    client.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>); <span class="cm">// SAME port as server</span>
+    <span class="cm">// Create TCP socket</span>
+    clientfd = <span class="fn">socket</span>(<span class="type">AF_INET</span>, <span class="type">SOCK_STREAM</span>, <span class="num">0</span>);
 
-    <span class="cm">// Step 3: Connect to server (replaces bind+listen+accept)</span>
-    k = <span class="fn">connect</span>(sock_desc, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;client, <span class="kw">sizeof</span>(client));
-    <span class="kw">if</span> (k == -<span class="num">1</span>)
-        <span class="fn">printf</span>(<span class="str">"Error in connecting\n"</span>);
+    <span class="kw">if</span>(clientfd == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while SOCKET Creation\n&quot;</span>);
 
-    <span class="cm">// Step 4: Send message first (client initiates)</span>
-    <span class="fn">printf</span>(<span class="str">"Enter data to send: "</span>);
-    <span class="fn">fgets</span>(buf, <span class="num">100</span>, stdin);
-    <span class="fn">send</span>(sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
+    <span class="cm">// Configure server address details</span>
+    client.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
+    client.sin_family = <span class="type">AF_INET</span>;
+    client.sin_port = <span class="fn">htons</span>(<span class="num">3003</span>);
 
-    <span class="cm">// Step 5: Receive reply from server</span>
-    k = <span class="fn">recv</span>(sock_desc, buf, <span class="num">100</span>, <span class="num">0</span>);
-    <span class="fn">printf</span>(<span class="str">"Message from server: %s\n"</span>, buf);
+    <span class="cm">// Connect to server</span>
+    k = <span class="fn">connect</span>(clientfd, (<span class="type">SA</span>*)&amp;client, <span class="kw">sizeof</span>(client));
 
-    <span class="fn">close</span>(sock_desc);
-    <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Connecting\n&quot;</span>);
+
+    <span class="cm">// Read message from user</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter Data to be Sent:\t&quot;</span>);
+    <span class="fn">fgets</span>(buff, <span class="num">100</span>, stdin);
+
+    <span class="cm">// Send data to server</span>
+    k = <span class="fn">send</span>(clientfd, buff, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="cm">// Receive response from server</span>
+    k = <span class="fn">recv</span>(clientfd, buff, <span class="num">100</span>, <span class="num">0</span>);
+
+    <span class="fn">printf</span>(<span class="str">&quot;Message from Server is:\n\t\t%s\n\n&quot;</span>, buff);
+
+    <span class="cm">// Close socket connection</span>
+    <span class="fn">close</span>(clientfd);
 }</pre>
     </div>
   </div>
@@ -1163,64 +1194,70 @@
     <p class="section-desc">Run as: <code>./server &lt;Port&gt;</code>. Server binds to the given port, prints <code>Server waiting...</code>, then blocks on <code>recvfrom()</code>. When a datagram arrives it prints it and exits. No reply sent — one-way only.</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// UDP SERVER PROGRAM</span>
-
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]) {
+<span class="cm">// Typedef for socket address</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="type">sockaddr</span> <span class="type">SA</span>;
+
+<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]){
+
+    <span class="cm">// Structures for server and client address</span>
     <span class="kw">struct</span> <span class="type">sockaddr_in</span> server, client;
 
-    <span class="cm">// Check input format</span>
-    <span class="kw">if</span> (argc != <span class="num">2</span>) {
-        <span class="fn">printf</span>(<span class="str">"Usage: %s &lt;Port&gt;\n"</span>, argv[<span class="num">0</span>]);
+    <span class="cm">// sockfd -&gt; Socket descriptor</span>
+    <span class="type">int</span> sockfd, k;
+
+    <span class="cm">// Validate command line arguments</span>
+    <span class="kw">if</span>(argc != <span class="num">2</span>){
+
+        <span class="fn">printf</span>(<span class="str">&quot;USAGE: %s &lt;Port&gt;\n&quot;</span>, argv[<span class="num">0</span>]);
         <span class="kw">return</span> <span class="num">0</span>;
     }
 
-    <span class="cm">// Create socket</span>
-    <span class="type">int</span> sockfd = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sockfd == -<span class="num">1</span>) {
-        <span class="fn">printf</span>(<span class="str">"Error in socket()\n"</span>);
-        <span class="kw">return</span> <span class="num">0</span>;
-    }
+    <span class="cm">// Create UDP socket</span>
+    sockfd = <span class="fn">socket</span>(<span class="type">AF_INET</span>, <span class="type">SOCK_DGRAM</span>, <span class="num">0</span>);
 
-    <span class="cm">// Server details</span>
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
+    <span class="kw">if</span>(sockfd == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error While Socket Creation\n&quot;</span>);
+
+    <span class="cm">// Configure server details</span>
+    server.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
     server.sin_port = <span class="fn">htons</span>(<span class="fn">atoi</span>(argv[<span class="num">1</span>]));
+    server.sin_family = <span class="type">AF_INET</span>;
 
-    <span class="cm">// Bind socket</span>
-    <span class="kw">if</span> (<span class="fn">bind</span>(sockfd,
-             (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;server,
-             <span class="kw">sizeof</span>(server)) &lt; <span class="num">0</span>) {
-        <span class="fn">printf</span>(<span class="str">"Error in bind()!\n"</span>);
-        <span class="kw">return</span> <span class="num">0</span>;
-    }
+    <span class="cm">// Bind socket to given port</span>
+    k = <span class="fn">bind</span>(sockfd, (<span class="type">SA</span>*)&amp;server, <span class="kw">sizeof</span>(server));
 
-    <span class="type">char</span> buffer[<span class="num">100</span>];
-    <span class="type">socklen_t</span> client_len = <span class="kw">sizeof</span>(client);
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while binding\n&quot;</span>);
 
-    <span class="fn">printf</span>(<span class="str">"Server waiting...\n"</span>);
+    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(client);
 
-    <span class="cm">// Receive message</span>
-    <span class="kw">if</span> (<span class="fn">recvfrom</span>(sockfd,
-                 buffer,
-                 <span class="kw">sizeof</span>(buffer),
-                 <span class="num">0</span>,
-                 (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;client,
-                 &amp;client_len) &lt; <span class="num">0</span>) {
-        <span class="fn">printf</span>(<span class="str">"Error in recvfrom()!\n"</span>);
-        <span class="kw">return</span> <span class="num">0</span>;
-    }
+    <span class="cm">// Buffer for communication</span>
+    <span class="type">char</span> buff[<span class="num">100</span>];
 
-    <span class="fn">printf</span>(<span class="str">"Got a datagram: %s\n"</span>, buffer);
+    <span class="fn">printf</span>(<span class="str">&quot;\t\tSERVER UP AND RUNNING\n\n&quot;</span>);
 
-    <span class="fn">close</span>(sockfd);
-    <span class="kw">return</span> <span class="num">0</span>;
+    <span class="cm">// Receive datagram from client</span>
+    k = <span class="fn">recvfrom</span>(sockfd, buff, <span class="num">100</span>, <span class="num">0</span>,
+                 (<span class="type">SA</span>*)&amp;client, &amp;len);
+
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Receiving\n&quot;</span>);
+
+    <span class="fn">printf</span>(<span class="str">&quot;DATA GRAM RECEIVED:\n\t\t%s\n&quot;</span>, buff);
+
+    <span class="cm">// Send response back to client</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter the data to send\n&quot;</span>);
+    <span class="fn">fgets</span>(buff, <span class="num">100</span>, stdin);
+
+    k = <span class="fn">sendto</span>(sockfd, buff, <span class="fn">strlen</span>(buff), <span class="num">0</span>,
+               (<span class="type">SA</span>*)&amp;client, <span class="kw">sizeof</span>(client));
 }</pre>
     </div>
     <div class="trick-box">
@@ -1234,57 +1271,65 @@
     <p class="section-desc">Run as: <code>./client &lt;IP Address&gt; &lt;Port&gt;</code>. Client takes the server IP and port on the command line, uses <code>inet_addr()</code> to convert the IP string, sends one message, then exits. No <code>recvfrom()</code> — one-way only.</p>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// UDP CLIENT PROGRAM</span>
-
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;unistd.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;arpa/inet.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;netdb.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]) {
+<span class="cm">// Typedef for socket address</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="type">sockaddr</span> <span class="type">SA</span>;
+
+<span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> argc, <span class="type">char</span> *argv[]){
+
+    <span class="cm">// server -&gt; Stores server address details</span>
     <span class="kw">struct</span> <span class="type">sockaddr_in</span> server;
-    <span class="type">int</span> sockfd;
 
-    <span class="cm">// Check input format</span>
-    <span class="kw">if</span> (argc != <span class="num">3</span>) {
-        <span class="fn">printf</span>(<span class="str">"Usage: %s &lt;IP Address&gt; &lt;Port&gt;\n"</span>, argv[<span class="num">0</span>]);
+    <span class="cm">// sockfd -&gt; Socket descriptor</span>
+    <span class="type">int</span> sockfd, k;
+
+    <span class="cm">// Check command line arguments</span>
+    <span class="kw">if</span>(argc != <span class="num">3</span>){
+
+        <span class="fn">printf</span>(<span class="str">&quot;USAGE: %s &lt;IP Address&gt; &lt;Port&gt;\n&quot;</span>, argv[<span class="num">0</span>]);
         <span class="kw">return</span> <span class="num">0</span>;
     }
 
-    <span class="cm">// Create socket</span>
-    sockfd = <span class="fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sockfd == -<span class="num">1</span>) {
-        <span class="fn">printf</span>(<span class="str">"Error in socket()\n"</span>);
-        <span class="kw">return</span> <span class="num">0</span>;
-    }
+    <span class="cm">// Create UDP socket</span>
+    sockfd = <span class="fn">socket</span>(<span class="type">AF_INET</span>, <span class="type">SOCK_DGRAM</span>, <span class="num">0</span>);
 
-    <span class="cm">// Server details</span>
-    server.sin_family = AF_INET;
+    <span class="kw">if</span>(sockfd == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error While Socket Creation\n&quot;</span>);
+
+    <span class="cm">// Configure server details</span>
+    server.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
     server.sin_port = <span class="fn">htons</span>(<span class="fn">atoi</span>(argv[<span class="num">2</span>]));
-    server.sin_addr.s_addr = <span class="fn">inet_addr</span>(argv[<span class="num">1</span>]);
+    server.sin_family = <span class="type">AF_INET</span>;
 
-    <span class="type">char</span> buffer[<span class="num">100</span>];
+    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(server);
 
-    <span class="fn">printf</span>(<span class="str">"Enter a message to be sent to server:\n"</span>);
-    <span class="fn">fgets</span>(buffer, <span class="kw">sizeof</span>(buffer), stdin);
+    <span class="cm">// Buffer for communication</span>
+    <span class="type">char</span> buff[<span class="num">100</span>];
 
-    <span class="cm">// Send message</span>
-    <span class="kw">if</span> (<span class="fn">sendto</span>(sockfd,
-               buffer,
-               <span class="fn">strlen</span>(buffer),
-               <span class="num">0</span>,
-               (<span class="kw">struct</span> <span class="type">sockaddr</span> *)&amp;server,
-               <span class="kw">sizeof</span>(server)) &lt; <span class="num">0</span>) {
-        <span class="fn">printf</span>(<span class="str">"Error in sendto()\n"</span>);
-        <span class="kw">return</span> <span class="num">0</span>;
-    }
+    <span class="cm">// Read data from user</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter the data to send\n&quot;</span>);
+    <span class="fn">fgets</span>(buff, <span class="num">100</span>, stdin);
 
-    <span class="fn">printf</span>(<span class="str">"Message sent successfully\n"</span>);
+    <span class="cm">// Send datagram to server</span>
+    k = <span class="fn">sendto</span>(sockfd, buff, <span class="fn">strlen</span>(buff), <span class="num">0</span>,
+               (<span class="type">SA</span>*)&amp;server, <span class="kw">sizeof</span>(server));
 
-    <span class="fn">close</span>(sockfd);
-    <span class="kw">return</span> <span class="num">0</span>;
+    <span class="cm">// Receive response from server</span>
+    k = <span class="fn">recvfrom</span>(sockfd, buff, <span class="num">100</span>, <span class="num">0</span>,
+                 (<span class="type">SA</span>*)&amp;server, &amp;len);
+
+    <span class="kw">if</span>(k == <span class="num">-1</span>)
+        <span class="fn">printf</span>(<span class="str">&quot;Error while Receiving\n&quot;</span>);
+
+    <span class="fn">printf</span>(<span class="str">&quot;DATA GRAM RECEIVED:\n\t\t%s\n&quot;</span>, buff);
 }</pre>
     </div>
     <div class="trick-box orange">
@@ -1380,81 +1425,156 @@
     <div class="section-title">Stop &amp; Wait — Full Code</div>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// STOP AND WAIT — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;stdbool.h&gt;</span>
 
-<span class="kw">struct</span> frame {
-    <span class="type">int</span> info;
-    <span class="type">int</span> seq;
+<span class="cm">// Frame structure used for transmission</span>
+<span class="kw">struct</span> frame{
+    <span class="type">int</span> seq, info;
 };
 
-<span class="type">int</span> ak;
-<span class="type">int</span> t = <span class="num">5</span>, k;
-<span class="type">int</span> disconnect = <span class="num">0</span>;
-<span class="kw">struct</span> frame p;
-<span class="type">char</span> turn = <span class="str">'s'</span>;
-<span class="type">int</span> errorframe = <span class="num">1</span>, errorack = <span class="num">1</span>;
+<span class="cm">// Global variables</span>
+<span class="type">int</span> ack, errorFrame = <span class="num">0</span>, errorAck = <span class="num">0</span>, t = <span class="num">5</span>;
+<span class="type">char</span> turn = <span class="str">&#x27;s&#x27;</span>;
+<span class="kw">struct</span> frame f;
+<span class="type">bool</span> disconnected = <span class="type">false</span>;
 
-<span class="type">void</span> <span class="fn">sender</span>();
-<span class="type">void</span> <span class="fn">receiver</span>();
 
-<span class="type">void</span> <span class="fn">main</span>() {
-    p.info = <span class="num">0</span>;
-    p.seq = <span class="num">0</span>;
-    <span class="kw">while</span> (!disconnect) {
-        <span class="fn">sender</span>();
-        <span class="fn">receiver</span>();
-    }
-}
+<span class="cm">// Sender function</span>
+<span class="cm">// Handles packet transmission and retransmission</span>
+<span class="type">void</span> <span class="fn">sender</span>(){
 
-<span class="type">void</span> <span class="fn">sender</span>() {
     <span class="kw">static</span> <span class="type">int</span> flag = <span class="num">0</span>;
-    <span class="kw">if</span> (turn == <span class="str">'s'</span>) {
-        <span class="kw">if</span> (errorack == <span class="num">0</span>) {          <span class="cm">// ACK was lost last time</span>
-            <span class="fn">printf</span>(<span class="str">"SENDER: sent packet with seq NO:%d\n"</span>, p.seq);
-            errorframe = <span class="fn">rand</span>() % <span class="num">4</span>;
-            <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorframe == <span class="num">0</span> ? <span class="str">"Error while sending Packet"</span> : <span class="str">""</span>));
-            turn = <span class="str">'r'</span>;
-        } <span class="kw">else</span> {
-            <span class="kw">if</span> (flag == <span class="num">1</span>)
-                <span class="fn">printf</span>(<span class="str">"SENDER: Received ACK for packet %d\n"</span>, ak);
-            <span class="kw">if</span> (p.seq == <span class="num">5</span>) {         <span class="cm">// Sent all 5 packets</span>
-                disconnect = <span class="num">1</span>;
+
+    <span class="kw">if</span>(turn == <span class="str">&#x27;s&#x27;</span>){
+
+        <span class="cm">// If ACK was lost previously,</span>
+        <span class="cm">// resend same packet</span>
+        <span class="kw">if</span>(errorAck == <span class="num">0</span>){
+
+            <span class="fn">printf</span>(<span class="str">&quot;SENDER: ACK NOT RECEIVED&lt; RESENDING PACKET WITH SEQ NO&gt;: %d\n&quot;</span>,
+                   f.seq);
+
+            <span class="cm">// Randomly simulate frame error</span>
+            errorFrame = <span class="fn">rand</span>() % <span class="num">4</span>;
+
+            <span class="kw">if</span>(errorFrame == <span class="num">0</span>){
+                <span class="fn">printf</span>(<span class="str">&quot;Sender: Error While Sending Packet %d&quot;</span>,
+                       f.seq);
+            }
+
+            turn = <span class="str">&#x27;r&#x27;</span>;
+        }
+
+        <span class="kw">else</span>{
+
+            <span class="cm">// Display ACK received message</span>
+            <span class="kw">if</span>(flag == <span class="num">1</span>){
+
+                <span class="fn">printf</span>(<span class="str">&quot;SENDER: RECEIVED ACK FROM RECEIVER FOR PACKET %d\n&quot;</span>,
+                       ack);
+            }
+
+            <span class="cm">// Stop after sending 5 packets</span>
+            <span class="kw">if</span>(f.seq == <span class="num">5</span>){
+                disconnected = <span class="type">true</span>;
                 <span class="kw">return</span>;
             }
-            p.info = p.info + <span class="num">1</span>;
-            p.seq = p.seq + <span class="num">1</span>;
-            <span class="fn">printf</span>(<span class="str">"SENDER: Sent packet with seq NO:%d\n"</span>, p.seq);
-            errorframe = <span class="fn">rand</span>() % <span class="num">4</span>;
-            <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorframe == <span class="num">0</span> ? <span class="str">"Error While sending Packet"</span> : <span class="str">""</span>));
-            turn = <span class="str">'r'</span>;
+
+            <span class="cm">// Generate next frame</span>
+            f.seq++;
+            f.info++;
+
+            <span class="fn">printf</span>(<span class="str">&quot;SENDER: SENDING PACKET WITH SEQ NO: %d\n&quot;</span>,
+                   f.seq);
+
+            <span class="cm">// Randomly simulate frame corruption</span>
+            errorFrame = <span class="fn">rand</span>() % <span class="num">4</span>;
+
+            <span class="kw">if</span>(errorFrame == <span class="num">0</span>){
+
+                <span class="fn">printf</span>(<span class="str">&quot;SENDER: ERROR WHILE SENDING PACKET WITH SEQ NO: %d\n&quot;</span>,
+                       f.seq);
+            }
+
+            turn = <span class="str">&#x27;r&#x27;</span>;
             flag = <span class="num">1</span>;
         }
-    } <span class="kw">else</span> {
-        t--;  <span class="cm">// timeout countdown</span>
+    }
+
+    <span class="kw">else</span>{
+
+        <span class="cm">// Timer simulation</span>
+        <span class="kw">if</span>(t &gt; <span class="num">0</span>)
+            t--;
     }
 }
 
-<span class="type">void</span> <span class="fn">receiver</span>() {
-    <span class="kw">static</span> <span class="type">int</span> frexp = <span class="num">1</span>;  <span class="cm">// expected frame</span>
-    <span class="kw">if</span> (turn == <span class="str">'r'</span>) {
-        <span class="kw">if</span> (errorframe != <span class="num">0</span>) {    <span class="cm">// packet arrived OK</span>
-            <span class="kw">if</span> (p.seq == frexp) {  <span class="cm">// correct sequence</span>
-                <span class="fn">printf</span>(<span class="str">"RECEIVER: Received packet with seq %d\n"</span>, p.seq);
-                ak = p.seq;
-                frexp = frexp + <span class="num">1</span>;
-                turn = <span class="str">'s'</span>;
-                errorack = <span class="fn">rand</span>() % <span class="num">4</span>;
-                <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorack == <span class="num">0</span> ? <span class="str">"Error while sending ACK"</span> : <span class="str">""</span>));
-            } <span class="kw">else</span> {              <span class="cm">// duplicate packet</span>
-                <span class="fn">printf</span>(<span class="str">"RECEIVER: Duplicated packet with seq %d\n"</span>, p.seq);
-                ak = frexp - <span class="num">1</span>;
-                turn = <span class="str">'s'</span>;
-                errorack = <span class="fn">rand</span>() % <span class="num">4</span>;
-                <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (errorack == <span class="num">0</span> ? <span class="str">"Error while sending ACK"</span> : <span class="str">""</span>));
+
+<span class="cm">// Receiver function</span>
+<span class="cm">// Handles receiving frames and sending ACKs</span>
+<span class="type">void</span> <span class="fn">receiver</span>(){
+
+    <span class="kw">static</span> <span class="type">int</span> exp = <span class="num">1</span>;
+
+    <span class="kw">if</span>(turn == <span class="str">&#x27;r&#x27;</span>){
+
+        <span class="cm">// Proceed only if frame is not corrupted</span>
+        <span class="kw">if</span>(errorFrame != <span class="num">0</span>){
+
+            <span class="cm">// Correct frame received</span>
+            <span class="kw">if</span>(f.seq == exp){
+
+                <span class="fn">printf</span>(<span class="str">&quot;RECEIVER: RECEIVED PACKET WITH SEQ NO: %d\n&quot;</span>,
+                       f.seq);
+
+                ack = f.seq;
+
+                <span class="cm">// Switch turn back to sender</span>
+                turn = <span class="str">&#x27;s&#x27;</span>;
+
+                exp++;
+
+                <span class="cm">// Randomly simulate ACK loss</span>
+                errorAck = <span class="fn">rand</span>() % <span class="num">4</span>;
+
+                <span class="kw">if</span>(errorAck == <span class="num">0</span>)
+                    <span class="fn">printf</span>(<span class="str">&quot;RECIEVER: ERROR WHILE SENDING ACK&quot;</span>);
+            }
+
+            <span class="kw">else</span>{
+
+                <span class="cm">// Duplicate frame received</span>
+                <span class="fn">printf</span>(<span class="str">&quot;RECEIVER: RECEIVED DUPLICATE PACKET %d\n&quot;</span>,
+                       f.seq);
+
+                ack = exp - <span class="num">1</span>;
+
+                turn = <span class="str">&#x27;s&#x27;</span>;
+
+                errorAck = <span class="fn">rand</span>() % <span class="num">4</span>;
+
+                <span class="kw">if</span>(errorAck == <span class="num">0</span>)
+                    <span class="fn">printf</span>(<span class="str">&quot;RECIEVER: ERROR WHILE SENDING ACK&quot;</span>);
             }
         }
+    }
+}
+
+
+<span class="cm">// Main function starts sender and receiver simulation</span>
+<span class="type">void</span> <span class="fn">main</span>(){
+
+    <span class="cm">// Initial frame setup</span>
+    f.seq = <span class="num">0</span>;
+    f.info = <span class="num">0</span>;
+
+    <span class="cm">// Continue until all packets transmitted</span>
+    <span class="kw">while</span>(!disconnected){
+
+        <span class="fn">sender</span>();
+        <span class="fn">receiver</span>();
     }
 }</pre>
     </div>
@@ -1501,57 +1621,90 @@
     <div class="section-title">DVR — Full Code</div>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// DISTANCE VECTOR ROUTING — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
 
-<span class="kw">struct</span> node {
-    <span class="type">unsigned</span> dist[<span class="num">20</span>];   <span class="cm">// distance to each node</span>
-    <span class="type">unsigned</span> from[<span class="num">20</span>];   <span class="cm">// next hop to reach each node</span>
-} rt[<span class="num">10</span>];              <span class="cm">// routing table for 10 nodes</span>
+<span class="cm">// Structure representing routing table for each router</span>
+<span class="kw">struct</span> node{
+    <span class="type">unsigned</span> dist[<span class="num">20</span>];   <span class="cm">// Minimum distance to each node</span>
+    <span class="type">unsigned</span> from[<span class="num">20</span>];   <span class="cm">// Next hop router</span>
+}rt[<span class="num">10</span>];
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> dmat[<span class="num">20</span>][<span class="num">20</span>];    <span class="cm">// cost matrix</span>
-    <span class="type">int</span> n, i, j, k, count = <span class="num">0</span>;
+<span class="type">int</span> <span class="fn">main</span>(){
 
-    <span class="fn">printf</span>(<span class="str">"Enter the number of nodes: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+    <span class="cm">// dmat  -&gt; Cost adjacency matrix</span>
+    <span class="cm">// n     -&gt; Number of routers</span>
+    <span class="cm">// i,j,k -&gt; Loop variables</span>
+    <span class="cm">// count -&gt; Tracks updates in routing table</span>
+    <span class="type">int</span> dmat[<span class="num">20</span>][<span class="num">20</span>], n, i, j, k, count = <span class="num">0</span>;
 
-    <span class="fn">printf</span>(<span class="str">"Enter the cost matrix:\n"</span>);
-    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
-        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
-            <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;dmat[i][j]);
+    <span class="cm">// Input number of routers</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter the NO of node:\t&quot;</span>);
+    <span class="fn">scanf</span>(<span class="str">&quot;%d&quot;</span>, &amp;n);
 
-    <span class="cm">// Initialize routing table with direct link costs</span>
-    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
-        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++) {
-            rt[i].dist[j] = dmat[i][j];
-            rt[i].from[j] = j;  <span class="cm">// initially, go directly</span>
+    <span class="cm">// Input cost matrix</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter the Cost Matrix\n&quot;</span>);
+    <span class="kw">for</span>(i = <span class="num">0</span>; i &lt; n; i++){
+        <span class="kw">for</span>(j = <span class="num">0</span>; j &lt; n; j++){
+            <span class="fn">scanf</span>(<span class="str">&quot;%d&quot;</span>, &amp;dmat[i][j]);
         }
+    }
 
-    <span class="cm">// Bellman-Ford: update until no change</span>
-    <span class="kw">do</span> {
+    <span class="cm">// Initialize routing table</span>
+    <span class="cm">// Initially every router knows only direct distances</span>
+    <span class="kw">for</span>(i = <span class="num">0</span>; i &lt; n; i++){
+        <span class="kw">for</span>(j = <span class="num">0</span>; j &lt; n; j++){
+
+            <span class="cm">// Direct distance from router i to j</span>
+            rt[i].dist[j] = dmat[i][j];
+
+            <span class="cm">// Direct router itself is next hop initially</span>
+            rt[i].from[j] = j;
+        }
+    }
+
+    <span class="cm">// Apply Distance Vector Routing Algorithm</span>
+    <span class="cm">// Repeat until no routing table changes occur</span>
+    <span class="kw">do</span>{
         count = <span class="num">0</span>;
-        <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
-            <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
-                <span class="kw">for</span> (k = <span class="num">0</span>; k &lt; n; k++) {
-                    <span class="cm">// Can we reach j via k cheaper?</span>
-                    <span class="kw">if</span> (rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j]) {
-                        rt[i].dist[j] = dmat[i][k] + rt[k].dist[j];  <span class="cm">// ✅ FIXED</span>
+
+        <span class="kw">for</span>(i = <span class="num">0</span>; i &lt; n; i++){
+            <span class="kw">for</span>(j = <span class="num">0</span>; j &lt; n; j++){
+                <span class="kw">for</span>(k = <span class="num">0</span>; k &lt; n; k++){
+
+                    <span class="cm">// Check if route through router k is shorter</span>
+                    <span class="kw">if</span>(rt[i].dist[j] &gt;
+                       dmat[i][k] + rt[k].dist[j]){
+
+                        <span class="cm">// Update shortest distance</span>
+                        rt[i].dist[j] =
+                        dmat[i][k] + rt[k].dist[j];
+
+                        <span class="cm">// Update next hop</span>
                         rt[i].from[j] = k;
-                        count++;  <span class="cm">// something changed</span>
+
+                        count++;
                     }
                 }
-    } <span class="kw">while</span> (count != <span class="num">0</span>);  <span class="cm">// repeat till stable</span>
+            }
+        }
 
-    <span class="cm">// Print routing tables</span>
-    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
-        <span class="fn">printf</span>(<span class="str">"\n\nState value for router %d\n"</span>, i + <span class="num">1</span>);
-        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; n; j++)
-            <span class="fn">printf</span>(<span class="str">"\n node %d via %d Distance %d"</span>,
-                   j + <span class="num">1</span>, rt[i].from[j] + <span class="num">1</span>, rt[i].dist[j]);
+    }<span class="kw">while</span>(count != <span class="num">0</span>);
+
+    <span class="cm">// Display final routing tables</span>
+    <span class="kw">for</span>(i = <span class="num">0</span>; i &lt; n; i++){
+
+        <span class="fn">printf</span>(<span class="str">&quot;\n\nState Value for Router %d\n&quot;</span>, i + <span class="num">1</span>);
+
+        <span class="kw">for</span>(j = <span class="num">0</span>; j &lt; n; j++){
+
+            <span class="fn">printf</span>(<span class="str">&quot;\nnode %d via %d cost: %d&quot;</span>,
+                   j + <span class="num">1</span>,
+                   rt[i].from[j] + <span class="num">1</span>,
+                   rt[i].dist[j]);
+        }
+
+        <span class="fn">printf</span>(<span class="str">&quot;\n&quot;</span>);
     }
-    <span class="fn">printf</span>(<span class="str">"\n"</span>);
-    <span class="kw">return</span> <span class="num">0</span>;
 }</pre>
     </div>
   </div>
@@ -1626,40 +1779,64 @@
     <div class="section-title">Leaky Bucket — Full Code</div>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// LEAKY BUCKET ALGORITHM — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<pre><span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> incoming, outgoing, buck_size, n, store = <span class="num">0</span>;
+<span class="type">void</span> <span class="fn">main</span>(){
 
-    <span class="fn">printf</span>(<span class="str">"Enter bucket size, outgoing rate and no of inputs: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%d%d%d"</span>, &amp;buck_size, &amp;outgoing, &amp;n);
+    <span class="cm">// Variables:</span>
+    <span class="cm">// in        -&gt; Incoming packet size</span>
+    <span class="cm">// out       -&gt; Outgoing transmission rate</span>
+    <span class="cm">// bucksize  -&gt; Maximum bucket capacity</span>
+    <span class="cm">// n         -&gt; Number of packet inputs</span>
+    <span class="cm">// store     -&gt; Current data stored inside bucket</span>
+    <span class="type">int</span> in, out, bucksize, n, store = <span class="num">0</span>;
 
-    <span class="kw">while</span> (n != <span class="num">0</span>) {
-        <span class="fn">printf</span>(<span class="str">"Enter the incoming packet size: "</span>);
-        <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;incoming);
-        <span class="fn">printf</span>(<span class="str">"Incoming packet size %d\n"</span>, incoming);
+    <span class="cm">// Taking bucket configuration from user</span>
+    <span class="fn">printf</span>(<span class="str">&quot;Enter Bucket Size, Outgoing Rate and No of inputs\n&quot;</span>);
+    <span class="fn">scanf</span>(<span class="str">&quot;%d%d%d&quot;</span>, &amp;bucksize, &amp;out, &amp;n);
 
-        <span class="cm">// Does it fit in bucket?</span>
-        <span class="kw">if</span> (incoming &lt;= (buck_size - store)) {
-            store += incoming;
-            <span class="fn">printf</span>(<span class="str">"Bucket buffer size %d out of %d\n"</span>, store, buck_size);
-        } <span class="kw">else</span> {
-            <span class="cm">// Drop what doesn't fit</span>
-            <span class="fn">printf</span>(<span class="str">"Dropped %d no of packets\n"</span>, incoming - (buck_size - store));
-            <span class="fn">printf</span>(<span class="str">"Bucket buffer size %d out of %d\n"</span>, buck_size, buck_size);
-            store = buck_size;  <span class="cm">// bucket is full</span>
+    <span class="cm">// Process each incoming packet</span>
+    <span class="kw">while</span>(n &gt; <span class="num">0</span>){
+
+        <span class="cm">// Read incoming packet size</span>
+        <span class="fn">printf</span>(<span class="str">&quot;Enter Incoming Packet Size\n&quot;</span>);
+        <span class="fn">scanf</span>(<span class="str">&quot;%d&quot;</span>, &amp;in);
+
+        <span class="cm">// Check whether packet can fit inside bucket</span>
+        <span class="kw">if</span>(in &lt;= bucksize - store){
+
+            <span class="cm">// Store packet inside bucket</span>
+            store += in;
+
+            <span class="cm">// Display remaining free space</span>
+            <span class="fn">printf</span>(<span class="str">&quot;Available Size: %d\n&quot;</span>, bucksize - store);
+
+        }<span class="kw">else</span>{
+
+            <span class="cm">// If bucket overflows, drop extra packets</span>
+            <span class="fn">printf</span>(<span class="str">&quot;Dropped %d packets due less availabilty\n&quot;</span>,
+                   in - (bucksize - store));
+
+            <span class="cm">// Bucket becomes full</span>
+            store = bucksize;
+
+            <span class="cm">// No free space left</span>
+            <span class="fn">printf</span>(<span class="str">&quot;Available Size: %d\n&quot;</span>, bucksize - store);
         }
 
-        <span class="cm">// Drain at constant outgoing rate</span>
-        store = store - outgoing;
-        <span class="kw">if</span> (store &lt; <span class="num">0</span>) store = <span class="num">0</span>;  <span class="cm">// ✅ FIXED — clamp to zero</span>
+        <span class="cm">// Simulate outgoing transmission from bucket</span>
+        store -= out;
 
-        <span class="fn">printf</span>(<span class="str">"After outgoing %d packets left out of %d in buffer\n"</span>,
-               store, buck_size);
+        <span class="cm">// Prevent negative storage value</span>
+        <span class="kw">if</span>(store &lt; <span class="num">0</span>)
+            store = <span class="num">0</span>;
+
+        <span class="cm">// Display free space after outgoing packets leave</span>
+        <span class="fn">printf</span>(<span class="str">&quot;Available Size after Outgoing: %d\n&quot;</span>,
+               bucksize - store);
+
         n--;
     }
-    <span class="kw">return</span> <span class="num">0</span>;
 }</pre>
     </div>
   </div>
@@ -1706,64 +1883,64 @@
     <div class="section-title">FTP Server <span class="tag tag-server">SERVER</span></div>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// FTP SERVER — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<pre>&lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// FTP SERVER — Networks Lab&lt;/span&gt;</span>
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;stdio.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;stdlib.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;sys/socket.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;netinet/in.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;string.h&gt;&lt;/span&gt;
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    <span class="type">int</span> sd, newsd, n, port;
-    <span class="type">char</span> name[<span class="num">100</span>], fileread[<span class="num">100</span>];
-    FILE *fp;
-    <span class="kw">struct</span> <span class="type">sockaddr_in</span> serveraddr, clientaddr;
-    <span class="type">socklen_t</span> len = <span class="kw">sizeof</span>(clientaddr);
+&lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">int</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;main&lt;/span&gt;() {
+    &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">int</span>&lt;/span&gt; sd, newsd, n, port;
+    &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">char</span>&lt;/span&gt; name[&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;], fileread[&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;];
+    <span class="type">FILE</span> *fp;
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">struct</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">sockaddr_in</span>&lt;/span&gt; serveraddr, clientaddr;
+    &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">socklen_t</span>&lt;/span&gt; len = &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(clientaddr);
 
-    <span class="fn">printf</span>(<span class="str">"Enter the port: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;port);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Enter the port: &quot;</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;scanf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;%d&quot;</span>&lt;/span&gt;, &amp;port);
 
-    <span class="cm">// TCP socket setup (same as TCP server!)</span>
-    sd = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
-    <span class="kw">if</span> (sd &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Can't create socket\n"</span>);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// TCP socket setup (same as TCP server!)&lt;/span&gt;</span>
+    sd = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;socket&lt;/span&gt;(<span class="type">AF_INET</span>, <span class="type">SOCK_STREAM</span>, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (sd &lt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Can&#x27;t create socket\n&quot;</span>&lt;/span&gt;);
 
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_addr.s_addr = INADDR_ANY;
-    serveraddr.sin_port = <span class="fn">htons</span>(port);
+    serveraddr.sin_family = <span class="type">AF_INET</span>;
+    serveraddr.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
+    serveraddr.sin_port = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;htons&lt;/span&gt;(port);
 
-    <span class="kw">if</span> (<span class="fn">bind</span>(sd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;serveraddr, <span class="kw">sizeof</span>(serveraddr)) &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Can't bind\n"</span>);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (&lt;span class=<span class="str">&quot;fn&quot;</span>&gt;bind&lt;/span&gt;(sd, (&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">struct</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">sockaddr</span>&lt;/span&gt;*)&amp;serveraddr, &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(serveraddr)) &lt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Can&#x27;t bind\n&quot;</span>&lt;/span&gt;);
 
-    <span class="fn">listen</span>(sd, <span class="num">5</span>);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;listen&lt;/span&gt;(sd, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">5</span>&lt;/span&gt;);
 
-    newsd = <span class="fn">accept</span>(sd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;clientaddr, &amp;len);
-    <span class="kw">if</span> (newsd &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Can't accept\n"</span>);
+    newsd = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;accept&lt;/span&gt;(sd, (&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">struct</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">sockaddr</span>&lt;/span&gt;*)&amp;clientaddr, &amp;len);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (newsd &lt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Can&#x27;t accept\n&quot;</span>&lt;/span&gt;);
 
-    <span class="cm">// Receive filename from client</span>
-    n = <span class="fn">recv</span>(newsd, name, <span class="num">100</span>, <span class="num">0</span>);
-    name[n] = <span class="str">'\0'</span>;
-    <span class="fn">printf</span>(<span class="str">"File requested: %s\n"</span>, name);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Receive filename from client&lt;/span&gt;</span>
+    n = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;recv&lt;/span&gt;(newsd, name, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+    name[n] = &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&#x27;\0&#x27;</span>&lt;/span&gt;;
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;File requested: %s\n&quot;</span>&lt;/span&gt;, name);
 
-    <span class="cm">// Open the file</span>
-    fp = <span class="fn">fopen</span>(name, <span class="str">"r"</span>);
-    <span class="kw">if</span> (fp == NULL) {
-        <span class="fn">send</span>(newsd, <span class="str">"File not found"</span>, <span class="num">100</span>, <span class="num">0</span>);
-    } <span class="kw">else</span> {
-        <span class="cm">// Send file line by line</span>
-        <span class="kw">while</span> (<span class="fn">fgets</span>(fileread, <span class="kw">sizeof</span>(fileread), fp)) {
-            <span class="fn">send</span>(newsd, fileread, <span class="kw">sizeof</span>(fileread), <span class="num">0</span>);
-            <span class="fn">sleep</span>(<span class="num">1</span>);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Open the file&lt;/span&gt;</span>
+    fp = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fopen&lt;/span&gt;(name, &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;r&quot;</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (fp == <span class="type">NULL</span>) {
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;send&lt;/span&gt;(newsd, &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;File not found&quot;</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+    } &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">else</span>&lt;/span&gt; {
+        &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Send file line by line&lt;/span&gt;</span>
+        &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">while</span>&lt;/span&gt; (&lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fgets&lt;/span&gt;(fileread, &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(fileread), fp)) {
+            &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;send&lt;/span&gt;(newsd, fileread, &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(fileread), &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+            &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;sleep&lt;/span&gt;(&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">1</span>&lt;/span&gt;);
         }
-        <span class="cm">// Signal completion</span>
-        <span class="fn">send</span>(newsd, <span class="str">"completed"</span>, <span class="num">100</span>, <span class="num">0</span>);
-        <span class="fn">fclose</span>(fp);
+        &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Signal completion&lt;/span&gt;</span>
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;send&lt;/span&gt;(newsd, &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;completed&quot;</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fclose&lt;/span&gt;(fp);
     }
 
-    <span class="fn">close</span>(newsd);
-    <span class="fn">close</span>(sd);
-    <span class="kw">return</span> <span class="num">0</span>;
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;close&lt;/span&gt;(newsd);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;close&lt;/span&gt;(sd);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">return</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;;
 }</pre>
     </div>
   </div>
@@ -1772,56 +1949,56 @@
     <div class="section-title">FTP Client <span class="tag tag-client">CLIENT</span></div>
     <div class="code-wrap">
       <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-<pre><span class="cm">// FTP CLIENT — Networks Lab</span>
-<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;sys/socket.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;netinet/in.h&gt;</span>
-<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>
+<pre>&lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// FTP CLIENT — Networks Lab&lt;/span&gt;</span>
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;stdio.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;stdlib.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;sys/socket.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;netinet/in.h&gt;&lt;/span&gt;
+&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">#include</span>&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&lt;string.h&gt;&lt;/span&gt;
 
-<span class="type">int</span> <span class="fn">main</span>() {
-    FILE *fp;
-    <span class="type">int</span> csd, port, n;
-    <span class="type">char</span> name[<span class="num">100</span>], rcv[<span class="num">100</span>], newname[<span class="num">100</span>];
-    <span class="kw">struct</span> <span class="type">sockaddr_in</span> serveraddr;
+&lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">int</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;main&lt;/span&gt;() {
+    <span class="type">FILE</span> *fp;
+    &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">int</span>&lt;/span&gt; csd, port, n;
+    &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">char</span>&lt;/span&gt; name[&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;], rcv[&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;], newname[&lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;];
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">struct</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">sockaddr_in</span>&lt;/span&gt; serveraddr;
 
-    <span class="fn">printf</span>(<span class="str">"Enter the port: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;port);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Enter the port: &quot;</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;scanf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;%d&quot;</span>&lt;/span&gt;, &amp;port);
 
-    <span class="cm">// TCP socket setup (same as TCP client!)</span>
-    csd = <span class="fn">socket</span>(AF_INET, SOCK_STREAM, <span class="num">0</span>);
-    <span class="kw">if</span> (csd &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Can't create socket\n"</span>);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// TCP socket setup (same as TCP client!)&lt;/span&gt;</span>
+    csd = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;socket&lt;/span&gt;(<span class="type">AF_INET</span>, <span class="type">SOCK_STREAM</span>, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (csd &lt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Can&#x27;t create socket\n&quot;</span>&lt;/span&gt;);
 
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_addr.s_addr = INADDR_ANY;
-    serveraddr.sin_port = <span class="fn">htons</span>(port);
+    serveraddr.sin_family = <span class="type">AF_INET</span>;
+    serveraddr.sin_addr.s_addr = <span class="type">INADDR_ANY</span>;
+    serveraddr.sin_port = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;htons&lt;/span&gt;(port);
 
-    <span class="kw">if</span> (<span class="fn">connect</span>(csd, (<span class="kw">struct</span> <span class="type">sockaddr</span>*)&amp;serveraddr, <span class="kw">sizeof</span>(serveraddr)) &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Can't connect\n"</span>);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (&lt;span class=<span class="str">&quot;fn&quot;</span>&gt;connect&lt;/span&gt;(csd, (&lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">struct</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;type&quot;</span>&gt;<span class="type">sockaddr</span>&lt;/span&gt;*)&amp;serveraddr, &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(serveraddr)) &lt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Can&#x27;t connect\n&quot;</span>&lt;/span&gt;);
 
-    <span class="cm">// Send requested filename to server</span>
-    <span class="fn">printf</span>(<span class="str">"Enter filename to request: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%s"</span>, name);
-    <span class="fn">send</span>(csd, name, <span class="kw">sizeof</span>(name), <span class="num">0</span>);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Send requested filename to server&lt;/span&gt;</span>
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Enter filename to request: &quot;</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;scanf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;%s&quot;</span>&lt;/span&gt;, name);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;send&lt;/span&gt;(csd, name, &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">sizeof</span>&lt;/span&gt;(name), &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;);
 
-    <span class="cm">// Enter new filename to save as</span>
-    <span class="fn">printf</span>(<span class="str">"Enter new filename to save: "</span>);
-    <span class="fn">scanf</span>(<span class="str">"%s"</span>, newname);
-    fp = <span class="fn">fopen</span>(newname, <span class="str">"w"</span>);
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Enter new filename to save as&lt;/span&gt;</span>
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;Enter new filename to save: &quot;</span>&lt;/span&gt;);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;scanf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;%s&quot;</span>&lt;/span&gt;, newname);
+    fp = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fopen&lt;/span&gt;(newname, &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;w&quot;</span>&lt;/span&gt;);
 
-    <span class="cm">// Receive and write until "completed"</span>
-    <span class="kw">while</span> ((n = <span class="fn">recv</span>(csd, rcv, <span class="num">100</span>, <span class="num">0</span>)) &gt; <span class="num">0</span>) {
-        <span class="kw">if</span> (<span class="fn">strcmp</span>(rcv, <span class="str">"completed"</span>) == <span class="num">0</span>) {
-            <span class="fn">printf</span>(<span class="str">"File transfer completed!\n"</span>);
-            <span class="kw">break</span>;
+    &lt;span class=<span class="str">&quot;cm&quot;</span>&gt;<span class="cm">// Receive and write until &quot;completed&quot;&lt;/span&gt;</span>
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">while</span>&lt;/span&gt; ((n = &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;recv&lt;/span&gt;(csd, rcv, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">100</span>&lt;/span&gt;, &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;)) &gt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;) {
+        &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">if</span>&lt;/span&gt; (&lt;span class=<span class="str">&quot;fn&quot;</span>&gt;strcmp&lt;/span&gt;(rcv, &lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;completed&quot;</span>&lt;/span&gt;) == &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;) {
+            &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;printf&lt;/span&gt;(&lt;span class=<span class="str">&quot;str&quot;</span>&gt;<span class="str">&quot;File transfer completed!\n&quot;</span>&lt;/span&gt;);
+            &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">break</span>&lt;/span&gt;;
         }
-        <span class="fn">fputs</span>(rcv, fp);
+        &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fputs&lt;/span&gt;(rcv, fp);
     }
 
-    <span class="fn">fclose</span>(fp);
-    <span class="fn">close</span>(csd);
-    <span class="kw">return</span> <span class="num">0</span>;
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;fclose&lt;/span&gt;(fp);
+    &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;close&lt;/span&gt;(csd);
+    &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">return</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;;
 }</pre>
     </div>
   </div>
@@ -3018,8 +3195,8 @@
       </div>
       <div class="viva-a-body">
         <div class="viva-answer-content">
-          <pre><code>if (rt[i].dist[j] > dmat[i][k] + rt[k].dist[j])
-    rt[i].dist[j] = dmat[i][k] + rt[k].dist[j]</code></pre><p>Translation: <em>"Can I reach destination j from node i via intermediate node k, cheaper than my current best path?"</em> If yes &rarr; update distance and next hop.</p>
+          <pre>&lt;code&gt;<span class="kw">if</span> (rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j])
+    rt[i].dist[j] = dmat[i][k] + rt[k].dist[j]&lt;/code&gt;</pre><p>Translation: <em>"Can I reach destination j from node i via intermediate node k, cheaper than my current best path?"</em> If yes &rarr; update distance and next hop.</p>
         </div>
       </div>
     </div>
@@ -3321,7 +3498,7 @@
       </div>
       <div class="viva-a-body">
         <div class="viva-answer-content">
-          <pre><code>Dropped = incoming - (buck_size - store)</code></pre><p>i.e., how many packets <strong>exceeded the available space</strong> in the bucket.</p>
+          <pre>&lt;code&gt;Dropped = incoming - (buck_size - store)&lt;/code&gt;</pre><p>i.e., how many packets <strong>exceeded the available space</strong> in the bucket.</p>
         </div>
       </div>
     </div>
