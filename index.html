@@ -897,6 +897,125 @@
       font-size: 0.82rem;
     }
   }
+
+  /* ALGORITHM TAB STYLES */
+  .algo-section { margin-bottom: 28px; }
+  .algo-section:last-child { margin-bottom: 0; }
+
+  .algo-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .algo-heading::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--accent3);
+    border-radius: 2px;
+  }
+  .algo-heading.green { color: var(--green); }
+  .algo-heading.green::before { background: var(--green); }
+  .algo-heading.orange { color: var(--accent2); }
+  .algo-heading.orange::before { background: var(--accent2); }
+  .algo-heading.yellow { color: var(--yellow); }
+  .algo-heading.yellow::before { background: var(--yellow); }
+  .algo-heading.cyan { color: var(--accent); }
+  .algo-heading.cyan::before { background: var(--accent); }
+
+  .pseudo-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.85;
+    color: #c9d1d9;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    counter-reset: step-counter;
+  }
+  .pseudo-block.green  { border-left-color: var(--green);   }
+  .pseudo-block.orange { border-left-color: var(--accent2); }
+  .pseudo-block.yellow { border-left-color: var(--yellow);  }
+  .pseudo-block.cyan   { border-left-color: var(--accent);  }
+
+  .ps-kw   { color: #ff79c6; font-weight: 700; }   /* BEGIN END IF ELSE WHILE FOR CALL RETURN */
+  .ps-fn   { color: #50fa7b; }                      /* function / syscall names */
+  .ps-cm   { color: #6272a4; font-style: italic; }  /* // comments */
+  .ps-num  { color: #bd93f9; }
+  .ps-var  { color: #8be9fd; }                      /* variable names */
+  .ps-str  { color: #f1fa8c; }
+
+  .explain-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+  }
+  .explain-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 0.83rem;
+    line-height: 1.55;
+  }
+  .explain-item:hover { border-color: rgba(167,139,250,0.4); }
+  .explain-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #000;
+    background: var(--accent3);
+    border-radius: 4px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .explain-badge.green  { background: var(--green);   }
+  .explain-badge.orange { background: var(--accent2); }
+  .explain-badge.yellow { background: var(--yellow);  }
+  .explain-badge.cyan   { background: var(--accent);  }
+  .explain-text { color: var(--muted); }
+  .explain-text strong { color: var(--text); }
+
+  .algo-marks-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(0,229,255,0.05));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.82rem;
+  }
+  .algo-marks-bar .marks-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent3);
+    line-height: 1;
+  }
+  .algo-marks-bar .marks-label { color: var(--muted); line-height: 1.4; }
+  .algo-marks-bar .marks-label strong { color: var(--text); display: block; }
+
 </style>
 </head>
 <body>
@@ -926,6 +1045,7 @@
     <button class="sub-btn" onclick="showSub('tcp','server')">Server</button>
     <button class="sub-btn" onclick="showSub('tcp','client')">Client</button>
     <button class="sub-btn" onclick="showSub('tcp','tricks')">Tricks &amp; Diff</button>
+    <button class="sub-btn" onclick="showSub('tcp','algo')">⚙ Algorithm</button>
   </div>
 
   <!-- Overview -->
@@ -1109,6 +1229,139 @@
     </div>
   </div>
 
+
+  <!-- TCP Algorithm -->
+  <div id="tcp-algo" class="sub-panel">
+    <div class="section-title">TCP — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Data Structures · Methods · Pseudocode (Server + Client) · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        TCP (Transmission Control Protocol) provides <strong>reliable, ordered, connection-oriented</strong> byte-stream communication between two processes over a network. It uses a <strong>three-way handshake</strong> to establish a connection before any data transfer begins, ensuring both endpoints are ready.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">sockfd</span><span class="explain-text"><strong>int</strong> — Server's listening socket descriptor returned by <code>socket()</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">clientfd</span><span class="explain-text"><strong>int</strong> — Descriptor for the accepted client connection, returned by <code>accept()</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">sockaddr_in</span><span class="explain-text"><strong>struct</strong> — Holds IP family, IP address (<code>sin_addr</code>), and port (<code>sin_port</code>) in network byte order.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">buff[100]</span><span class="explain-text"><strong>char array</strong> — Buffer used to hold data being sent or received over the socket.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">SA</span><span class="explain-text"><strong>typedef</strong> — Alias for <code>struct sockaddr</code>; used for casting in bind/connect/accept calls.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">System Call Methods</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">socket()</span><span class="explain-text"><strong>socket(AF_INET, SOCK_STREAM, 0)</strong> — Creates a TCP socket. <code>AF_INET</code> = IPv4. <code>SOCK_STREAM</code> = reliable stream (TCP). Returns a file descriptor.</span></li>
+        <li class="explain-item"><span class="explain-badge green">bind()</span><span class="explain-text"><strong>bind(sockfd, &amp;server, size)</strong> — Attaches the socket to an IP address and port number on the host machine. Only the server calls this.</span></li>
+        <li class="explain-item"><span class="explain-badge green">listen()</span><span class="explain-text"><strong>listen(sockfd, backlog)</strong> — Marks the socket as passive (ready to accept). <code>backlog=5</code> = max queue of pending connections.</span></li>
+        <li class="explain-item"><span class="explain-badge green">accept()</span><span class="explain-text"><strong>accept(sockfd, &amp;client, &amp;len)</strong> — Blocks until a client connects; returns a new socket descriptor for that specific client.</span></li>
+        <li class="explain-item"><span class="explain-badge green">connect()</span><span class="explain-text"><strong>connect(fd, &amp;server, size)</strong> — Client initiates the 3-way handshake to the server's IP:port. Blocks until connected.</span></li>
+        <li class="explain-item"><span class="explain-badge green">send()</span><span class="explain-text"><strong>send(fd, buff, len, 0)</strong> — Sends data through the connected socket. Returns number of bytes actually sent.</span></li>
+        <li class="explain-item"><span class="explain-badge green">recv()</span><span class="explain-text"><strong>recv(fd, buff, len, 0)</strong> — Receives data from the connected socket. Blocks until data arrives.</span></li>
+        <li class="explain-item"><span class="explain-badge green">close()</span><span class="explain-text"><strong>close(fd)</strong> — Closes the socket and releases the file descriptor. Server closes both <code>clientfd</code> and <code>sockfd</code>.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Pseudocode — TCP Server</div>
+      <div class="pseudo-block cyan"><span class="ps-kw">BEGIN</span> TCP_Server
+
+  <span class="ps-cm">// Step 1: Create a TCP socket endpoint</span>
+  <span class="ps-var">sockfd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_STREAM, <span class="ps-num">0</span>)
+  <span class="ps-kw">IF</span> <span class="ps-var">sockfd</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Socket error"
+
+  <span class="ps-cm">// Step 2: Configure server address</span>
+  <span class="ps-var">server.sin_family</span>   ← AF_INET
+  <span class="ps-var">server.sin_addr</span>     ← INADDR_ANY      <span class="ps-cm">// Accept on any interface</span>
+  <span class="ps-var">server.sin_port</span>     ← htons(<span class="ps-num">3003</span>)    <span class="ps-cm">// Convert port to network byte order</span>
+
+  <span class="ps-cm">// Step 3: Bind socket to address</span>
+  <span class="ps-var">k</span> ← <span class="ps-fn">bind</span>(<span class="ps-var">sockfd</span>, &amp;server, sizeof(server))
+  <span class="ps-kw">IF</span> <span class="ps-var">k</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Bind error"
+
+  <span class="ps-cm">// Step 4: Start listening for connections</span>
+  <span class="ps-var">k</span> ← <span class="ps-fn">listen</span>(<span class="ps-var">sockfd</span>, <span class="ps-num">5</span>)
+  <span class="ps-kw">IF</span> <span class="ps-var">k</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Listen error"
+
+  <span class="ps-cm">// Step 5: Accept incoming client connection (BLOCKS here)</span>
+  <span class="ps-var">clientfd</span> ← <span class="ps-fn">accept</span>(<span class="ps-var">sockfd</span>, &amp;client, &amp;len)
+  <span class="ps-kw">IF</span> <span class="ps-var">clientfd</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Accept error"
+
+  <span class="ps-cm">// Step 6: Receive message from client</span>
+  <span class="ps-fn">recv</span>(<span class="ps-var">clientfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+  print "Message from Client: " + <span class="ps-var">buff</span>
+
+  <span class="ps-cm">// Step 7: Read reply from keyboard and send</span>
+  <span class="ps-fn">fgets</span>(<span class="ps-var">buff</span>, stdin)
+  <span class="ps-fn">send</span>(<span class="ps-var">clientfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+
+  <span class="ps-cm">// Step 8: Close both sockets</span>
+  <span class="ps-fn">close</span>(<span class="ps-var">clientfd</span>)
+  <span class="ps-fn">close</span>(<span class="ps-var">sockfd</span>)
+
+<span class="ps-kw">END</span> TCP_Server</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">Step 1</span><span class="explain-text"><strong>socket()</strong> — Creates the endpoint. <code>SOCK_STREAM</code> requests TCP. Returns an integer file descriptor used in all subsequent calls.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 2</span><span class="explain-text"><strong>Address config</strong> — <code>INADDR_ANY</code> means "accept connections on any network interface on this machine." <code>htons()</code> converts from host to network byte order (big-endian).</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 3</span><span class="explain-text"><strong>bind()</strong> — Pairs the socket with the address struct. Without this, the OS doesn't know which port to listen on.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 4</span><span class="explain-text"><strong>listen()</strong> — Moves socket to passive mode. Backlog 5 = at most 5 connections can queue while one is being served.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 5</span><span class="explain-text"><strong>accept()</strong> — Creates a NEW socket dedicated to this client. The original <code>sockfd</code> keeps listening. This is the 3-way handshake completion point.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Steps 6–7</span><span class="explain-text"><strong>recv() then send()</strong> — Server receives first, then replies. Order matters — client does the opposite (send first, recv second).</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 8</span><span class="explain-text"><strong>close()</strong> — Sends FIN to client, completing 4-way connection teardown. Both descriptors must be closed.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">Pseudocode — TCP Client</div>
+      <div class="pseudo-block green"><span class="ps-kw">BEGIN</span> TCP_Client
+
+  <span class="ps-cm">// Step 1: Create TCP socket</span>
+  <span class="ps-var">clientfd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_STREAM, <span class="ps-num">0</span>)
+  <span class="ps-kw">IF</span> <span class="ps-var">clientfd</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Socket error"
+
+  <span class="ps-cm">// Step 2: Configure server address (same port as server)</span>
+  <span class="ps-var">client.sin_family</span> ← AF_INET
+  <span class="ps-var">client.sin_addr</span>   ← INADDR_ANY
+  <span class="ps-var">client.sin_port</span>   ← htons(<span class="ps-num">3003</span>)
+
+  <span class="ps-cm">// Step 3: Connect to server (triggers 3-way handshake)</span>
+  <span class="ps-var">k</span> ← <span class="ps-fn">connect</span>(<span class="ps-var">clientfd</span>, &amp;client, sizeof(client))
+  <span class="ps-kw">IF</span> <span class="ps-var">k</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Connect error"
+
+  <span class="ps-cm">// Step 4: Read data from keyboard and send to server</span>
+  <span class="ps-fn">fgets</span>(<span class="ps-var">buff</span>, stdin)
+  <span class="ps-fn">send</span>(<span class="ps-var">clientfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+
+  <span class="ps-cm">// Step 5: Receive server's reply</span>
+  <span class="ps-fn">recv</span>(<span class="ps-var">clientfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+  print "Message from Server: " + <span class="ps-var">buff</span>
+
+  <span class="ps-cm">// Step 6: Close socket</span>
+  <span class="ps-fn">close</span>(<span class="ps-var">clientfd</span>)
+
+<span class="ps-kw">END</span> TCP_Client</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">Step 1</span><span class="explain-text"><strong>socket()</strong> — Same as server. Client uses only one socket descriptor (no separate listening socket needed).</span></li>
+        <li class="explain-item"><span class="explain-badge green">Step 2</span><span class="explain-text"><strong>Address config</strong> — Client configures the <em>server's</em> address to connect to, not its own. Port must match the server's bound port.</span></li>
+        <li class="explain-item"><span class="explain-badge green">Step 3</span><span class="explain-text"><strong>connect()</strong> — This single call replaces bind+listen+accept. It sends SYN, waits for SYN-ACK, then sends ACK. Blocks until the 3-way handshake completes.</span></li>
+        <li class="explain-item"><span class="explain-badge green">Steps 4–5</span><span class="explain-text"><strong>send() then recv()</strong> — Client sends first, then waits for server's reply. Reverse of server order.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      TCP algorithm = Socket Creation → Address Config → bind (S) / connect (C) → listen+accept (S only) → send/recv (opposite order on each side) → close. Key: server uses <strong>2 sockets</strong>, client uses <strong>1</strong>. <code>htons()</code> is mandatory for port. <code>accept()</code> is where the 3-way handshake finalises.
+    </div>
+  </div>
+
   <!-- Tricks -->
   <div id="tcp-tricks" class="sub-panel">
     <div class="section-title">TCP — Copy-Paste Tricks &amp; Diff</div>
@@ -1156,6 +1409,7 @@
     <button class="sub-btn" onclick="showSub('udp','server')">Server</button>
     <button class="sub-btn" onclick="showSub('udp','client')">Client</button>
     <button class="sub-btn" onclick="showSub('udp','tricks')">Tricks &amp; Diff</button>
+    <button class="sub-btn" onclick="showSub('udp','algo')">⚙ Algorithm</button>
   </div>
 
   <div id="udp-overview" class="sub-panel active">
@@ -1338,6 +1592,118 @@
     </div>
   </div>
 
+
+  <!-- UDP Algorithm -->
+  <div id="udp-algo" class="sub-panel">
+    <div class="section-title">UDP — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Data Structures · Methods · Pseudocode (Server + Client) · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        UDP (User Datagram Protocol) provides a <strong>connectionless, unreliable, low-overhead</strong> datagram service. There is no handshake — the sender fires packets without confirming the receiver is ready. Used where speed &gt; reliability (DNS, video streaming, gaming). This implementation takes port/IP as <strong>command-line arguments</strong> and performs a two-way exchange.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">sockfd</span><span class="explain-text"><strong>int</strong> — UDP socket descriptor created with <code>SOCK_DGRAM</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">sockaddr_in server/client</span><span class="explain-text"><strong>struct</strong> — Holds address info. Server uses both (client address captured in <code>recvfrom</code>). Client uses only server struct.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">socklen_t len</span><span class="explain-text"><strong>unsigned int</strong> — Holds the size of the address struct. Passed by pointer to <code>recvfrom()</code> so the kernel can fill the sender's address.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">argv[]</span><span class="explain-text"><strong>char*</strong> — Command-line args. Server: <code>argv[1]</code>=Port. Client: <code>argv[1]</code>=IP, <code>argv[2]</code>=Port.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">buff[100]</span><span class="explain-text"><strong>char array</strong> — Buffer for datagram data.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">System Call Methods</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">socket()</span><span class="explain-text"><strong>socket(AF_INET, SOCK_DGRAM, 0)</strong> — Creates a UDP socket. <code>SOCK_DGRAM</code> = datagram mode. No connection, no guarantee.</span></li>
+        <li class="explain-item"><span class="explain-badge green">bind()</span><span class="explain-text"><strong>bind(sockfd, &amp;server, size)</strong> — Server only. Tells OS which port to receive datagrams on. Client does NOT bind — OS assigns ephemeral port automatically.</span></li>
+        <li class="explain-item"><span class="explain-badge green">recvfrom()</span><span class="explain-text"><strong>recvfrom(fd, buff, len, 0, &amp;client, &amp;clen)</strong> — Receives a datagram AND captures the sender's address into the <code>client</code> struct (needed to reply).</span></li>
+        <li class="explain-item"><span class="explain-badge green">sendto()</span><span class="explain-text"><strong>sendto(fd, buff, len, 0, &amp;dest, dlen)</strong> — Sends datagram to the specified address. No connection needed — destination specified per-call.</span></li>
+        <li class="explain-item"><span class="explain-badge green">atoi()</span><span class="explain-text"><strong>atoi(argv[n])</strong> — Converts command-line port string to integer before passing to <code>htons()</code>.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Pseudocode — UDP Server</div>
+      <div class="pseudo-block cyan"><span class="ps-kw">BEGIN</span> UDP_Server(argv[<span class="ps-num">1</span>] = Port)
+
+  <span class="ps-kw">IF</span> argc ≠ <span class="ps-num">2</span> <span class="ps-kw">THEN</span> print "USAGE: ./server &lt;Port&gt;" ; exit
+
+  <span class="ps-cm">// Step 1: Create UDP socket</span>
+  <span class="ps-var">sockfd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="ps-num">0</span>)
+  <span class="ps-kw">IF</span> <span class="ps-var">sockfd</span> == -<span class="ps-num">1</span> <span class="ps-kw">THEN</span> print "Socket error"
+
+  <span class="ps-cm">// Step 2: Configure and bind server address</span>
+  <span class="ps-var">server.sin_family</span> ← AF_INET
+  <span class="ps-var">server.sin_addr</span>   ← INADDR_ANY
+  <span class="ps-var">server.sin_port</span>   ← htons(atoi(argv[<span class="ps-num">1</span>]))
+  <span class="ps-fn">bind</span>(<span class="ps-var">sockfd</span>, &amp;server, sizeof(server))
+
+  <span class="ps-cm">// Step 3: Wait for and receive a datagram</span>
+  print "SERVER UP AND RUNNING"
+  <span class="ps-var">len</span> ← sizeof(client)
+  <span class="ps-fn">recvfrom</span>(<span class="ps-var">sockfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>, &amp;client, &amp;len)
+  <span class="ps-cm">// client struct now holds the sender's IP and port</span>
+  print "DATAGRAM RECEIVED: " + <span class="ps-var">buff</span>
+
+  <span class="ps-cm">// Step 4: Read reply and send back to client</span>
+  <span class="ps-fn">fgets</span>(<span class="ps-var">buff</span>, stdin)
+  <span class="ps-fn">sendto</span>(<span class="ps-var">sockfd</span>, <span class="ps-var">buff</span>, strlen(buff), <span class="ps-num">0</span>, &amp;client, sizeof(client))
+
+<span class="ps-kw">END</span> UDP_Server</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">argc check</span><span class="explain-text">Server expects exactly 2 args (program name + port). <code>atoi(argv[1])</code> converts the port string to integer. Without this check the program would crash on wrong usage.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">SOCK_DGRAM</span><span class="explain-text">This is the key difference from TCP. Datagram sockets are message-oriented — each <code>sendto/recvfrom</code> is one complete message, not a stream.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">recvfrom &amp; client</span><span class="explain-text">The <code>&amp;client</code> and <code>&amp;len</code> parameters are filled by the kernel with the sender's address. This is how the server knows who to reply to — there is no established connection to reference.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">sendto with client</span><span class="explain-text">Uses the <code>client</code> struct populated by <code>recvfrom</code> as the destination. The server could not reply without this.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">Pseudocode — UDP Client</div>
+      <div class="pseudo-block green"><span class="ps-kw">BEGIN</span> UDP_Client(argv[<span class="ps-num">1</span>] = IP, argv[<span class="ps-num">2</span>] = Port)
+
+  <span class="ps-kw">IF</span> argc ≠ <span class="ps-num">3</span> <span class="ps-kw">THEN</span> print "USAGE: ./client &lt;IP&gt; &lt;Port&gt;" ; exit
+
+  <span class="ps-cm">// Step 1: Create UDP socket</span>
+  <span class="ps-var">sockfd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_DGRAM, <span class="ps-num">0</span>)
+
+  <span class="ps-cm">// Step 2: Configure server address</span>
+  <span class="ps-var">server.sin_family</span> ← AF_INET
+  <span class="ps-var">server.sin_addr</span>   ← INADDR_ANY      <span class="ps-cm">// or inet_addr(argv[1])</span>
+  <span class="ps-var">server.sin_port</span>   ← htons(atoi(argv[<span class="ps-num">2</span>]))
+
+  <span class="ps-cm">// Step 3: Read data and send datagram to server</span>
+  <span class="ps-fn">fgets</span>(<span class="ps-var">buff</span>, stdin)
+  <span class="ps-fn">sendto</span>(<span class="ps-var">sockfd</span>, <span class="ps-var">buff</span>, strlen(buff), <span class="ps-num">0</span>, &amp;server, sizeof(server))
+
+  <span class="ps-cm">// Step 4: Receive server's reply</span>
+  <span class="ps-var">len</span> ← sizeof(server)
+  <span class="ps-fn">recvfrom</span>(<span class="ps-var">sockfd</span>, <span class="ps-var">buff</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>, &amp;server, &amp;len)
+  print "DATAGRAM RECEIVED: " + <span class="ps-var">buff</span>
+
+<span class="ps-kw">END</span> UDP_Client</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">No bind()</span><span class="explain-text">Client does NOT bind. The OS automatically assigns a free ephemeral port when <code>sendto()</code> is first called. This is a fundamental UDP characteristic.</span></li>
+        <li class="explain-item"><span class="explain-badge green">No connect()</span><span class="explain-text">UDP client does not call <code>connect()</code>. Each <code>sendto()</code> specifies the destination explicitly — no persistent connection exists.</span></li>
+        <li class="explain-item"><span class="explain-badge green">strlen(buff)</span><span class="explain-text">UDP uses <code>strlen(buff)</code> as the length, not a fixed 100. This sends only the actual data, not the entire buffer — important for datagram efficiency.</span></li>
+        <li class="explain-item"><span class="explain-badge green">argc != 3</span><span class="explain-text">Client takes two args: IP address and port. It needs to know the server's address since there is no pre-established connection.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      UDP = no connect(), no accept(), no listen(). Server: socket→bind→recvfrom→sendto. Client: socket→sendto→recvfrom. Key: <code>recvfrom</code> captures sender's address; <code>sendto</code> specifies destination every time. <code>SOCK_DGRAM</code> vs <code>SOCK_STREAM</code> is the TCP/UDP toggle. Args: server takes port only, client takes IP+port.
+    </div>
+  </div>
+
   <div id="udp-tricks" class="sub-panel">
     <div class="section-title">UDP — Copy-Paste Tricks &amp; Diff</div>
 
@@ -1388,6 +1754,7 @@
     <button class="sub-btn active" onclick="showSub('snw','overview')">Overview</button>
     <button class="sub-btn" onclick="showSub('snw','code')">Full Code</button>
     <button class="sub-btn" onclick="showSub('snw','tricks')">Tricks</button>
+    <button class="sub-btn" onclick="showSub('snw','algo')">⚙ Algorithm</button>
   </div>
 
   <div id="snw-overview" class="sub-panel active">
@@ -1580,6 +1947,117 @@
     </div>
   </div>
 
+
+  <!-- Stop and Wait Algorithm -->
+  <div id="snw-algo" class="sub-panel">
+    <div class="section-title">Stop &amp; Wait ARQ — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Data Structures · Sender Logic · Receiver Logic · Full Pseudocode · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        Stop-and-Wait ARQ (Automatic Repeat reQuest) is the simplest <strong>error control and flow control</strong> protocol. The sender transmits one frame and then <strong>stops and waits</strong> for an acknowledgment (ACK) before sending the next. If the ACK is not received (due to frame error or ACK error), the sender <strong>retransmits</strong>. This implementation simulates errors using <code>rand() % 4 == 0</code> (~25% error rate).
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">struct frame { seq, info }</span><span class="explain-text">The data unit being transmitted. <code>seq</code> = sequence number (1–5). <code>info</code> = payload data.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">turn (char)</span><span class="explain-text">'s' = sender's turn, 'r' = receiver's turn. Controls who acts in each simulation cycle.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">errorFrame (int)</span><span class="explain-text">0 = frame corrupted during transmission (packet lost). Non-zero = frame delivered OK.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">errorAck (int)</span><span class="explain-text">0 = ACK lost on its way back to sender. Non-zero = ACK delivered OK.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">ack (int)</span><span class="explain-text">Acknowledgment number sent by receiver = sequence number of the successfully received frame.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">disconnected (bool)</span><span class="explain-text">Set to true when all 5 frames are transmitted successfully. Terminates the simulation loop.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">t (int)</span><span class="explain-text">Timeout counter (starts at 5). Decremented while waiting; triggers retransmission.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">Methods</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">sender()</span><span class="explain-text">Called each cycle when <code>turn == 's'</code>. Checks if previous ACK arrived. If <code>errorAck == 0</code>, retransmits. Otherwise, sends the next frame and randomizes a new <code>errorFrame</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge green">receiver()</span><span class="explain-text">Called each cycle when <code>turn == 'r'</code>. If <code>errorFrame != 0</code> (frame OK), checks if sequence matches expected. Sends ACK and randomizes <code>errorAck</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge green">rand() % 4</span><span class="explain-text">Generates 0,1,2,3 with equal probability. 0 = error (~25% chance). This simulates real-world packet loss independently for frames and ACKs.</span></li>
+        <li class="explain-item"><span class="explain-badge green">main()</span><span class="explain-text">Initialises frame to seq=0, info=0. Runs <code>while(!disconnected)</code> loop calling sender() then receiver() alternately.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Pseudocode — Sender</div>
+      <div class="pseudo-block"><span class="ps-kw">FUNCTION</span> sender():
+
+  <span class="ps-kw">IF</span> turn == <span class="ps-str">'s'</span>:
+
+    <span class="ps-kw">IF</span> errorAck == <span class="ps-num">0</span>:   <span class="ps-cm">// ACK was lost → retransmit</span>
+      print "ACK NOT RECEIVED, RESENDING SEQ: " + f.seq
+      errorFrame ← rand() % <span class="ps-num">4</span>   <span class="ps-cm">// Simulate new send attempt</span>
+      <span class="ps-kw">IF</span> errorFrame == <span class="ps-num">0</span>: print "Error sending packet"
+      turn ← <span class="ps-str">'r'</span>
+
+    <span class="ps-kw">ELSE</span>:                   <span class="ps-cm">// ACK OK → send next frame</span>
+      <span class="ps-kw">IF</span> flag == <span class="ps-num">1</span>: print "ACK RECEIVED FOR PACKET: " + ack
+      <span class="ps-kw">IF</span> f.seq == <span class="ps-num">5</span>:         <span class="ps-cm">// All 5 frames done</span>
+        disconnected ← <span class="ps-kw">TRUE</span>
+        <span class="ps-kw">RETURN</span>
+      f.seq ← f.seq + <span class="ps-num">1</span>
+      f.info ← f.info + <span class="ps-num">1</span>
+      print "SENDING PACKET SEQ: " + f.seq
+      errorFrame ← rand() % <span class="ps-num">4</span>
+      <span class="ps-kw">IF</span> errorFrame == <span class="ps-num">0</span>: print "Error sending packet"
+      turn ← <span class="ps-str">'r'</span>
+      flag ← <span class="ps-num">1</span>
+
+  <span class="ps-kw">ELSE</span>:   <span class="ps-cm">// Waiting for receiver → decrement timer</span>
+    <span class="ps-kw">IF</span> t &gt; <span class="ps-num">0</span>: t ← t - <span class="ps-num">1</span></div>
+
+      <div class="algo-heading green" style="margin-top:16px;">Pseudocode — Receiver</div>
+      <div class="pseudo-block green"><span class="ps-kw">FUNCTION</span> receiver():
+
+  <span class="ps-kw">IF</span> turn == <span class="ps-str">'r'</span>:
+
+    <span class="ps-kw">IF</span> errorFrame ≠ <span class="ps-num">0</span>:   <span class="ps-cm">// Frame arrived without error</span>
+
+      <span class="ps-kw">IF</span> f.seq == exp:     <span class="ps-cm">// Expected frame — accept it</span>
+        print "RECEIVED PACKET SEQ: " + f.seq
+        ack ← f.seq
+        turn ← <span class="ps-str">'s'</span>
+        exp ← exp + <span class="ps-num">1</span>
+        errorAck ← rand() % <span class="ps-num">4</span>
+        <span class="ps-kw">IF</span> errorAck == <span class="ps-num">0</span>: print "ACK send error"
+
+      <span class="ps-kw">ELSE</span>:                <span class="ps-cm">// Duplicate frame — re-ACK old</span>
+        print "RECEIVED DUPLICATE PACKET: " + f.seq
+        ack ← exp - <span class="ps-num">1</span>
+        turn ← <span class="ps-str">'s'</span>
+        errorAck ← rand() % <span class="ps-num">4</span>
+
+    <span class="ps-cm">// If errorFrame == 0: frame corrupted → silently drop, no ACK sent</span>
+
+<span class="ps-kw">FUNCTION</span> main():
+  f.seq ← <span class="ps-num">0</span> ; f.info ← <span class="ps-num">0</span>
+  <span class="ps-kw">WHILE</span> NOT disconnected:
+    <span class="ps-fn">sender</span>()
+    <span class="ps-fn">receiver</span>()</div>
+
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge">errorAck == 0</span><span class="explain-text"><strong>Retransmit path</strong> — ACK was lost so sender never got confirmation. It resends the same frame (f.seq unchanged). This is the ARQ "repeat" mechanism.</span></li>
+        <li class="explain-item"><span class="explain-badge">f.seq == 5</span><span class="explain-text"><strong>Termination</strong> — After sending and getting ACK for all 5 packets, <code>disconnected = true</code> exits the while loop cleanly.</span></li>
+        <li class="explain-item"><span class="explain-badge green">errorFrame != 0</span><span class="explain-text"><strong>Frame OK check</strong> — Only when errorFrame is non-zero does the receiver process the frame. If it's 0, the frame is silently dropped, mimicking a corrupted/lost packet.</span></li>
+        <li class="explain-item"><span class="explain-badge green">f.seq == exp</span><span class="explain-text"><strong>Duplicate detection</strong> — If seq doesn't match expected, it's a retransmitted duplicate. Receiver re-ACKs with <code>ack = exp - 1</code> to tell sender "I already have this one."</span></li>
+        <li class="explain-item"><span class="explain-badge green">static exp</span><span class="explain-text">The <code>static int exp = 1</code> in receiver() persists across calls — it remembers the next expected frame number across the entire simulation.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      Stop &amp; Wait: sender sends 1 frame → waits for ACK. Two independent errors: <code>errorFrame</code> (packet lost) and <code>errorAck</code> (ACK lost). <code>rand()%4==0</code> = ~25% error. Receiver drops silently on frame error; sender retransmits if ACK error. <code>turn</code> variable alternates control. Terminates after 5 successful frames.
+    </div>
+  </div>
+
   <div id="snw-tricks" class="sub-panel">
     <div class="section-title">Stop &amp; Wait — Tricks to Remember</div>
     <div class="trick-box"><div class="trick-label">🔁 THE LOOP</div>While(!disconnect) calls sender() then receiver() alternately. They cooperate using the <code>turn</code> variable.</div>
@@ -1595,6 +2073,7 @@
     <button class="sub-btn active" onclick="showSub('dvr','overview')">Overview</button>
     <button class="sub-btn" onclick="showSub('dvr','code')">Full Code</button>
     <button class="sub-btn" onclick="showSub('dvr','tricks')">Tricks</button>
+    <button class="sub-btn" onclick="showSub('dvr','algo')">⚙ Algorithm</button>
   </div>
 
   <div id="dvr-overview" class="sub-panel active">
@@ -1709,6 +2188,97 @@
     </div>
   </div>
 
+
+  <!-- DVR Algorithm -->
+  <div id="dvr-algo" class="sub-panel">
+    <div class="section-title">Distance Vector Routing — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Data Structures · Bellman-Ford Logic · Full Pseudocode · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        Distance Vector Routing is a <strong>dynamic routing algorithm</strong> based on the Bellman-Ford equation. Each router maintains a table of the <strong>minimum cost</strong> to reach every other router, along with the <strong>next-hop</strong> router to use. Routers share their tables with neighbors and iteratively update until no further improvement is possible — this is called <strong>convergence</strong>.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">struct node { dist[20], from[20] } rt[10]</span><span class="explain-text">Routing table array. <code>rt[i].dist[j]</code> = shortest known distance from router i to j. <code>rt[i].from[j]</code> = which next-hop router to use from i to reach j.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">dmat[20][20]</span><span class="explain-text">Direct cost adjacency matrix. <code>dmat[i][j]</code> = cost of direct link between i and j. 0 if same node, large number (999/INF) if no direct link.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">n</span><span class="explain-text">Number of routers in the network.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">i, j, k</span><span class="explain-text">Loop indices. i = source router, j = destination router, k = intermediate (relay) router being evaluated.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">count</span><span class="explain-text">Counts updates made in each iteration. When count == 0, no more improvements possible → algorithm has converged.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">The Bellman-Ford Core Condition</div>
+      <div class="trick-box green">
+        <div class="trick-label green">THE KEY FORMULA</div>
+        <code>if ( rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j] )</code><br><br>
+        <strong>Plain English:</strong> "Is the cost to go from router i to router j via intermediate router k cheaper than my current best known route to j?"<br><br>
+        If YES → Update: <code>rt[i].dist[j] = dmat[i][k] + rt[k].dist[j]</code> and <code>rt[i].from[j] = k</code>
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Full Pseudocode</div>
+      <div class="pseudo-block"><span class="ps-kw">BEGIN</span> DistanceVectorRouting
+
+  <span class="ps-cm">// Step 1: Input</span>
+  READ <span class="ps-var">n</span>                             <span class="ps-cm">// number of routers</span>
+  READ <span class="ps-var">dmat[n][n]</span>                   <span class="ps-cm">// direct cost matrix</span>
+
+  <span class="ps-cm">// Step 2: Initialize routing tables</span>
+  <span class="ps-kw">FOR</span> i ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:
+    <span class="ps-kw">FOR</span> j ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:
+      <span class="ps-var">rt[i].dist[j]</span> ← <span class="ps-var">dmat[i][j]</span>  <span class="ps-cm">// start with direct links only</span>
+      <span class="ps-var">rt[i].from[j]</span> ← j           <span class="ps-cm">// initially go direct to j</span>
+
+  <span class="ps-cm">// Step 3: Iteratively apply Bellman-Ford</span>
+  <span class="ps-kw">REPEAT</span>:
+    count ← <span class="ps-num">0</span>
+    <span class="ps-kw">FOR</span> i ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:            <span class="ps-cm">// for each source router</span>
+      <span class="ps-kw">FOR</span> j ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:          <span class="ps-cm">// for each destination</span>
+        <span class="ps-kw">FOR</span> k ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:        <span class="ps-cm">// try every intermediate router</span>
+
+          <span class="ps-kw">IF</span> rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j]:
+            rt[i].dist[j] ← dmat[i][k] + rt[k].dist[j]
+            rt[i].from[j] ← k         <span class="ps-cm">// route via k is better</span>
+            count ← count + <span class="ps-num">1</span>
+
+  <span class="ps-kw">UNTIL</span> count == <span class="ps-num">0</span>                  <span class="ps-cm">// converged: no more updates</span>
+
+  <span class="ps-cm">// Step 4: Print routing tables</span>
+  <span class="ps-kw">FOR</span> i ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:
+    print "Router " + (i+<span class="ps-num">1</span>)
+    <span class="ps-kw">FOR</span> j ← <span class="ps-num">0</span> to n-<span class="ps-num">1</span>:
+      print "To node " + (j+<span class="ps-num">1</span>) + " via " + (rt[i].from[j]+<span class="ps-num">1</span>) + " cost: " + rt[i].dist[j]
+
+<span class="ps-kw">END</span> DistanceVectorRouting</div>
+
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge">Step 1</span><span class="explain-text"><strong>Input</strong> — The cost matrix is provided by the user. <code>dmat[i][i] = 0</code> (self), <code>dmat[i][j] = link cost</code>, and typically <code>999</code> or a large number for no direct link.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 2: Init</span><span class="explain-text"><strong>Each router starts with only direct link knowledge.</strong> <code>rt[i].dist[j] = dmat[i][j]</code> means "I know about direct neighbors." <code>rt[i].from[j] = j</code> means "to reach j, go directly to j."</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 3: i loop</span><span class="explain-text"><strong>Source router i</strong> — We're updating the routing table of router i. "What's the best path for i?"</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 3: j loop</span><span class="explain-text"><strong>Destination j</strong> — For each destination, we check if there's a better path.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 3: k loop</span><span class="explain-text"><strong>Intermediate k</strong> — "Can I reach j cheaper by going through k?" <code>dmat[i][k]</code> = cost i→k (direct link), <code>rt[k].dist[j]</code> = k's best known path to j.</span></li>
+        <li class="explain-item"><span class="explain-badge green">Bellman-Ford</span><span class="explain-text"><strong>Update condition</strong> — If the new path is shorter, update both the distance and the next-hop. Increment count so we know an update happened and need another pass.</span></li>
+        <li class="explain-item"><span class="explain-badge">UNTIL count==0</span><span class="explain-text"><strong>Convergence</strong> — The do-while loop repeats until no routing table entry changes in a full pass. This guarantees the algorithm found the globally optimal routes.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 4</span><span class="explain-text"><strong>Output</strong> — Prints routing table per router. Output shows: destination node, next-hop router (via which neighbor to leave), and total cost.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      DVR algorithm: Initialize routing tables from cost matrix → Triple nested loop (i=src, j=dst, k=intermediate) → Apply Bellman-Ford: if <code>rt[i].dist[j] &gt; dmat[i][k] + rt[k].dist[j]</code> then update dist and from → Repeat until convergence (count==0) → Print tables. Time complexity: O(n³) per iteration. Uses <strong>do-while</strong> to guarantee at least one pass before checking convergence.
+    </div>
+  </div>
+
   <div id="dvr-tricks" class="sub-panel">
     <div class="section-title">DVR — Tricks to Remember</div>
     <div class="trick-box"><div class="trick-label">🧠 THE MAGIC LINE</div>
@@ -1734,6 +2304,7 @@
     <button class="sub-btn active" onclick="showSub('leaky','overview')">Overview</button>
     <button class="sub-btn" onclick="showSub('leaky','code')">Full Code</button>
     <button class="sub-btn" onclick="showSub('leaky','tricks')">Tricks</button>
+    <button class="sub-btn" onclick="showSub('leaky','algo')">⚙ Algorithm</button>
   </div>
 
   <div id="leaky-overview" class="sub-panel active">
@@ -1841,6 +2412,98 @@
     </div>
   </div>
 
+
+  <!-- Leaky Bucket Algorithm -->
+  <div id="leaky-algo" class="sub-panel">
+    <div class="section-title">Leaky Bucket — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Analogy · Data Structures · Core Logic · Full Pseudocode · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        The Leaky Bucket Algorithm is a <strong>congestion control and traffic shaping</strong> mechanism. It converts <strong>bursty, irregular</strong> incoming traffic into a <strong>smooth, constant-rate</strong> outgoing stream. The bucket represents a buffer — packets fill it from the top (incoming), while it drains at a fixed rate from the bottom (outgoing). Packets that overflow the bucket are <strong>dropped</strong>.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">bucksize</span><span class="explain-text"><strong>int</strong> — Maximum capacity of the bucket (buffer). No more than <code>bucksize</code> units can be stored at any time.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">store</span><span class="explain-text"><strong>int</strong> — Current amount of data in the bucket. Starts at 0. Increases with incoming packets, decreases with outgoing drain.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">in</span><span class="explain-text"><strong>int</strong> — Size of the incoming packet in this round. Read from user input.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">out</span><span class="explain-text"><strong>int</strong> — Constant outgoing drain rate per round. Fixed — does not vary with input. This is the "leak."</span></li>
+        <li class="explain-item"><span class="explain-badge orange">n</span><span class="explain-text"><strong>int</strong> — Number of input rounds (packets) to simulate. Controls the while loop.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">Core Decision Logic</div>
+      <div class="trick-box green">
+        <div class="trick-label green">ACCEPT OR DROP?</div>
+        Available space = <code>bucksize - store</code><br><br>
+        <strong>If <code>in ≤ bucksize - store</code></strong> → Packet fits → Accept: <code>store += in</code><br>
+        <strong>Else</strong> → Overflow → Drop <code>in - (bucksize - store)</code> units → <code>store = bucksize</code><br><br>
+        <strong>After every round:</strong> Drain: <code>store -= out</code>. If <code>store &lt; 0</code>, clamp to 0.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Full Pseudocode</div>
+      <div class="pseudo-block"><span class="ps-kw">BEGIN</span> LeakyBucket
+
+  <span class="ps-cm">// Step 1: Read configuration</span>
+  READ <span class="ps-var">bucksize</span>, <span class="ps-var">out</span>, <span class="ps-var">n</span>
+  <span class="ps-var">store</span> ← <span class="ps-num">0</span>
+
+  <span class="ps-cm">// Step 2: Process n incoming packets</span>
+  <span class="ps-kw">WHILE</span> n &gt; <span class="ps-num">0</span>:
+
+    READ <span class="ps-var">in</span>                         <span class="ps-cm">// incoming packet size this round</span>
+
+    <span class="ps-cm">// Step 3: Check if packet fits in bucket</span>
+    <span class="ps-kw">IF</span> <span class="ps-var">in</span> ≤ (<span class="ps-var">bucksize</span> - <span class="ps-var">store</span>):
+
+      <span class="ps-var">store</span> ← <span class="ps-var">store</span> + <span class="ps-var">in</span>           <span class="ps-cm">// Accept all incoming data</span>
+      print "Available: " + (bucksize - store)
+
+    <span class="ps-kw">ELSE</span>:                            <span class="ps-cm">// Bucket would overflow</span>
+
+      dropped ← <span class="ps-var">in</span> - (<span class="ps-var">bucksize</span> - <span class="ps-var">store</span>)
+      print "Dropped: " + dropped
+      <span class="ps-var">store</span> ← <span class="ps-var">bucksize</span>              <span class="ps-cm">// Fill bucket to max</span>
+      print "Available: 0"
+
+    <span class="ps-cm">// Step 4: Drain the bucket at constant outgoing rate</span>
+    <span class="ps-var">store</span> ← <span class="ps-var">store</span> - <span class="ps-var">out</span>
+
+    <span class="ps-cm">// Step 5: Prevent negative store (drain more than bucket held)</span>
+    <span class="ps-kw">IF</span> <span class="ps-var">store</span> &lt; <span class="ps-num">0</span>:
+      <span class="ps-var">store</span> ← <span class="ps-num">0</span>
+
+    print "Available after outgoing: " + (bucksize - store)
+    <span class="ps-var">n</span> ← <span class="ps-var">n</span> - <span class="ps-num">1</span>
+
+<span class="ps-kw">END</span> LeakyBucket</div>
+
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge">Step 1</span><span class="explain-text"><strong>Configuration</strong> — Three inputs: bucket capacity, constant drain rate per round, and number of rounds. <code>store = 0</code> means bucket starts empty.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 3: Accept</span><span class="explain-text"><strong>Available space = bucksize - store.</strong> If the incoming packet fits entirely within the free space, accept all of it. Store increases by <code>in</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 3: Drop</span><span class="explain-text"><strong>Overflow handling.</strong> The amount that exceeds available space is dropped: <code>dropped = in - (bucksize - store)</code>. The bucket fills to max (<code>store = bucksize</code>). Only the excess is dropped, not the entire packet.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 4: Drain</span><span class="explain-text"><strong>Constant-rate outgoing.</strong> Every round, <code>out</code> units leave the bucket regardless of input size. This is the "leak" — it's always the same, creating smooth output traffic.</span></li>
+        <li class="explain-item"><span class="explain-badge">Step 5: Clamp</span><span class="explain-text"><strong>Edge case guard.</strong> If <code>store &lt; 0</code> (outgoing rate exceeded what's in bucket), clamp to 0. Without this, store could go negative, which is meaningless for a buffer.</span></li>
+        <li class="explain-item"><span class="explain-badge green">Key Property</span><span class="explain-text"><strong>Output is always bounded by <code>out</code>.</strong> No matter how large the incoming burst, the network beyond the bucket only ever sees at most <code>out</code> units per round. This is traffic shaping.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      Leaky Bucket: Read (bucksize, out, n) → Loop n times → If <code>in ≤ bucksize-store</code>: accept (store+=in) → Else: drop excess, fill bucket → Drain: store-=out → Clamp store to 0 if negative → Print available space. Purpose: <strong>traffic shaping</strong> — converts bursty input to smooth constant-rate output. vs Token Bucket: token bucket allows occasional bursts; leaky bucket enforces strict output rate.
+    </div>
+  </div>
+
   <div id="leaky-tricks" class="sub-panel">
     <div class="section-title">Leaky Bucket — Tricks</div>
     <div class="trick-box"><div class="trick-label">💧 THE ANALOGY</div>Bucket = buffer. Water in = incoming packets. Hole = outgoing rate. If too much water → overflow (drop packets). Hole always drains at same rate regardless of input.</div>
@@ -1857,6 +2520,7 @@
     <button class="sub-btn" onclick="showSub('ftp','server')">Server</button>
     <button class="sub-btn" onclick="showSub('ftp','client')">Client</button>
     <button class="sub-btn" onclick="showSub('ftp','tricks')">Tricks &amp; Diff</button>
+    <button class="sub-btn" onclick="showSub('ftp','algo')">⚙ Algorithm</button>
   </div>
 
   <div id="ftp-overview" class="sub-panel active">
@@ -2000,6 +2664,124 @@
     &lt;span class=<span class="str">&quot;fn&quot;</span>&gt;close&lt;/span&gt;(csd);
     &lt;span class=<span class="str">&quot;kw&quot;</span>&gt;<span class="kw">return</span>&lt;/span&gt; &lt;span class=<span class="str">&quot;num&quot;</span>&gt;<span class="num">0</span>&lt;/span&gt;;
 }</pre>
+    </div>
+  </div>
+
+
+  <!-- FTP Algorithm -->
+  <div id="ftp-algo" class="sub-panel">
+    <div class="section-title">FTP — Algorithm <span class="tag tag-both">30 Marks</span></div>
+    <div class="algo-marks-bar">
+      <div class="marks-num">30</div>
+      <div class="marks-label"><strong>Algorithm covers:</strong> Purpose · Data Structures · Methods · Pseudocode (Server + Client) · Step-by-step explanation</div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading cyan">Purpose</div>
+      <div class="trick-box">
+        File Transfer Protocol (FTP) over TCP allows a client to request a file from a server, which reads the file and sends it line-by-line. It is <strong>TCP socket programming + File I/O</strong> combined. The socket setup is <strong>identical to TCP</strong>; the only addition is <code>fopen()</code>, <code>fgets()</code>, and <code>fputs()</code> for file handling. A special sentinel string <code>"completed"</code> signals end of transfer.
+      </div>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading orange">Data Structures &amp; Variables</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge cyan">sd, newsd</span><span class="explain-text"><strong>int</strong> — Server's listening socket and accepted client socket. Identical role to <code>sockfd</code>/<code>clientfd</code> in TCP.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">FILE *fp</span><span class="explain-text"><strong>File pointer</strong> — Points to the opened file on the server's filesystem. <code>NULL</code> if file not found.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">name[100]</span><span class="explain-text"><strong>char array</strong> — Filename sent by client to server via <code>send()</code>/<code>recv()</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">fileread[100]</span><span class="explain-text"><strong>char array</strong> — Buffer used to read one line from the file at a time with <code>fgets()</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">rcv[100]</span><span class="explain-text"><strong>char array</strong> — Buffer on the client side to receive file content. Checked for <code>"completed"</code> sentinel.</span></li>
+        <li class="explain-item"><span class="explain-badge orange">newname[100]</span><span class="explain-text"><strong>char array</strong> — Name of the local file the client creates to save the received data.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading green">Additional Methods (beyond TCP)</div>
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge green">fopen(name, "r")</span><span class="explain-text">Opens file for reading. Returns NULL if file does not exist. Server checks for NULL and sends "File not found" if so.</span></li>
+        <li class="explain-item"><span class="explain-badge green">fgets(buf, size, fp)</span><span class="explain-text">Reads one line (up to size-1 chars) from the file. Returns NULL at end-of-file — this is the loop termination condition.</span></li>
+        <li class="explain-item"><span class="explain-badge green">fopen(name, "w")</span><span class="explain-text">Client opens a new file for writing to save received content.</span></li>
+        <li class="explain-item"><span class="explain-badge green">fputs(rcv, fp)</span><span class="explain-text">Client writes each received line to the local file.</span></li>
+        <li class="explain-item"><span class="explain-badge green">strcmp(rcv, "completed")</span><span class="explain-text">Client checks if received string is the sentinel. When matched, it knows the file transfer is complete and exits the loop.</span></li>
+        <li class="explain-item"><span class="explain-badge green">sleep(1)</span><span class="explain-text">Server sleeps 1 second between sends to avoid flooding the client — basic rate control for this simulation.</span></li>
+      </ul>
+    </div>
+
+    <div class="algo-section">
+      <div class="algo-heading">Pseudocode — FTP Server</div>
+      <div class="pseudo-block cyan"><span class="ps-kw">BEGIN</span> FTP_Server
+
+  <span class="ps-cm">// Step 1–4: TCP setup (identical to TCP server)</span>
+  <span class="ps-var">sd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_STREAM, <span class="ps-num">0</span>)
+  READ port ; configure serveraddr
+  <span class="ps-fn">bind</span>(<span class="ps-var">sd</span>, &amp;serveraddr) ; <span class="ps-fn">listen</span>(<span class="ps-var">sd</span>, <span class="ps-num">5</span>)
+  <span class="ps-var">newsd</span> ← <span class="ps-fn">accept</span>(<span class="ps-var">sd</span>, &amp;clientaddr, &amp;len)
+
+  <span class="ps-cm">// Step 5: Receive filename from client</span>
+  n ← <span class="ps-fn">recv</span>(<span class="ps-var">newsd</span>, <span class="ps-var">name</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+  name[n] ← ' '                  <span class="ps-cm">// null-terminate the filename string</span>
+  print "File requested: " + name
+
+  <span class="ps-cm">// Step 6: Open the requested file</span>
+  <span class="ps-var">fp</span> ← <span class="ps-fn">fopen</span>(<span class="ps-var">name</span>, <span class="ps-str">"r"</span>)
+  <span class="ps-kw">IF</span> fp == NULL:
+    <span class="ps-fn">send</span>(<span class="ps-var">newsd</span>, <span class="ps-str">"File not found"</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+  <span class="ps-kw">ELSE</span>:
+    <span class="ps-cm">// Step 7: Send file line by line</span>
+    <span class="ps-kw">WHILE</span> <span class="ps-fn">fgets</span>(<span class="ps-var">fileread</span>, sizeof(fileread), <span class="ps-var">fp</span>) ≠ NULL:
+      <span class="ps-fn">send</span>(<span class="ps-var">newsd</span>, <span class="ps-var">fileread</span>, sizeof(fileread), <span class="ps-num">0</span>)
+      <span class="ps-fn">sleep</span>(<span class="ps-num">1</span>)
+
+    <span class="ps-cm">// Step 8: Send end-of-transfer sentinel</span>
+    <span class="ps-fn">send</span>(<span class="ps-var">newsd</span>, <span class="ps-str">"completed"</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+    <span class="ps-fn">fclose</span>(<span class="ps-var">fp</span>)
+
+  <span class="ps-fn">close</span>(<span class="ps-var">newsd</span>) ; <span class="ps-fn">close</span>(<span class="ps-var">sd</span>)
+
+<span class="ps-kw">END</span> FTP_Server</div>
+
+      <div class="algo-heading green" style="margin-top:16px;">Pseudocode — FTP Client</div>
+      <div class="pseudo-block green"><span class="ps-kw">BEGIN</span> FTP_Client
+
+  <span class="ps-cm">// Step 1–3: TCP setup (identical to TCP client)</span>
+  <span class="ps-var">csd</span> ← <span class="ps-fn">socket</span>(AF_INET, SOCK_STREAM, <span class="ps-num">0</span>)
+  READ port ; configure serveraddr
+  <span class="ps-fn">connect</span>(<span class="ps-var">csd</span>, &amp;serveraddr, sizeof(serveraddr))
+
+  <span class="ps-cm">// Step 4: Send filename to server</span>
+  READ <span class="ps-var">name</span>                         <span class="ps-cm">// filename to request</span>
+  <span class="ps-fn">send</span>(<span class="ps-var">csd</span>, <span class="ps-var">name</span>, sizeof(name), <span class="ps-num">0</span>)
+
+  <span class="ps-cm">// Step 5: Open local file to save received data</span>
+  READ <span class="ps-var">newname</span>                      <span class="ps-cm">// local save filename</span>
+  <span class="ps-var">fp</span> ← <span class="ps-fn">fopen</span>(<span class="ps-var">newname</span>, <span class="ps-str">"w"</span>)
+
+  <span class="ps-cm">// Step 6: Receive file content until sentinel</span>
+  <span class="ps-kw">WHILE</span> TRUE:
+    n ← <span class="ps-fn">recv</span>(<span class="ps-var">csd</span>, <span class="ps-var">rcv</span>, <span class="ps-num">100</span>, <span class="ps-num">0</span>)
+    rcv[n] ← ' '
+    <span class="ps-kw">IF</span> <span class="ps-fn">strcmp</span>(<span class="ps-var">rcv</span>, <span class="ps-str">"completed"</span>) == <span class="ps-num">0</span>: <span class="ps-kw">BREAK</span>
+    <span class="ps-fn">fputs</span>(<span class="ps-var">rcv</span>, <span class="ps-var">fp</span>)                  <span class="ps-cm">// write line to local file</span>
+
+  <span class="ps-fn">fclose</span>(<span class="ps-var">fp</span>)
+  print "File received successfully"
+  <span class="ps-fn">close</span>(<span class="ps-var">csd</span>)
+
+<span class="ps-kw">END</span> FTP_Client</div>
+
+      <ul class="explain-list">
+        <li class="explain-item"><span class="explain-badge">Steps 1–4 (S)</span><span class="explain-text"><strong>TCP socket setup</strong> — Identical to regular TCP server: socket→bind→listen→accept. FTP adds nothing new here.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 5 (S)</span><span class="explain-text"><strong>Receive filename</strong> — Client sends the filename as a string. Server must null-terminate it (<code>name[n]=' '</code>) before using it as a C string in <code>fopen()</code>.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 6 (S): fopen NULL</span><span class="explain-text"><strong>Error handling</strong> — If the file doesn't exist, fopen returns NULL. Server sends a "File not found" error message and skips the transfer loop.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 7 (S)</span><span class="explain-text"><strong>fgets loop</strong> — Reads one line at a time. When EOF is reached, fgets returns NULL, exiting the while loop naturally. Each line is sent immediately over the socket.</span></li>
+        <li class="explain-item"><span class="explain-badge cyan">Step 8 (S)</span><span class="explain-text"><strong>Sentinel "completed"</strong> — After all lines are sent, the server sends this magic string. Without a sentinel, the client would block on <code>recv()</code> forever waiting for more data.</span></li>
+        <li class="explain-item"><span class="explain-badge green">Step 6 (C)</span><span class="explain-text"><strong>strcmp check</strong> — Client loops receiving lines and writing to local file. When it receives "completed", it breaks out of the loop and closes the file. This is the protocol-level end-of-transfer signal.</span></li>
+      </ul>
+    </div>
+
+    <div class="trick-box purple">
+      <div class="trick-label purple">📝 30-MARK EXAM SUMMARY</div>
+      FTP = TCP socket setup + File I/O. Server: TCP accept → recv filename → fopen → fgets loop → send each line → send "completed" sentinel → fclose. Client: TCP connect → send filename → fopen(write) → recv loop → strcmp("completed") to exit → fputs to file → fclose. Key additions over TCP: <code>fopen/fgets/fputs/fclose</code> and the <code>"completed"</code> sentinel string.
     </div>
   </div>
 
